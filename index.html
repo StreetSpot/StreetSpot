@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreetSpot | Vendor Locator</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 20px; background: #f4f4f4; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav { margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #007bff; font-weight: bold; }
+        .page { display: none; }
+        .active { display: block; }
+        h1, h2 { color: #333; }
+        .btn { display: inline-block; background: #333; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav>
+        <a href="#" onclick="showPage('app')">App</a>
+        <a href="#" onclick="showPage('privacy')">Privacy Policy</a>
+        <a href="#" onclick="showPage('delete')">Data Deletion</a>
+    </nav>
+
+    <div id="app" class="page active">
+        <h1>StreetSpot</h1>
+        <p>Welcome to the StreetSpot Vendor Locator. (Your map/vendor logic goes here).</p>
+        <div id="map-container" style="height: 300px; background: #eee; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center;">
+            [ Map Interface Active ]
+        </div>
+    </div>
+
+    <div id="privacy" class="page">
+        <h1>Privacy Policy</h1>
+        <p><strong>Effective Date:</strong> March 25, 2026</p>
+        <p>StreetSpot ("we," "our," or "us") is committed to protecting your privacy. This policy outlines how we handle data.</p>
+        <h2>1. Data Collection</h2>
+        <p>We collect precise location data to help you find nearby vendors. This data is only used while the app is in use.</p>
+        <h2>2. Third-Party Services</h2>
+        <p>We do not sell your personal data to third parties.</p>
+    </div>
+
+    <div id="delete" class="page">
+        <h1>Data Deletion Instructions</h1>
+        <p>If you wish to delete your account and all associated data from StreetSpot, please follow the steps below:</p>
+        <ul>
+            <li>Send an email to <strong>support@yourdomain.com</strong> (or your Gmail).</li>
+            <li>Use the subject line: <strong>Request for Data Deletion</strong>.</li>
+            <li>Include your username or registered email address.</li>
+        </ul>
+        <p>Your data will be permanently removed from our servers within 7 business days.</p>
+    </div>
+</div>
+
+<script>
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+    }
+</script>
+
+</body>
+</html>
