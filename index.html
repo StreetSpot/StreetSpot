@@ -25,7 +25,7 @@
     </nav>
 
     <div id="app" class="page active">
-        <h1>StreetSpot</h1>
+        <h1>StreetSpot by Hardin Brothers</h1>
         <p>Welcome to the StreetSpot Vendor Locator. (Your map/vendor logic goes here).</p>
         <div id="map-container" style="height: 300px; background: #eee; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center;">
             [ Map Interface Active ]
@@ -42,12 +42,12 @@
         <p>We do not sell your personal data to third parties.</p>
     </div>
 
-    <div id="delete" class="page">
+   <div id="delete" class="page">
         <h1>Data Deletion Instructions</h1>
         <p>If you wish to delete your account and all associated data from StreetSpot, please follow the steps below:</p>
         <ul>
-            <li>Send an email to <strong>support@yourdomain.com</strong> (or your Gmail).</li>
-            <li>Use the subject line: <strong>Request for Data Deletion</strong>.</li>
+            <li>Send an email to: <strong>streetspotvendors@gmail.com</strong></li>
+            <li>Use the subject line: <strong>Data Deletion Request</strong></li>
             <li>Include your username or registered email address.</li>
         </ul>
         <p>Your data will be permanently removed from our servers within 7 business days.</p>
@@ -55,11 +55,32 @@
 </div>
 
 <script>
+    // 1. Navigation
     function showPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
     }
-</script>
 
+    // 2. Android 17 Geofencing Fix
+    function startVendorTracking() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.watchPosition(
+                (position) => {
+                    console.log("StreetSpot tracked location at:", position.coords.latitude, position.coords.longitude);
+                },
+                (error) => {
+                    console.error("Location Error:", error.message);
+                },
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+            );
+        }
+    }
+
+    // 3. Launch
+    window.onload = function() {
+        startVendorTracking();
+        console.log("StreetSpot by Hardin Brothers is active.");
+    };
+</script>
 </body>
 </html>
