@@ -1,0 +1,27 @@
+{
+  "name": "StreetSpot - Street Vendor Discovery",
+  "short_name": "StreetSpot",
+  "description": "Discover street vendors in real time. Go live, get found.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#1a1a2e",
+  "orientation": "portrait",
+  "categories": ["food", "lifestyle", "shopping"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-icon.png",
+      "type": "image/png",
+      "sizes": "180x180",
+      "purpose": "any maskable"
+    }
+  ]
+}
