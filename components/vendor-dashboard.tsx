@@ -10,27 +10,16 @@ import {
   Crown,
   Radio,
   AlertCircle,
-  Sparkles,
-  Shield,
-  TrendingUp,
-  Zap,
-  Check,
-  ExternalLink,
   Mail,
   CheckCircle2,
   X,
 } from "lucide-react"
 import { vendorStore, useVendors, type Vendor } from "@/lib/vendor-store"
-
-const STRIPE_URL = "https://buy.stripe.com/dRmfZgbv4fDzepddxY63K00"
-
-function getStripeCheckoutUrl() {
-  const origin = typeof window !== "undefined" ? window.location.origin : ""
-  return STRIPE_URL
-    + (STRIPE_URL.includes("?") ? "&" : "?")
-    + "success_url=" + encodeURIComponent(origin + "/success")
-    + "&cancel_url=" + encodeURIComponent(origin + "/?cancelled=true")
-}
+import { PremierPinPayment } from "./premier-pin-payment"
+import { QuickTravelLog } from "./travel/quick-travel-log"
+import { NetEarningsCard } from "./travel/net-earnings-card"
+import { MileageDeductionCard } from "./travel/mileage-deduction-card"
+import { TravelLogsList } from "./travel/travel-logs-list"
 
 const SUPPORT_EMAIL = "support@streetspot.app"
 const SUPPORT_SUBJECT = "StreetSpot Support Request"
@@ -42,7 +31,6 @@ interface VendorDashboardProps {
   initialGold?: boolean
 }
 
-/* ───── Success toast ───── */
 function SuccessToast({
   message,
   onDismiss,
@@ -64,9 +52,7 @@ function SuccessToast({
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-500/20">
           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
         </div>
-        <p className="flex-1 text-sm font-medium text-emerald-300">
-          {message}
-        </p>
+        <p className="flex-1 text-sm font-medium text-emerald-300">{message}</p>
         <button
           onClick={onDismiss}
           className="shrink-0 rounded-md p-1 text-emerald-400/60 transition-colors hover:text-emerald-300"
@@ -79,7 +65,6 @@ function SuccessToast({
   )
 }
 
-/* ───── Main dashboard ───── */
 export function VendorDashboard({
   businessName,
   initialGold = false,
@@ -90,23 +75,21 @@ export function VendorDashboard({
   const [closingTime, setClosingTime] = useState("22:00")
   const [isLive, setIsLive] = useState(false)
   const [isPremium, setIsPremium] = useState(initialGold)
-  const [location, setLocation] = useState<{
-    lat: number
-    lng: number
-  } | null>(null)
+  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
+    null
+  )
   const [locationError, setLocationError] = useState<string | null>(null)
   const [isLocating, setIsLocating] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
 
   const myVendor = vendors.find((v) => v.id === vendorId)
 
-  // Check for returning from Stripe via sessionStorage
   useEffect(() => {
     if (typeof window === "undefined") return
     const goldFlag = sessionStorage.getItem("streetspot_gold_active")
     if (goldFlag === "true" || initialGold) {
       setIsPremium(true)
-      setToast("Gold Status activated! Your pin is now featured.")
+      setToast("Premier status activated! Your pin is now featured.")
       sessionStorage.removeItem("streetspot_gold_active")
     }
   }, [initialGold])
@@ -168,18 +151,12 @@ export function VendorDashboard({
         }
         vendorStore.addVendor(vendor)
       }
-      // Persist vendor ID for Stripe return flow
       if (typeof window !== "undefined") {
         sessionStorage.setItem("streetspot_vendor_id", vendorId)
       }
       setIsLive(true)
       setToast("You are now live on the map!")
     }
-  }
-
-  function handleDeactivateGold() {
-    setIsPremium(false)
-    if (isLive) vendorStore.updateVendor(vendorId, { isPremium: false })
   }
 
   function handleUpdateLocation() {
@@ -198,12 +175,10 @@ export function VendorDashboard({
         <SuccessToast message={toast} onDismiss={() => setToast(null)} />
       )}
 
-      {/* ── Status banner ── */}
+      {/* Status banner */}
       <div
         className={`mb-6 flex items-center gap-3 rounded-lg border px-4 py-3 ${
-          isLive
-            ? "border-primary/30 bg-primary/5"
-            : "border-border bg-card"
+          isLive ? "border-primary/30 bg-primary/5" : "border-border bg-card"
         }`}
       >
         <div
@@ -217,14 +192,12 @@ export function VendorDashboard({
           </p>
           <p className="text-xs text-muted-foreground">
             {isLive
-              ? `Visible to Finders until ${closingTime}${isPremium ? " \u00B7 Gold placement active" : ""}`
+              ? `Visible to Finders until ${closingTime}${isPremium ? " · Premier placement active" : ""}`
               : "Go live to appear on the Finder map"}
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {isPremium && isLive && (
-            <Crown className="h-4 w-4 text-amber-500" />
-          )}
+          {isPremium && isLive && <Crown className="h-4 w-4 text-amber-500" />}
           <Radio
             className={`h-5 w-5 ${
               isLive ? "text-primary" : "text-muted-foreground"
@@ -233,7 +206,7 @@ export function VendorDashboard({
         </div>
       </div>
 
-      {/* ── Business details ── */}
+      {/* Business details */}
       <div className="mb-6 rounded-xl border border-border bg-card p-5">
         <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Business Details
@@ -298,7 +271,7 @@ export function VendorDashboard({
         </div>
       </div>
 
-      {/* ── Location ── */}
+      {/* Location */}
       <div className="mb-6 rounded-xl border border-border bg-card p-5">
         <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Location
@@ -319,9 +292,7 @@ export function VendorDashboard({
         ) : (
           <div className="mb-4 flex items-center justify-center rounded-lg bg-secondary px-4 py-6">
             <p className="text-sm text-muted-foreground">
-              {isLocating
-                ? "Acquiring GPS signal..."
-                : "Location not available"}
+              {isLocating ? "Acquiring GPS signal..." : "Location not available"}
             </p>
           </div>
         )}
@@ -335,7 +306,7 @@ export function VendorDashboard({
         </button>
       </div>
 
-      {/* ── Go Live ── */}
+      {/* Go Live */}
       <button
         onClick={handleGoLive}
         disabled={!location}
@@ -358,176 +329,16 @@ export function VendorDashboard({
         )}
       </button>
 
-      {/* ── Gold Status ── */}
-      <div
-        className={`mb-6 overflow-hidden rounded-xl border ${
-          isPremium
-            ? "border-amber-500/30 bg-gradient-to-b from-amber-500/[0.05] to-card"
-            : "border-border bg-card"
-        }`}
-      >
-        {/* Header */}
-        <div
-          className={`flex items-center justify-between px-5 py-4 ${
-            isPremium ? "border-b border-amber-500/15" : ""
-          }`}
-        >
-          <div className="flex items-center gap-3">
-            <div
-              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ring-1 ${
-                isPremium
-                  ? "bg-amber-500/15 ring-amber-500/30"
-                  : "bg-amber-500/10 ring-amber-500/20"
-              }`}
-              style={
-                isPremium
-                  ? { animation: "gold-badge-pulse 2s ease-in-out infinite" }
-                  : undefined
-              }
-            >
-              <Crown className="h-5 w-5 text-amber-500" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h4 className="text-sm font-semibold text-foreground">
-                  Gold Status
-                </h4>
-                {isPremium ? (
-                  <span className="flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-400 ring-1 ring-emerald-500/20">
-                    <Check className="h-2.5 w-2.5" />
-                    Active
-                  </span>
-                ) : (
-                  <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-500">
-                    Pro
-                  </span>
-                )}
-              </div>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                {isPremium
-                  ? "Your pin has gold glow and top placement"
-                  : "Get priority visibility on the map"}
-              </p>
-            </div>
-          </div>
-          {isPremium && (
-            <button
-              onClick={handleDeactivateGold}
-              className="rounded-lg border border-border bg-secondary px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Deactivate
-            </button>
-          )}
-        </div>
+      {/* Premier Pin (Bronze / Silver / Gold) */}
+      <PremierPinPayment />
 
-        {/* Body */}
-        <div className="px-5 pb-5 pt-4">
-          {isPremium ? (
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3 rounded-lg bg-amber-500/[0.06] px-3.5 py-3 ring-1 ring-amber-500/10">
-                <Sparkles className="h-4 w-4 shrink-0 text-amber-500" />
-                <p className="text-xs leading-relaxed text-foreground/80">
-                  Your pin now has a pulsing gold glow and is prioritized at the
-                  top of all vendor lists for Finders.
-                </p>
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { icon: TrendingUp, label: "Top Placement" },
-                  { icon: Sparkles, label: "Gold Glow Pin" },
-                  { icon: Crown, label: "Featured Tag" },
-                ].map(({ icon: Icon, label }) => (
-                  <div
-                    key={label}
-                    className="flex flex-col items-center gap-1.5 rounded-lg bg-secondary px-2 py-3 text-center"
-                  >
-                    <Icon className="h-4 w-4 text-amber-500" />
-                    <span className="text-[10px] font-medium text-muted-foreground">
-                      {label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <p className="text-center text-[11px] text-muted-foreground">
-                Statement descriptor: STREETSPOT &middot; $0.99/week
-              </p>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                Upgrade to Gold for top-of-map placement. Your pin gets a
-                pulsing gold glow that draws every Finder&rsquo;s eye.
-              </p>
+      {/* Travel & Tax Tools */}
+      <QuickTravelLog />
+      <NetEarningsCard />
+      <MileageDeductionCard />
+      <TravelLogsList />
 
-              {/* Feature list */}
-              <div className="flex flex-col gap-2.5">
-                {[
-                  {
-                    icon: TrendingUp,
-                    title: "Top-of-Map Placement",
-                    desc: "Always appear above standard pins",
-                  },
-                  {
-                    icon: Sparkles,
-                    title: "Pulsing Gold Glow Pin",
-                    desc: "Premium visual that draws attention",
-                  },
-                  {
-                    icon: Shield,
-                    title: "Featured Vendor Badge",
-                    desc: "Trusted vendor badge on your listing",
-                  },
-                ].map(({ icon: Icon, title, desc }) => (
-                  <div key={title} className="flex items-center gap-3">
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-amber-500/10">
-                      <Icon className="h-3.5 w-3.5 text-amber-500" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium text-foreground">
-                        {title}
-                      </p>
-                      <p className="text-[11px] text-muted-foreground">
-                        {desc}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Pricing */}
-              <div className="rounded-lg bg-secondary px-4 py-3">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl font-bold text-foreground">
-                    $0.99
-                  </span>
-                  <span className="text-xs text-muted-foreground">/week</span>
-                </div>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  SaaS &middot; Personal Use &middot; Cancel anytime
-                </p>
-              </div>
-
-              {/* CTA - direct Stripe redirect */}
-              <a
-                href={getStripeCheckoutUrl()}
-                rel="noopener noreferrer"
-                className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-sm font-semibold text-white shadow-lg shadow-amber-500/20 transition-all hover:shadow-amber-500/30 hover:brightness-110"
-              >
-                <Zap className="h-4 w-4" />
-                Activate Gold Status
-                <ExternalLink className="h-3.5 w-3.5 opacity-60" />
-              </a>
-
-              <p className="flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
-                <Shield className="h-3 w-3" />
-                Secure checkout powered by Stripe &middot; STREETSPOT
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ── Settings & Support ── */}
+      {/* Settings & Support */}
       <div className="mb-6 rounded-xl border border-border bg-card p-5">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Settings
