@@ -20,6 +20,7 @@ import { QuickTravelLog } from "./travel/quick-travel-log"
 import { NetEarningsCard } from "./travel/net-earnings-card"
 import { MileageDeductionCard } from "./travel/mileage-deduction-card"
 import { TravelLogsList } from "./travel/travel-logs-list"
+import { VendorMenuEditor } from "./menu/vendor-menu-editor"
 
 const SUPPORT_EMAIL = "support@streetspot.app"
 const SUPPORT_SUBJECT = "StreetSpot Support Request"
@@ -331,6 +332,9 @@ export function VendorDashboard({
 
       {/* Premier Pin (Bronze / Silver / Gold) */}
       <PremierPinPayment />
+
+      {/* Menu & Pricing */}
+      <VendorMenuEditor />
 
       {/* Travel & Tax Tools */}
       <QuickTravelLog />
