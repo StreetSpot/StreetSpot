@@ -23,6 +23,7 @@ import { TravelLogsList } from "./travel/travel-logs-list"
 import { VendorMenuEditor } from "./menu/vendor-menu-editor"
 import { SaveParking } from "./parking/save-parking"
 import { VendorBookingsList } from "./bookings/vendor-bookings-list"
+import { ClaimableVendorsList } from "./claim/claimable-vendors-list"
 
 const SUPPORT_EMAIL = "support@streetspot.app"
 const SUPPORT_SUBJECT = "StreetSpot Support Request"
@@ -208,6 +209,9 @@ export function VendorDashboard({
           />
         </div>
       </div>
+
+      {/* Claim Your Spot – seeded Columbia vendors */}
+      <ClaimableVendorsList claimerName={businessName} />
 
       {/* Business details */}
       <div className="mb-6 rounded-xl border border-border bg-card p-5">
