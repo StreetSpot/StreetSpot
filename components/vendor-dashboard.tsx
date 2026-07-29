@@ -21,6 +21,8 @@ import { NetEarningsCard } from "./travel/net-earnings-card"
 import { MileageDeductionCard } from "./travel/mileage-deduction-card"
 import { TravelLogsList } from "./travel/travel-logs-list"
 import { VendorMenuEditor } from "./menu/vendor-menu-editor"
+import { SaveParking } from "./parking/save-parking"
+import { VendorBookingsList } from "./bookings/vendor-bookings-list"
 
 const SUPPORT_EMAIL = "support@streetspot.app"
 const SUPPORT_SUBJECT = "StreetSpot Support Request"
@@ -330,11 +332,17 @@ export function VendorDashboard({
         )}
       </button>
 
-      {/* Premier Pin (Bronze / Silver / Gold) */}
+      {/* Premier Pin */}
       <PremierPinPayment />
 
       {/* Menu & Pricing */}
       <VendorMenuEditor />
+
+      {/* Booking Requests */}
+      <VendorBookingsList />
+
+      {/* Find My Car */}
+      <SaveParking />
 
       {/* Travel & Tax Tools */}
       <QuickTravelLog />
