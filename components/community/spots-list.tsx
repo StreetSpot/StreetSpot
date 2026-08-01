@@ -7,22 +7,42 @@ import {
   communityStore,
   SPOT_TYPE_LABELS,
   isClaimableGemType,
+  type SpotType,
 } from "@/lib/community-store"
 
-export function SpotsList() {
+interface SpotsListProps {
+  filterType?: SpotType
+}
+
+export function SpotsList({ filterType }: SpotsListProps) {
   const spots = useCommunitySpots()
   const [claimName, setClaimName] = useState("")
   const [claimingId, setClaimingId] = useState<string | null>(null)
 
+  const visible = filterType
+    ? spots.filter((s) => s.type === filterType)
+    : spots
+
   if (spots.length === 0) {
     return (
-      <div className="mb-6 rounded-xl border border-border bg-card p-5">
-        <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          <MapPin className="h-4 w-4" />
-          Discovered Gems
+      <div className="mb-6 rounded-xl border border-dashed border-border bg-card/50 p-6 text-center">
+        <MapPin className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
+        <h3 className="mb-1 text-sm font-semibold text-foreground">
+          No gems yet
         </h3>
+        <p className="text-xs text-muted-foreground">
+          Be first — pin a food truck, skate park, market, or event at your
+          location above.
+        </p>
+      </div>
+    )
+  }
+
+  if (visible.length === 0) {
+    return (
+      <div className="mb-6 rounded-xl border border-border bg-card p-5">
         <p className="text-sm text-muted-foreground">
-          No gems yet. Pin a food truck, skate park, market, or event above.
+          No gems match this filter. Try &quot;All&quot; or pin a new one.
         </p>
       </div>
     )
@@ -39,11 +59,11 @@ export function SpotsList() {
     <div className="mb-6 rounded-xl border border-border bg-card p-5">
       <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         <MapPin className="h-4 w-4" />
-        Discovered Gems ({spots.length})
+        Discovered gems ({visible.length})
       </h3>
 
       <div className="flex flex-col gap-3">
-        {spots.map((spot) => (
+        {visible.map((spot) => (
           <div
             key={spot.id}
             className={`rounded-lg px-3 py-3 ${

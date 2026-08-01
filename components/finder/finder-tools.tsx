@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import {
   Car,
   Route,
@@ -8,27 +8,42 @@ import {
   Trash2,
   Navigation,
   Plus,
+  Share2,
 } from "lucide-react"
-import { parkingStore, useParking } from "@/lib/parking-store"
+import { parkingStore, useParkingSpots } from "@/lib/parking-store"
 import { travelStore, useTravelLogs, useTravelTotals } from "@/lib/travel-store"
+import {
+  useCommunitySpots,
+  SPOT_TYPE_LABELS,
+  type SpotType,
+} from "@/lib/community-store"
 import { CreateSpotForm } from "@/components/community/create-spot-form"
 import { SpotsList } from "@/components/community/spots-list"
 
-/**
- * Customer / finder tools:
- * - Save parking
- * - Travel / mileage / vacation logs
- * - Discover gems (skate + food trucks + events etc.)
- */
+const FILTER_CHIPS: { id: "all" | SpotType; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "food_truck", label: "Food trucks" },
+  { id: "popup_cart", label: "Carts" },
+  { id: "skate_park", label: "Skate parks" },
+  { id: "skate_spot", label: "Skate spots" },
+  { id: "market", label: "Markets" },
+  { id: "event", label: "Events" },
+  { id: "flea_market", label: "Flea markets" },
+  { id: "block_party", label: "Block parties" },
+  { id: "artisan", label: "Artisans" },
+]
+
 export function FinderTools() {
-  const parking = useParking()
+  const parkingSpots = useParkingSpots()
   const logs = useTravelLogs()
   const totals = useTravelTotals()
+  const allGems = useCommunitySpots()
+  const [filter, setFilter] = useState<"all" | SpotType>("all")
   const [parkingLabel, setParkingLabel] = useState("")
   const [isSavingParking, setIsSavingParking] = useState(false)
   const [showTravelForm, setShowTravelForm] = useState(false)
+  const [shareDone, setShareDone] = useState(false)
 
-  // Travel form state
   const [startAddress, setStartAddress] = useState("")
   const [destination, setDestination] = useState("")
   const [mileage, setMileage] = useState("")
@@ -39,6 +54,11 @@ export function FinderTools() {
   const [tripDate, setTripDate] = useState(
     () => new Date().toISOString().slice(0, 10)
   )
+
+  const filteredCount = useMemo(() => {
+    if (filter === "all") return allGems.length
+    return allGems.filter((g) => g.type === filter).length
+  }, [allGems, filter])
 
   function handleSaveParking() {
     setIsSavingParking(true)
@@ -83,71 +103,155 @@ export function FinderTools() {
     setShowTravelForm(false)
   }
 
-  return (
-    <div className="mx-auto max-w-2xl space-y-4 px-4 py-4">
-      {/* Discover gems */}
-      <CreateSpotForm />
-      <SpotsList />
+  async function handleInvite() {
+    const url =
+      typeof window !== "undefined"
+        ? window.location.origin
+        : "https://v0-street-spot-web-app.vercel.app"
+    const text = `StreetSpot — live street vendors, food trucks, markets & skate gems on a real-time map. Pin what you find. ${url}`
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "StreetSpot", text, url })
+      } else {
+        await navigator.clipboard.writeText(text)
+        setShareDone(true)
+        setTimeout(() => setShareDone(false), 2000)
+      }
+    } catch {
+      try {
+        await navigator.clipboard.writeText(text)
+        setShareDone(true)
+        setTimeout(() => setShareDone(false), 2000)
+      } catch {
+        /* ignore */
+      }
+    }
+  }
 
-      {/* Save parking */}
-      <div className="rounded-xl border border-border bg-card p-5">
-        <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          <Car className="h-4 w-4" />
-          Save Parking Spot
-        </h3>
-        {parking ? (
-          <div className="flex flex-col gap-2">
-            <p className="text-sm text-foreground">
-              {parking.label || "Saved spot"}
-            </p>
-            <p className="font-mono text-xs text-muted-foreground">
-              {parking.lat.toFixed(5)}, {parking.lng.toFixed(5)}
-            </p>
-            <div className="flex gap-2">
-              <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${parking.lat},${parking.lng}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary text-xs font-semibold text-primary-foreground"
-              >
-                <Navigation className="h-3.5 w-3.5" />
-                Find my car
-              </a>
-              <button
-                onClick={() => parkingStore.clear()}
-                className="flex h-9 items-center justify-center rounded-lg border border-border px-3 text-muted-foreground hover:text-destructive"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2">
-            <input
-              type="text"
-              value={parkingLabel}
-              onChange={(e) => setParkingLabel(e.target.value)}
-              placeholder="Label (optional) e.g. Level 2 near elevator"
-              className="h-10 w-full rounded-lg border border-border bg-input px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-            />
+  return (
+    <div className="mx-auto max-w-2xl space-y-4 px-4 py-4 pb-10">
+      {/* Growth CTA */}
+      <div className="rounded-xl border border-primary/25 bg-primary/5 p-4">
+        <p className="mb-2 text-sm font-medium text-foreground">
+          Help grow the map
+        </p>
+        <p className="mb-3 text-xs text-muted-foreground">
+          Pin food trucks, markets, skate spots, and events you find. Share the
+          app so more vendors go live near you.
+        </p>
+        <button
+          onClick={handleInvite}
+          className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary text-sm font-semibold text-primary-foreground"
+        >
+          <Share2 className="h-4 w-4" />
+          {shareDone ? "Link copied!" : "Invite friends & vendors"}
+        </button>
+      </div>
+
+      {/* Gem type filters */}
+      <div className="rounded-xl border border-border bg-card p-4">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Filter gems ({filteredCount})
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {FILTER_CHIPS.map((chip) => (
             <button
-              onClick={handleSaveParking}
-              disabled={isSavingParking}
-              className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary text-sm font-semibold text-primary-foreground disabled:opacity-40"
+              key={chip.id}
+              onClick={() => setFilter(chip.id)}
+              className={`rounded-full px-2.5 py-1 text-[11px] font-medium transition ${
+                filter === chip.id
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-muted-foreground hover:text-foreground"
+              }`}
             >
-              <MapPin className="h-4 w-4" />
-              {isSavingParking ? "Saving..." : "Save current location"}
+              {chip.label}
             </button>
-          </div>
+          ))}
+        </div>
+        {filter !== "all" && (
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            Showing {SPOT_TYPE_LABELS[filter as SpotType]} only in the list
+            below. Map still shows all active gems.
+          </p>
         )}
       </div>
 
-      {/* Travel / mileage / vacation logs */}
+      <CreateSpotForm />
+      <SpotsList filterType={filter === "all" ? undefined : filter} />
+
+      {/* Multi parking */}
+      <div className="rounded-xl border border-border bg-card p-5">
+        <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          <Car className="h-4 w-4" />
+          Parking spots
+        </h3>
+        {parkingSpots.length > 0 && (
+          <div className="mb-3 flex flex-col gap-2">
+            {parkingSpots.map((p) => (
+              <div
+                key={p.id}
+                className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2"
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm text-foreground">
+                    {p.label || "Saved spot"}
+                  </p>
+                  <p className="font-mono text-[10px] text-muted-foreground">
+                    {p.lat.toFixed(5)}, {p.lng.toFixed(5)}
+                  </p>
+                </div>
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md bg-primary px-2 py-1.5 text-[11px] font-semibold text-primary-foreground"
+                >
+                  Navigate
+                </a>
+                <button
+                  onClick={() => parkingStore.remove(p.id)}
+                  className="p-1.5 text-muted-foreground hover:text-destructive"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        {parkingSpots.length === 0 && (
+          <p className="mb-3 text-xs text-muted-foreground">
+            No parking saved yet. Save where you left the car or truck.
+          </p>
+        )}
+        <div className="flex flex-col gap-2">
+          <input
+            type="text"
+            value={parkingLabel}
+            onChange={(e) => setParkingLabel(e.target.value)}
+            placeholder="Label (optional)"
+            className="h-10 w-full rounded-lg border border-border bg-input px-3 text-sm"
+          />
+          <button
+            onClick={handleSaveParking}
+            disabled={isSavingParking || parkingSpots.length >= 5}
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary text-sm font-semibold text-primary-foreground disabled:opacity-40"
+          >
+            <MapPin className="h-4 w-4" />
+            {isSavingParking
+              ? "Saving..."
+              : parkingSpots.length >= 5
+                ? "Max 5 spots"
+                : "Save current location"}
+          </button>
+        </div>
+      </div>
+
+      {/* Travel logs */}
       <div className="rounded-xl border border-border bg-card p-5">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
             <Route className="h-4 w-4" />
-            Travel & Mileage Logs
+            Travel & mileage
           </h3>
           <button
             onClick={() => setShowTravelForm(!showTravelForm)}

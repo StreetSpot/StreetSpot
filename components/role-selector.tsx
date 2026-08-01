@@ -1,6 +1,15 @@
 "use client"
 
-import { Store, Search, ArrowRight, MapPin, Zap, Users } from "lucide-react"
+import {
+  Store,
+  Search,
+  ArrowRight,
+  MapPin,
+  Zap,
+  Users,
+  Gem,
+  MessageCircle,
+} from "lucide-react"
 
 interface RoleSelectorProps {
   onSelect: (role: "founder" | "finder") => void
@@ -10,39 +19,40 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
   return (
     <div className="flex min-h-[calc(100dvh-57px)] flex-col items-center justify-center px-4 py-12">
       <div className="mx-auto w-full max-w-2xl">
-        {/* Hero section */}
-        <div className="mb-12 text-center">
+        <div className="mb-10 text-center">
           <div className="mb-6 flex items-center justify-center gap-2">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
               <MapPin className="h-6 w-6 text-primary-foreground" />
             </div>
           </div>
           <h1 className="mb-3 text-balance text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Discover Street Vendors in Real Time
+            Find street vendors. Pin gems. Go live.
           </h1>
           <p className="mx-auto max-w-md text-pretty text-base leading-relaxed text-muted-foreground">
-            Whether you sell or search, StreetSpot puts you on the map.
-            Choose your role to get started.
+            Live map for food trucks, carts, markets, skate spots, and more.
+            Vendors go live in one tap. Anyone can discover new gems.
           </p>
         </div>
 
-        {/* Stats bar */}
-        <div className="mb-10 flex items-center justify-center gap-8 text-sm text-muted-foreground">
+        <div className="mb-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <Zap className="h-4 w-4 text-primary" />
             <span>Real-time GPS</span>
           </div>
           <div className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-primary" />
-            <span>Live Vendors</span>
+            <Gem className="h-4 w-4 text-primary" />
+            <span>Gem discovery</span>
           </div>
           <div className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-primary" />
-            <span>Auto Pin</span>
+            <MessageCircle className="h-4 w-4 text-primary" />
+            <span>Mutual messaging</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Users className="h-4 w-4 text-primary" />
+            <span>Claim your spot</span>
           </div>
         </div>
 
-        {/* Role cards */}
         <div className="grid gap-4 md:grid-cols-2">
           <button
             onClick={() => onSelect("founder")}
@@ -53,10 +63,11 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
             </div>
             <div>
               <h2 className="mb-1 text-lg font-semibold text-foreground">
-                {"I'm a Founder"}
+                I&apos;m a Vendor
               </h2>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Go live, pin your spot, and let customers find you in real time.
+                Go live, claim your gem, menus, bookings, tax mileage, and
+                Premier pins.
               </p>
             </div>
             <div className="flex items-center gap-1.5 text-sm font-medium text-primary">
@@ -74,10 +85,11 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
             </div>
             <div>
               <h2 className="mb-1 text-lg font-semibold text-foreground">
-                {"I'm a Finder"}
+                I&apos;m Exploring
               </h2>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Explore the live map and discover vendors near you right now.
+                Live map, pin new gems, save parking, track trips, message
+                vendors (with consent).
               </p>
             </div>
             <div className="flex items-center gap-1.5 text-sm font-medium text-primary">
@@ -87,9 +99,8 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
           </button>
         </div>
 
-        {/* Footer */}
         <p className="mt-10 text-center text-xs text-muted-foreground">
-          No account needed. Start using StreetSpot instantly.
+          No account required to explore. Vendors: go live in under a minute.
         </p>
       </div>
     </div>
