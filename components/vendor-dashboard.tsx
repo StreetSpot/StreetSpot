@@ -13,6 +13,7 @@ import {
   Mail,
   CheckCircle2,
   X,
+  Share2,
 } from "lucide-react"
 import { vendorStore, useVendors, type Vendor } from "@/lib/vendor-store"
 import { PremierPinPayment } from "./premier-pin-payment"
@@ -24,6 +25,7 @@ import { VendorMenuEditor } from "./menu/vendor-menu-editor"
 import { SaveParking } from "./parking/save-parking"
 import { VendorBookingsList } from "./bookings/vendor-bookings-list"
 import { ClaimableVendorsList } from "./claim/claimable-vendors-list"
+import { VendorInbox } from "./messaging/vendor-inbox"
 
 const SUPPORT_EMAIL = "support@streetspot.app"
 const SUPPORT_SUBJECT = "StreetSpot Support Request"
@@ -74,7 +76,13 @@ export function VendorDashboard({
   initialGold = false,
 }: VendorDashboardProps) {
   const vendors = useVendors()
-  const [vendorId] = useState(() => `vendor-${Date.now()}`)
+  const [vendorId] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = sessionStorage.getItem("streetspot_vendor_id")
+      if (saved) return saved
+    }
+    return `vendor-${Date.now()}`
+  })
   const [description, setDescription] = useState("")
   const [closingTime, setClosingTime] = useState("22:00")
   const [isLive, setIsLive] = useState(false)
@@ -85,6 +93,7 @@ export function VendorDashboard({
   const [locationError, setLocationError] = useState<string | null>(null)
   const [isLocating, setIsLocating] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
+  const [shareCopied, setShareCopied] = useState(false)
 
   const myVendor = vendors.find((v) => v.id === vendorId)
 
@@ -96,7 +105,8 @@ export function VendorDashboard({
       setToast("Premier status activated! Your pin is now featured.")
       sessionStorage.removeItem("streetspot_gold_active")
     }
-  }, [initialGold])
+    if (myVendor?.isLive) setIsLive(true)
+  }, [initialGold, myVendor?.isLive])
 
   const getLocation = useCallback(() => {
     setIsLocating(true)
@@ -173,13 +183,39 @@ export function VendorDashboard({
     }
   }
 
+  async function handleShareLive() {
+    const url =
+      typeof window !== "undefined"
+        ? window.location.origin
+        : "https://v0-street-spot-web-app.vercel.app"
+    const text = isLive
+      ? `I'm live on StreetSpot right now — ${businessName}. Find me on the map: ${url}`
+      : `Check out StreetSpot — live street vendors on the map: ${url}`
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "StreetSpot", text, url })
+      } else {
+        await navigator.clipboard.writeText(text)
+        setShareCopied(true)
+        setTimeout(() => setShareCopied(false), 2000)
+      }
+    } catch {
+      try {
+        await navigator.clipboard.writeText(text)
+        setShareCopied(true)
+        setTimeout(() => setShareCopied(false), 2000)
+      } catch {
+        /* ignore */
+      }
+    }
+  }
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 md:py-8">
       {toast && (
         <SuccessToast message={toast} onDismiss={() => setToast(null)} />
       )}
 
-      {/* Status banner */}
       <div
         className={`mb-6 flex items-center gap-3 rounded-lg border px-4 py-3 ${
           isLive ? "border-primary/30 bg-primary/5" : "border-border bg-card"
@@ -210,10 +246,8 @@ export function VendorDashboard({
         </div>
       </div>
 
-      {/* Claim Your Spot – seeded Columbia vendors */}
       <ClaimableVendorsList claimerName={businessName} />
 
-      {/* Business details */}
       <div className="mb-6 rounded-xl border border-border bg-card p-5">
         <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Business Details
@@ -278,7 +312,6 @@ export function VendorDashboard({
         </div>
       </div>
 
-      {/* Location */}
       <div className="mb-6 rounded-xl border border-border bg-card p-5">
         <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Location
@@ -303,17 +336,25 @@ export function VendorDashboard({
             </p>
           </div>
         )}
-        <button
-          onClick={handleUpdateLocation}
-          disabled={isLocating}
-          className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-border bg-secondary text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40"
-        >
-          <Navigation className="h-4 w-4" />
-          <span>{isLocating ? "Locating..." : "Refresh Location"}</span>
-        </button>
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={handleUpdateLocation}
+            disabled={isLocating}
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-border bg-secondary text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40"
+          >
+            <Navigation className="h-4 w-4" />
+            <span>{isLocating ? "Locating..." : "Refresh Location"}</span>
+          </button>
+          <button
+            onClick={handleShareLive}
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-border bg-secondary text-sm font-medium text-foreground transition-colors hover:bg-muted"
+          >
+            <Share2 className="h-4 w-4" />
+            <span>{shareCopied ? "Copied!" : "Share my StreetSpot link"}</span>
+          </button>
+        </div>
       </div>
 
-      {/* Go Live */}
       <button
         onClick={handleGoLive}
         disabled={!location}
@@ -336,25 +377,16 @@ export function VendorDashboard({
         )}
       </button>
 
-      {/* Premier Pin */}
       <PremierPinPayment />
-
-      {/* Menu & Pricing */}
+      <VendorInbox vendorId={vendorId} vendorName={businessName} />
       <VendorMenuEditor />
-
-      {/* Booking Requests */}
       <VendorBookingsList />
-
-      {/* Find My Car */}
       <SaveParking />
-
-      {/* Travel & Tax Tools */}
       <QuickTravelLog />
       <NetEarningsCard />
       <MileageDeductionCard />
       <TravelLogsList />
 
-      {/* Settings & Support */}
       <div className="mb-6 rounded-xl border border-border bg-card p-5">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Settings
