@@ -3,11 +3,12 @@
 import { Suspense, useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import dynamic from "next/dynamic"
-import { MapPin, Globe, CreditCard } from "lucide-react"
+import { MapPin, Globe, CreditCard, Wrench } from "lucide-react"
 import { AppHeader } from "@/components/app-header"
 import { RoleSelector } from "@/components/role-selector"
 import { VendorLogin } from "@/components/vendor-login"
 import { VendorDashboard } from "@/components/vendor-dashboard"
+import { FinderTools } from "@/components/finder/finder-tools"
 
 const VendorMap = dynamic(
   () => import("@/components/vendor-map").then((mod) => mod.VendorMap),
@@ -39,6 +40,7 @@ export default function HomePage() {
 }
 
 type AppView = "landing" | "founder-login" | "founder-dashboard" | "finder"
+type FinderTab = "map" | "tools"
 
 function HomeContent() {
   const searchParams = useSearchParams()
@@ -47,8 +49,8 @@ function HomeContent() {
   const [view, setView] = useState<AppView>("landing")
   const [businessName, setBusinessName] = useState("")
   const [goldActivated, setGoldActivated] = useState(false)
+  const [finderTab, setFinderTab] = useState<FinderTab>("map")
 
-  // If returning from /success with ?gold=activated, go straight to dashboard
   useEffect(() => {
     if (goldParam === "activated") {
       setGoldActivated(true)
@@ -70,6 +72,7 @@ function HomeContent() {
       setView("founder-login")
     } else {
       setView("finder")
+      setFinderTab("map")
     }
   }
 
@@ -85,6 +88,7 @@ function HomeContent() {
     setView("landing")
     setBusinessName("")
     setGoldActivated(false)
+    setFinderTab("map")
   }
 
   const headerMode =
@@ -108,7 +112,36 @@ function HomeContent() {
             initialGold={goldActivated}
           />
         )}
-        {view === "finder" && <VendorMap />}
+        {view === "finder" && (
+          <div className="flex flex-col">
+            {/* Finder tabs: Map | Tools (gems, parking, travel) */}
+            <div className="flex border-b border-border bg-card">
+              <button
+                onClick={() => setFinderTab("map")}
+                className={`flex flex-1 items-center justify-center gap-1.5 py-2.5 text-xs font-semibold transition ${
+                  finderTab === "map"
+                    ? "border-b-2 border-primary text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <MapPin className="h-3.5 w-3.5" />
+                Live Map
+              </button>
+              <button
+                onClick={() => setFinderTab("tools")}
+                className={`flex flex-1 items-center justify-center gap-1.5 py-2.5 text-xs font-semibold transition ${
+                  finderTab === "tools"
+                    ? "border-b-2 border-primary text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Wrench className="h-3.5 w-3.5" />
+                Discover & Tools
+              </button>
+            </div>
+            {finderTab === "map" ? <VendorMap /> : <FinderTools />}
+          </div>
+        )}
       </main>
 
       {showFooter && (
