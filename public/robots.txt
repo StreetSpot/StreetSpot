@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://v0-street-spot-web-app.vercel.app/sitemap.xml

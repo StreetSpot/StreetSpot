@@ -1,14 +1,15 @@
 {
-  "name": "StreetSpot - Street Vendor Discovery",
+  "name": "StreetSpot — Live Vendors & Local Gems",
   "short_name": "StreetSpot",
-  "description": "Discover street vendors in real time. Go live, get found.",
+  "description": "Real-time map of food trucks, street vendors, markets, skate spots, and local gems. Go live. Pin what you find. Claim your spot.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0d1117",
-  "theme_color": "#1a1a2e",
-  "orientation": "portrait",
-  "categories": ["food", "lifestyle", "shopping"],
+  "background_color": "#0D0D0D",
+  "theme_color": "#008D7C",
+  "orientation": "portrait-primary",
+  "categories": ["food", "lifestyle", "navigation", "shopping"],
+  "lang": "en-US",
   "prefer_related_applications": false,
   "icons": [
     {
@@ -22,6 +23,12 @@
       "type": "image/png",
       "sizes": "180x180",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-dark-32x32.png",
+      "type": "image/png",
+      "sizes": "32x32",
+      "purpose": "any"
     }
   ]
 }
