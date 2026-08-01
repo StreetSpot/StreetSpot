@@ -1,16 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import { MapPin, Plus } from "lucide-react"
+import { MapPin, Plus, Gem } from "lucide-react"
 import {
   communityStore,
   SPOT_TYPE_LABELS,
+  isSkateType,
   type SpotType,
 } from "@/lib/community-store"
 
 export function CreateSpotForm() {
   const [name, setName] = useState("")
-  const [type, setType] = useState<SpotType>("community")
+  const [type, setType] = useState<SpotType>("food_truck")
   const [description, setDescription] = useState("")
   const [createdBy, setCreatedBy] = useState("")
   const [eventDate, setEventDate] = useState("")
@@ -46,7 +47,7 @@ export function CreateSpotForm() {
         setDescription("")
         setCreatedBy("")
         setEventDate("")
-        setType("community")
+        setType("food_truck")
         setIsLocating(false)
         setSaved(true)
         setTimeout(() => setSaved(false), 2500)
@@ -59,12 +60,19 @@ export function CreateSpotForm() {
     )
   }
 
+  const skate = isSkateType(type)
+
   return (
     <div className="mb-6 rounded-xl border border-border bg-card p-5">
-      <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        <MapPin className="h-4 w-4" />
-        Create Community / Event Spot
+      <h3 className="mb-1 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+        <Gem className="h-4 w-4" />
+        Discover a New Gem
       </h3>
+      <p className="mb-4 text-xs text-muted-foreground">
+        Pin skate parks, food trucks, markets, fairs, block parties, artisans,
+        and more. Anyone can add a gem. For non-skate spots, only the real owner
+        can claim it later.
+      </p>
 
       {error && (
         <p className="mb-3 text-xs text-destructive">{error}</p>
@@ -73,13 +81,13 @@ export function CreateSpotForm() {
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <div>
           <label className="mb-1 block text-xs font-medium text-foreground">
-            Spot / Event Name
+            Gem Name
           </label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Riverside Skate Park Meetup"
+            placeholder="e.g. Tacos Olé truck, Riverside Skate Park"
             className="h-10 w-full rounded-lg border border-border bg-input px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             required
           />
@@ -100,17 +108,22 @@ export function CreateSpotForm() {
               </option>
             ))}
           </select>
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            {skate
+              ? "Skate gems are open — no exclusive claim needed."
+              : "This gem stays unclaimed until the real owner claims it in the app."}
+          </p>
         </div>
 
         <div>
           <label className="mb-1 block text-xs font-medium text-foreground">
-            Your Name
+            Your Name (discoverer)
           </label>
           <input
             type="text"
             value={createdBy}
             onChange={(e) => setCreatedBy(e.target.value)}
-            placeholder="Who is hosting?"
+            placeholder="Who spotted this?"
             className="h-10 w-full rounded-lg border border-border bg-input px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             required
           />
@@ -135,7 +148,7 @@ export function CreateSpotForm() {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="What's happening here?"
+            placeholder="What makes this a gem?"
             rows={2}
             className="w-full resize-none rounded-lg border border-border bg-input px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
@@ -150,8 +163,8 @@ export function CreateSpotForm() {
           {isLocating
             ? "Getting location..."
             : saved
-              ? "Spot Created!"
-              : "Drop Spot at My Location"}
+              ? "Gem Pinned!"
+              : "Pin Gem at My Location"}
         </button>
       </form>
     </div>
