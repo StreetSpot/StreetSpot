@@ -7,8 +7,46 @@ const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' })
 
 export const metadata: Metadata = {
-  title: 'StreetSpot - Discover Street Vendors Near You',
-  description: 'Real-time street vendor discovery. Founders go live, Finders find them.',
+  title: {
+    default: 'StreetSpot — Live Food Trucks, Street Vendors & Local Gems',
+    template: '%s | StreetSpot',
+  },
+  description:
+    'Real-time map of food trucks, pop-up carts, markets, flea markets, block parties, skate parks, and street vendors. Vendors go live in one tap. Anyone can pin new gems. Claim your spot.',
+  keywords: [
+    'StreetSpot',
+    'food trucks near me',
+    'street vendors',
+    'live vendor map',
+    'pop-up carts',
+    'flea market',
+    'skate park',
+    'block party',
+    'claim your spot',
+    'street food',
+    'Columbia SC',
+    'Manning SC',
+  ],
+  applicationName: 'StreetSpot',
+  authors: [{ name: 'StreetSpot' }],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'StreetSpot',
+    title: 'StreetSpot — Live Food Trucks, Street Vendors & Local Gems',
+    description:
+      'Find street vendors in real time. Pin food trucks, markets, skate spots, and events. Vendors go live with one tap.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'StreetSpot — Live map for street vendors & gems',
+    description:
+      'Food trucks, carts, markets, skate parks — live on the map. Pin what you find. Claim your spot.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   generator: 'v0.app',
   icons: {
     icon: [
@@ -27,10 +65,11 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  manifest: '/manifest.json',
 }
 
 export const viewport: Viewport = {
-  themeColor: '#1a1a2e',
+  themeColor: '#0D0D0D',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
