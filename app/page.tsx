@@ -3,7 +3,7 @@
 import { Suspense, useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import dynamic from "next/dynamic"
-import { MapPin, Globe, CreditCard, Wrench } from "lucide-react"
+import { MapPin, Globe, Wrench } from "lucide-react"
 import { AppHeader } from "@/components/app-header"
 import { RoleSelector } from "@/components/role-selector"
 import { VendorLogin } from "@/components/vendor-login"
@@ -157,14 +157,10 @@ function HomeContent() {
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <MapPin className="h-3 w-3" />
-                Manning, SC 29102
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CreditCard className="h-3 w-3" />
-                StreetSpot Gold &ndash; $0.99/week
-              </span>
+  <span className="flex items-center gap-1.5">
+          <MapPin className="h-3 w-3" />
+          Choose a location to discover nearby spots
+        </span>
               <a
                 href="https://v0.app/chat/street-spot-web-app"
                 target="_blank"
@@ -176,14 +172,9 @@ function HomeContent() {
               </a>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-muted-foreground/50">
-              <span>Statement Descriptor: STREETSPOT</span>
-              <span>Tax: SaaS &ndash; Personal Use</span>
-            </div>
-
             <p className="text-center text-[10px] leading-relaxed text-muted-foreground/60">
               {"\u00A9"} {new Date().getFullYear()} StreetSpot. All rights
-              reserved. Payments processed securely via Stripe.
+              reserved. Explore freely; paid services are not activated.
             </p>
 
             <p className="rounded-md border border-border bg-secondary px-3 py-1.5 text-[10px] text-muted-foreground">

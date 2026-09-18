@@ -8,7 +8,7 @@ const STORAGE_KEY = "streetspot_claimable_vendors"
 
 function loadClaims(): ClaimableVendor[] {
   if (typeof window === "undefined") {
-    return SEEDED_CLAIMABLE_VENDORS.map((v) => ({ ...v, claimed: false }))
+    return SEEDED_CLAIMABLE_VENDORS.map((v): ClaimableVendor => ({ ...v, claimed: false }))
   }
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -109,6 +109,6 @@ export function useClaimableVendors() {
   return useSyncExternalStore(
     claimStore.subscribe,
     claimStore.getSnapshot,
-    () => SEEDED_CLAIMABLE_VENDORS.map((v) => ({ ...v, claimed: false }))
+    () => SEEDED_CLAIMABLE_VENDORS.map((v): ClaimableVendor => ({ ...v, claimed: false }))
   )
 }

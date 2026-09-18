@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -66,14 +65,16 @@ export const metadata: Metadata = {
     apple: '/apple-icon.png',
   },
   manifest: '/manifest.json',
+  metadataBase: new URL('https://streetspot.app'),
+  alternates: { canonical: '/' },
 }
 
 export const viewport: Viewport = {
   themeColor: '#0D0D0D',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
+  userScalable: true,
 }
 
 export default function RootLayout({
@@ -91,7 +92,6 @@ export default function RootLayout({
       </head>
       <body className={`${_inter.variable} ${_jetbrainsMono.variable} font-sans antialiased`}>
         {children}
-        <Analytics />
       </body>
     </html>
   )

@@ -112,9 +112,8 @@ export function VendorDashboard({
     setIsLocating(true)
     setLocationError(null)
     if (!navigator.geolocation) {
-      setLocationError("Geolocation is not supported by your browser")
+      setLocationError("Location is unavailable. Enter a location manually or allow browser location access.")
       setIsLocating(false)
-      setLocation({ lat: 40.7128, lng: -74.006 })
       return
     }
     navigator.geolocation.getCurrentPosition(
@@ -123,8 +122,8 @@ export function VendorDashboard({
         setIsLocating(false)
       },
       () => {
-        setLocationError("Unable to get location. Using default.")
-        setLocation({ lat: 40.7128, lng: -74.006 })
+        setLocationError("Unable to get your location. Allow access or choose a location manually.")
+        setLocation(null)
         setIsLocating(false)
       },
       { enableHighAccuracy: true, timeout: 10000 }
