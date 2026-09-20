@@ -162,7 +162,7 @@ function HomeContent() {
           Choose a location to discover nearby spots
         </span>
               <a
-                href="https://v0.app/chat/street-spot-web-app"
+                href="/support"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 transition-colors hover:text-foreground"
