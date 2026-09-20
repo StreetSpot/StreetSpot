@@ -189,7 +189,11 @@ export function VendorMap() {
       zoomControl: false,
       attributionControl: false,
     })
-    L.tileLayer("https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map)
+    // Keep map rendering free-first: the configured `key` is not a verified CARTO key.
+    // CARTO's public Voyager tiles remain available without sending an untrusted value.
+    L.tileLayer("https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+    }).addTo(map)
     L.control.zoom({ position: "bottomright" }).addTo(map)
     L.control
       .attribution({ position: "bottomleft" })
