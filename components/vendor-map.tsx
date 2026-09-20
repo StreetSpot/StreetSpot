@@ -189,7 +189,7 @@ export function VendorMap() {
       zoomControl: false,
       attributionControl: false,
     })
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", { maxZoom: 19 }).addTo(map)
+    L.tileLayer("https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map)
     L.control.zoom({ position: "bottomright" }).addTo(map)
     L.control
       .attribution({ position: "bottomleft" })
