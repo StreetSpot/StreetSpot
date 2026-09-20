@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://v0-street-spot-web-app.vercel.app"
+  const base = "https://streetspot.app"
   return [
     {
       url: base,

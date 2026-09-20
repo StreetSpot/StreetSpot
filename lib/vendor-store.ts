@@ -20,41 +20,9 @@ export function getMinutesRemaining(closingTime: string): number {
   return Math.max(0, Math.floor((closing.getTime() - now.getTime()) / 60000))
 }
 
-let vendors: Vendor[] = [
-  {
-    id: "demo-1",
-    name: "Taco Royale",
-    description: "Authentic street tacos & burritos. Fresh salsas daily.",
-    lat: 40.7128,
-    lng: -74.006,
-    closingTime: "23:00",
-    isLive: true,
-    isPremium: true,
-    createdAt: Date.now() - 3600000,
-  },
-  {
-    id: "demo-2",
-    name: "Boba Bliss",
-    description: "Premium bubble tea & fruit smoothies.",
-    lat: 40.7148,
-    lng: -74.002,
-    closingTime: "22:00",
-    isLive: true,
-    isPremium: false,
-    createdAt: Date.now() - 7200000,
-  },
-  {
-    id: "demo-3",
-    name: "Seoul Grill",
-    description: "Korean BBQ skewers & kimchi fries.",
-    lat: 40.711,
-    lng: -74.009,
-    closingTime: "21:30",
-    isLive: true,
-    isPremium: false,
-    createdAt: Date.now() - 1800000,
-  },
-]
+// Production starts empty until a verified vendor is added by the active data layer.
+// This prevents demo businesses or unrelated coordinates from appearing as real listings.
+let vendors: Vendor[] = []
 
 let listeners: Array<() => void> = []
 
