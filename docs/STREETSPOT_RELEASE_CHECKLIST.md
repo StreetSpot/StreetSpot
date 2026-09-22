@@ -13,9 +13,10 @@ Updated: 2026-09-20
 
 ## Android / Google Play
 
-- Target SDK: NOT PRESENT IN THIS WEB REPOSITORY. The external Android wrapper must target and compile API 36.
-- Package ID: NOT PRESENT. Determine the existing application ID from the Android/WebIntoApp project and preserve it; do not invent or change it.
-- API 36 compatibility, edge-to-edge, predictive back, exported activities, signing, icons, screenshots, and store listing remain wrapper/Play Console work.
+- Target SDK: API 36 is required in the external Android wrapper; this web repository cannot set Gradle SDK values.
+- Package ID: `app.vercel.v0_street_spot_web_app.twa` (preserved in the web manifest/app-links configuration; verify against the signed wrapper before release).
+- API 36 compatibility, edge-to-edge, predictive back, exported activities, signing, screenshots, and store listing remain wrapper/Play Console work.
+- Web app assets include `/manifest.json`, `/icon-192.png`, `/icon-512.png`, and `/.well-known/assetlinks.json` (replace the placeholder certificate fingerprint with the signed release SHA-256 fingerprint before publishing).
 - Register the existing package before September 30, 2026.
 - Request only permissions actually used. The web app uses browser geolocation only after permission and does not run background GPS tracking.
 

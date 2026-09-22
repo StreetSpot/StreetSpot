@@ -4,8 +4,9 @@
     "target": {
       "namespace": "android_app",
       "package_name": "com.plainjane.streetspot",
-      "sha256_cert_fingerprints":
-        ["1C:C6:95:CD:1A:91:02:DD:CE:F0:27:45:58:F3:8C:3F:8B:5A:68:50:5C:72:AF:96:0B:95:0C:A9:6A:07:F2:63"]
+      "sha256_cert_fingerprints": [
+        "1C:C6:95:CD:1A:91:02:DD:CE:F0:27:45:58:F3:8C:3F:8B:5A:68:50:5C:72:AF:96:0B:95:0C:A9:6A:07:F2:63"
+      ]
     }
   }
 ]
