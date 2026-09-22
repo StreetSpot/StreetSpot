@@ -1,25 +1,25 @@
-import { NextResponse } from "next/server"
+import { NextRequest } from "next/server"
+import { errorResponse, requireUser, supabaseAuthAdmin, supabaseFetch } from "@/lib/supabase-admin"
 
-/**
- * Account deletion is intentionally fail-closed until a durable auth/database
- * adapter is connected. This avoids claiming deletion or deleting the wrong
- * records based on a client-supplied identifier.
- */
-export async function POST() {
-  return NextResponse.json(
-    {
-      ok: false,
-      code: "ACCOUNT_DELETION_NOT_CONFIGURED",
-      message:
-        "Account deletion is not available until you are signed in with a connected account system. Use the ownership-confirmed request flow on /delete-account.",
-    },
-    { status: 501 },
-  )
+const ownedTables = ["messages", "conversations", "vendor_claims", "favorites", "reviews", "events", "parking_saves", "travel_logs", "profiles"]
+
+export async function POST(request: NextRequest) {
+  try {
+    const user = await requireUser(request)
+    for (const table of ownedTables) {
+      try {
+        await supabaseFetch(`${table}?user_id=eq.${encodeURIComponent(user.id)}`, { method: "DELETE", headers: { Prefer: "return=minimal" } })
+      } catch (error) {
+        if (!(error instanceof Error && error.message.includes("(404)"))) throw error
+      }
+    }
+    await supabaseAuthAdmin(`users/${encodeURIComponent(user.id)}`, { method: "DELETE" })
+    return Response.json({ ok: true, deletedUserId: user.id })
+  } catch (error) {
+    return errorResponse(error)
+  }
 }
 
 export function GET() {
-  return NextResponse.json(
-    { ok: false, message: "Use POST to request account deletion." },
-    { status: 405, headers: { Allow: "POST" } },
-  )
+  return Response.json({ ok: false, message: "Use POST to request account deletion." }, { status: 405, headers: { Allow: "POST" } })
 }
