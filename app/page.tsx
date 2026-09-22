@@ -1,7 +1,6 @@
 "use client"
 
-import { Suspense, useState, useEffect } from "react"
-import { useSearchParams } from "next/navigation"
+import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { MapPin, Globe, Wrench } from "lucide-react"
 import { AppHeader } from "@/components/app-header"
@@ -26,25 +25,14 @@ const VendorMap = dynamic(
 )
 
 export default function HomePage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-dvh items-center justify-center bg-background">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-        </div>
-      }
-    >
-      <HomeContent />
-    </Suspense>
-  )
+  return <HomeContent />
 }
 
 type AppView = "landing" | "founder-login" | "founder-dashboard" | "finder"
 type FinderTab = "map" | "tools"
 
 function HomeContent() {
-  const searchParams = useSearchParams()
-  const goldParam = searchParams.get("gold")
+  const [goldParam, setGoldParam] = useState<string | null>(null)
 
   const [view, setView] = useState<AppView>("landing")
   const [businessName, setBusinessName] = useState("")
@@ -52,12 +40,12 @@ function HomeContent() {
   const [finderTab, setFinderTab] = useState<FinderTab>("map")
 
   useEffect(() => {
-    if (goldParam === "activated") {
+    const param = new URLSearchParams(window.location.search).get("gold")
+    setGoldParam(param)
+
+    if (param === "activated") {
       setGoldActivated(true)
-      const savedName =
-        typeof window !== "undefined"
-          ? sessionStorage.getItem("streetspot_business_name")
-          : null
+      const savedName = sessionStorage.getItem("streetspot_business_name")
       if (savedName) {
         setBusinessName(savedName)
         setView("founder-dashboard")
@@ -65,7 +53,7 @@ function HomeContent() {
         setView("founder-login")
       }
     }
-  }, [goldParam])
+  }, [])
 
   function handleRoleSelect(role: "founder" | "finder") {
     if (role === "founder") {
