@@ -1,34 +1,19 @@
 {
-  "name": "StreetSpot — Live Vendors & Local Gems",
+  "name": "StreetSpot: Built for the Hustle",
   "short_name": "StreetSpot",
-  "description": "Real-time map of food trucks, street vendors, markets, skate spots, and local gems. Go live. Pin what you find. Claim your spot.",
+  "description": "Discover local vendors, businesses, events, and community gems.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0D0D0D",
-  "theme_color": "#008D7C",
-  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "any",
   "categories": ["food", "lifestyle", "navigation", "shopping"],
   "lang": "en-US",
   "prefer_related_applications": false,
   "icons": [
-    {
-      "src": "/icon.svg",
-      "type": "image/svg+xml",
-      "sizes": "any",
-      "purpose": "any"
-    },
-    {
-      "src": "/apple-icon.png",
-      "type": "image/png",
-      "sizes": "180x180",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-dark-32x32.png",
-      "type": "image/png",
-      "sizes": "32x32",
-      "purpose": "any"
-    }
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" },
+    { "src": "/apple-icon.png", "type": "image/png", "sizes": "180x180", "purpose": "any" }
   ]
 }
