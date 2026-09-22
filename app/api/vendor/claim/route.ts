@@ -24,8 +24,8 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const user = await requireUser(request)
-    const adminUser = await supabaseAuthAdmin(`users/${encodeURIComponent(user.id)}`) as { user_metadata?: { role?: string }; app_metadata?: { role?: string } }
-    const role = adminUser.app_metadata?.role ?? adminUser.user_metadata?.role
+    const adminUser = await supabaseAuthAdmin(`users/${encodeURIComponent(user.id)}`) as { app_metadata?: { role?: string } }
+    const role = adminUser.app_metadata?.role
     if (role !== "admin" && role !== "staff") return Response.json({ ok: false, code: "FORBIDDEN" }, { status: 403 })
     const body = await request.json()
     const claimId = typeof body.claimId === "string" ? body.claimId : ""
