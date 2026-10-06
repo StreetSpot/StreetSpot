@@ -100,7 +100,7 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
         </div>
 
         <p className="mt-10 text-center text-xs text-muted-foreground">
-          No account required to explore. Vendors: go live in under a minute.
+          Explore without an account. Vendor tools use a browser-only session until verified sign-in is configured.
         </p>
       </div>
     </div>

@@ -27,10 +27,10 @@ export function VendorLogin({ onLogin }: VendorLoginProps) {
             </div>
           </div>
           <h2 className="mb-2 text-balance text-2xl font-bold tracking-tight text-foreground">
-            Founder Login
+            Vendor Dashboard
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Enter your business name to access the vendor dashboard.
+            Enter a business name to open this browser&apos;s vendor session. This does not verify ownership or create an account.
           </p>
         </div>
 

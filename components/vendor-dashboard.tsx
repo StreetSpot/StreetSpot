@@ -27,14 +27,13 @@ import { VendorBookingsList } from "./bookings/vendor-bookings-list"
 import { ClaimableVendorsList } from "./claim/claimable-vendors-list"
 import { VendorInbox } from "./messaging/vendor-inbox"
 
-const SUPPORT_EMAIL = "support@streetspot.app"
+const SUPPORT_EMAIL = "support@streetspotapp.com"
 const SUPPORT_SUBJECT = "StreetSpot Support Request"
 const SUPPORT_BODY =
   "Hi StreetSpot Team,%0D%0A%0D%0AI need help with my account.%0D%0A%0D%0ABusiness Name: %0D%0AIssue: %0D%0A%0D%0AThank you."
 
 interface VendorDashboardProps {
   businessName: string
-  initialGold?: boolean
 }
 
 function SuccessToast({
@@ -73,7 +72,6 @@ function SuccessToast({
 
 export function VendorDashboard({
   businessName,
-  initialGold = false,
 }: VendorDashboardProps) {
   const vendors = useVendors()
   const [vendorId] = useState(() => {
@@ -85,8 +83,7 @@ export function VendorDashboard({
   })
   const [description, setDescription] = useState("")
   const [closingTime, setClosingTime] = useState("22:00")
-  const [isLive, setIsLive] = useState(false)
-  const [isPremium, setIsPremium] = useState(initialGold)
+  const isPremium = false
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
     null
   )
@@ -97,32 +94,25 @@ export function VendorDashboard({
 
   const myVendor = vendors.find((v) => v.id === vendorId)
 
-  useEffect(() => {
-    if (typeof window === "undefined") return
-    const goldFlag = sessionStorage.getItem("streetspot_gold_active")
-    if (goldFlag === "true" || initialGold) {
-      setIsPremium(true)
-      setToast("Premier status activated! Your pin is now featured.")
-      sessionStorage.removeItem("streetspot_gold_active")
-    }
-    if (myVendor?.isLive) setIsLive(true)
-  }, [initialGold, myVendor?.isLive])
+  const isLive = Boolean(myVendor?.isLive)
 
-  const getLocation = useCallback(() => {
+  const getLocation = useCallback((onLocated?: (position: { lat: number; lng: number }) => void) => {
     setIsLocating(true)
     setLocationError(null)
     if (!navigator.geolocation) {
-      setLocationError("Location is unavailable. Enter a location manually or allow browser location access.")
+      setLocationError("Location is unavailable. Allow browser location access to go live.")
       setIsLocating(false)
       return
     }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude })
+        const position = { lat: pos.coords.latitude, lng: pos.coords.longitude }
+        setLocation(position)
+        onLocated?.(position)
         setIsLocating(false)
       },
       () => {
-        setLocationError("Unable to get your location. Allow access or choose a location manually.")
+        setLocationError("Unable to get your location. Allow browser location access and try again.")
         setLocation(null)
         setIsLocating(false)
       },
@@ -130,22 +120,13 @@ export function VendorDashboard({
     )
   }, [])
 
-  useEffect(() => {
-    getLocation()
-  }, [getLocation])
-
-  function handleGoLive() {
-    if (!location) return
-    if (isLive) {
-      vendorStore.updateVendor(vendorId, { isLive: false })
-      setIsLive(false)
-    } else {
+  function publishVendor(position: { lat: number; lng: number }) {
       if (myVendor) {
         vendorStore.updateVendor(vendorId, {
           name: businessName,
           description: description || "Street vendor",
-          lat: location.lat,
-          lng: location.lng,
+          lat: position.lat,
+          lng: position.lng,
           closingTime,
           isLive: true,
           isPremium,
@@ -155,8 +136,8 @@ export function VendorDashboard({
           id: vendorId,
           name: businessName,
           description: description || "Street vendor",
-          lat: location.lat,
-          lng: location.lng,
+          lat: position.lat,
+          lng: position.lng,
           closingTime,
           isLive: true,
           isPremium,
@@ -167,26 +148,27 @@ export function VendorDashboard({
       if (typeof window !== "undefined") {
         sessionStorage.setItem("streetspot_vendor_id", vendorId)
       }
-      setIsLive(true)
       setToast("You are now live on the map!")
+  }
+
+  function handleGoLive() {
+    if (isLive) {
+      vendorStore.updateVendor(vendorId, { isLive: false })
+    } else if (location) {
+      publishVendor(location)
+    } else {
+      getLocation(publishVendor)
     }
   }
 
   function handleUpdateLocation() {
-    getLocation()
-    if (location && isLive) {
-      vendorStore.updateVendor(vendorId, {
-        lat: location.lat,
-        lng: location.lng,
-      })
-    }
+    getLocation((position) => {
+      if (isLive) vendorStore.updateVendor(vendorId, position)
+    })
   }
 
   async function handleShareLive() {
-    const url =
-      typeof window !== "undefined"
-        ? window.location.origin
-        : "https://v0-street-spot-web-app.vercel.app"
+    const url = "https://streetspotapp.com"
     const text = isLive
       ? `I'm live on StreetSpot right now — ${businessName}. Find me on the map: ${url}`
       : `Check out StreetSpot — live street vendors on the map: ${url}`
@@ -356,7 +338,7 @@ export function VendorDashboard({
 
       <button
         onClick={handleGoLive}
-        disabled={!location}
+        disabled={isLocating}
         className={`mb-6 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl text-sm font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-40 ${
           isLive
             ? "border border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/20"
@@ -371,7 +353,7 @@ export function VendorDashboard({
         ) : (
           <>
             <Power className="h-4 w-4" />
-            <span>Go Live</span>
+            <span>{isLocating ? "Getting location…" : "Go Live"}</span>
           </>
         )}
       </button>

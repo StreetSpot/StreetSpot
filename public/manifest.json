@@ -3,6 +3,7 @@
   "short_name": "StreetSpot",
   "description": "Discover local vendors, businesses, events, and community gems.",
   "start_url": "/",
+  "id": "https://streetspotapp.com/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -18,7 +18,10 @@ function loadClaims(): ClaimableVendor[] {
       const missing = SEEDED_CLAIMABLE_VENDORS.filter(
         (s) => !existingIds.has(s.id)
       ).map((s) => ({ ...s, claimed: false }))
-      return [...parsed, ...missing]
+      return [...parsed.map((vendor) => {
+        const claimStatus = vendor.claimStatus ?? (vendor.claimed ? "PENDING_VERIFICATION" : "UNCLAIMED")
+        return { ...vendor, claimStatus, claimed: claimStatus === "CLAIMED" }
+      }), ...missing]
     }
   } catch {}
   return SEEDED_CLAIMABLE_VENDORS.map((v) => ({ ...v, claimed: false }))
@@ -58,8 +61,8 @@ export const claimStore = {
   claim(id: string, claimedBy: string) {
     ensureInit()
     vendors = vendors.map((v) =>
-      v.id === id && !v.claimed
-        ? { ...v, claimed: true, claimedBy, claimedAt: Date.now() }
+      v.id === id && !v.claimed && v.claimStatus !== "PENDING_VERIFICATION"
+        ? { ...v, claimStatus: "PENDING_VERIFICATION", claimedBy, claimedAt: Date.now() }
         : v
     )
     saveClaims(vendors)
@@ -68,8 +71,8 @@ export const claimStore = {
   unclaim(id: string) {
     ensureInit()
     vendors = vendors.map((v) =>
-      v.id === id
-        ? { ...v, claimed: false, claimedBy: undefined, claimedAt: undefined }
+      v.id === id && v.claimStatus === "CLAIMED"
+        ? { ...v, claimed: false, claimStatus: "UNCLAIMED", claimedBy: undefined, claimedAt: undefined }
         : v
     )
     saveClaims(vendors)
@@ -77,11 +80,11 @@ export const claimStore = {
   },
   getUnclaimed() {
     ensureInit()
-    return vendors.filter((v) => !v.claimed)
+    return vendors.filter((v) => !v.claimed && v.claimStatus !== "PENDING_VERIFICATION")
   },
   getClaimed() {
     ensureInit()
-    return vendors.filter((v) => v.claimed)
+    return vendors.filter((v) => v.claimed || v.claimStatus === "CLAIMED")
   },
   /**
    * Client-side search. Ready to swap for a remote API later

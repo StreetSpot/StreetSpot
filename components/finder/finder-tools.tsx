@@ -6,7 +6,6 @@ import {
   Route,
   MapPin,
   Trash2,
-  Navigation,
   Plus,
   Share2,
 } from "lucide-react"
@@ -104,10 +103,7 @@ export function FinderTools() {
   }
 
   async function handleInvite() {
-    const url =
-      typeof window !== "undefined"
-        ? window.location.origin
-        : "https://v0-street-spot-web-app.vercel.app"
+    const url = "https://streetspotapp.com"
     const text = `StreetSpot — live street vendors, food trucks, markets & skate gems on a real-time map. Pin what you find. ${url}`
     try {
       if (navigator.share) {

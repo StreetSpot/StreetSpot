@@ -24,7 +24,6 @@ export const metadata: Metadata = {
     'claim your spot',
     'street food',
     'Columbia SC',
-    'Manning SC',
   ],
   applicationName: 'StreetSpot',
   authors: [{ name: 'StreetSpot' }],
@@ -32,6 +31,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'StreetSpot',
+    url: 'https://streetspotapp.com',
     title: 'StreetSpot — Live Food Trucks, Street Vendors & Local Gems',
     description:
       'Find street vendors in real time. Pin food trucks, markets, skate spots, and events. Vendors go live with one tap.',
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     apple: '/apple-icon.png',
   },
   manifest: '/manifest.json',
-  metadataBase: new URL('https://streetspot.app'),
+  metadataBase: new URL('https://streetspotapp.com'),
   alternates: { canonical: '/' },
 }
 

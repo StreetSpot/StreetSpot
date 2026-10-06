@@ -18,10 +18,10 @@ export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps)
     ? claimStore.search(query)
     : vendors
 
-  const unclaimed = filtered.filter((v) => !v.claimed)
+  const unclaimed = filtered.filter((v) => !v.claimed && v.claimStatus !== "PENDING_VERIFICATION")
   const claimed = filtered.filter((v) => v.claimed)
 
-  function handleClaim(id: string, name: string) {
+  function handleClaim(id: string) {
     const who = claimerName?.trim() || "Vendor"
     claimStore.claim(id, who)
     setJustClaimed(id)
@@ -34,8 +34,7 @@ export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps)
         Claim Your Spot
       </h3>
       <p className="mb-4 text-xs text-muted-foreground">
-        Search for your business name below. If it’s listed, claim it so the map
-        isn’t empty and you own your pin.
+        Request a review for an existing listing. Requests are saved in this browser only; ownership is not verified or transferred here.
       </p>
 
       {/* Search */}
@@ -59,7 +58,7 @@ export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps)
           <p className="text-sm text-muted-foreground">
             {query
               ? "No matching unclaimed names. Try a different search."
-              : "All seeded names have been claimed."}
+              : "There are no unreviewed listings in this local catalog."}
           </p>
         ) : (
           <div className="flex max-h-64 flex-col gap-2 overflow-y-auto">
@@ -77,16 +76,16 @@ export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps)
                   </p>
                 </div>
                 <button
-                  onClick={() => handleClaim(v.id, v.name)}
+                  onClick={() => handleClaim(v.id)}
                   className="shrink-0 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground transition hover:opacity-90"
                 >
                   {justClaimed === v.id ? (
                     <span className="flex items-center gap-1">
                       <Check className="h-3.5 w-3.5" />
-                      Claimed
+                      Request recorded
                     </span>
                   ) : (
-                    "Claim"
+                    "Request review"
                   )}
                 </button>
               </div>
@@ -94,6 +93,15 @@ export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps)
           </div>
         )}
       </div>
+
+      {filtered.some((v) => v.claimStatus === "PENDING_VERIFICATION") && (
+        <div className="mb-4">
+          <p className="mb-2 text-xs font-medium text-amber-400">Pending verification</p>
+          {filtered.filter((v) => v.claimStatus === "PENDING_VERIFICATION").map((vendor) => (
+            <p key={vendor.id} className="text-sm text-muted-foreground">{vendor.name} · Request saved on this device</p>
+          ))}
+        </div>
+      )}
 
       {/* Already claimed (collapsed summary) */}
       {claimed.length > 0 && (

@@ -36,7 +36,8 @@ export function LocateControl({ onLocated }: LocateControlProps) {
     <button
       type="button"
       onClick={handleLocate}
-      title="Center on my location"
+      title={error ? "Location unavailable. Check browser permission and try again." : "Center on my location"}
+      aria-label={error ? "Location unavailable; check browser permission" : "Center on my location"}
       className={`absolute bottom-24 right-3 z-[400] flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card shadow-lg transition hover:bg-secondary ${
         error ? "text-destructive" : "text-primary"
       }`}

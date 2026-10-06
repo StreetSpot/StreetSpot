@@ -32,51 +32,45 @@ type AppView = "landing" | "founder-login" | "founder-dashboard" | "finder"
 type FinderTab = "map" | "tools"
 
 function HomeContent() {
-  const [goldParam, setGoldParam] = useState<string | null>(null)
-
   const [view, setView] = useState<AppView>("landing")
   const [businessName, setBusinessName] = useState("")
-  const [goldActivated, setGoldActivated] = useState(false)
   const [finderTab, setFinderTab] = useState<FinderTab>("map")
 
   useEffect(() => {
-    const param = new URLSearchParams(window.location.search).get("gold")
-    setGoldParam(param)
-
-    if (param === "activated") {
-      setGoldActivated(true)
-      const savedName = sessionStorage.getItem("streetspot_business_name")
-      if (savedName) {
-        setBusinessName(savedName)
-        setView("founder-dashboard")
-      } else {
-        setView("founder-login")
-      }
+    window.history.replaceState({ streetSpotView: "landing" }, "", window.location.href)
+    const restoreView = (event: PopStateEvent) => {
+      const next = event.state?.streetSpotView
+      setView(next === "founder-login" || next === "founder-dashboard" || next === "finder" ? next : "landing")
     }
+    window.addEventListener("popstate", restoreView)
+    return () => window.removeEventListener("popstate", restoreView)
   }, [])
+
+  function navigateView(next: AppView) {
+    window.history.pushState({ streetSpotView: next }, "", window.location.href)
+    setView(next)
+  }
 
   function handleRoleSelect(role: "founder" | "finder") {
     if (role === "founder") {
-      setView("founder-login")
+      navigateView("founder-login")
     } else {
-      setView("finder")
+      navigateView("finder")
       setFinderTab("map")
     }
   }
 
   function handleLogin(name: string) {
     setBusinessName(name)
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("streetspot_business_name", name)
-    }
-    setView("founder-dashboard")
+    navigateView("founder-dashboard")
   }
 
   function handleBack() {
+    if (view !== "landing" && window.history.state?.streetSpotView) {
+      window.history.back()
+      return
+    }
     setView("landing")
-    setBusinessName("")
-    setGoldActivated(false)
-    setFinderTab("map")
   }
 
   const headerMode =
@@ -97,7 +91,6 @@ function HomeContent() {
         {view === "founder-dashboard" && (
           <VendorDashboard
             businessName={businessName}
-            initialGold={goldActivated}
           />
         )}
         {view === "finder" && (
@@ -151,8 +144,6 @@ function HomeContent() {
         </span>
               <a
                 href="/support"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="flex items-center gap-1.5 transition-colors hover:text-foreground"
               >
                 <Globe className="h-3 w-3" />
@@ -162,7 +153,7 @@ function HomeContent() {
 
             <p className="text-center text-[10px] leading-relaxed text-muted-foreground/60">
               {"\u00A9"} {new Date().getFullYear()} StreetSpot. All rights
-              reserved. Explore freely; paid services are not activated.
+              reserved. Plan checkout and account status are handled outside this page.
             </p>
 
             <p className="rounded-md border border-border bg-secondary px-3 py-1.5 text-[10px] text-muted-foreground">

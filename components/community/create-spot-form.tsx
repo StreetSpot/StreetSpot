@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { MapPin, Plus, Gem } from "lucide-react"
+import { Plus, Gem } from "lucide-react"
 import {
   communityStore,
   SPOT_TYPE_LABELS,
@@ -111,7 +111,7 @@ export function CreateSpotForm() {
           <p className="mt-1 text-[11px] text-muted-foreground">
             {skate
               ? "Skate gems are open — no exclusive claim needed."
-              : "This gem stays unclaimed until the real owner claims it in the app."}
+              : "New claim requests require owner verification before ownership can change."}
           </p>
         </div>
 

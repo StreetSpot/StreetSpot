@@ -1,79 +1,36 @@
-# StreetSpot release checklist
+# StreetSpot release status
 
-Updated: 2026-09-20
+Updated: 2026-10-05
 
-## Repository status
+## Repository facts
 
-- Version: 0.1.0 from `package.json`.
-- Framework: Next.js 16.1.6, React 19.2.4, TypeScript.
-- Build: `pnpm build` passes after the repair.
-- Paid services activated: NONE.
-- New paid API keys: NONE.
-- Paid infrastructure created: NONE.
+- Web app: Next.js 16, React 19, TypeScript; package manager lockfile: pnpm.
+- Canonical public site: https://streetspotapp.com
+- Support: https://streetspotapp.com/support and support@streetspotapp.com.
+- Public policy routes: `/privacy`, `/terms`, `/delete-account`, `/support`.
+- Browser-only feature stores are not a durable, authenticated database.
+- The vendor-name form is not account authentication or ownership verification.
+- Google Sign-In is not implemented in this repository. No Google OAuth callback or credentials are configured.
+- Stripe-hosted plan links exist, but no payment webhook or server-side subscription verification is implemented. A return to `/success` does not activate a plan.
+- The local claim catalog and browser claim requests do not establish verified ownership. The Supabase claim API requires a configured backend; ownership approval remains disabled until its database transaction is implemented.
+- Automated account deletion is disabled until the backend data-ownership map and deletion policy are configured; the public page provides a support contact and browser-data guidance.
+- beehiiv is not connected; there is no newsletter signup or campaign API in this repository.
+- Agent coordination is local and deterministic; it has no Play Console, ad, analytics, social, email, or production account access.
 
-## Android / Google Play
+## Android / Play Store
 
-- Target SDK: API 36 is required in the external Android wrapper; this web repository cannot set Gradle SDK values.
-- Package ID: `app.vercel.v0_street_spot_web_app.twa` (preserved in the web manifest/app-links configuration; verify against the signed wrapper before release).
-- API 36 compatibility, edge-to-edge, predictive back, exported activities, signing, screenshots, and store listing remain wrapper/Play Console work.
-- Web app assets include `/manifest.json`, `/icon-192.png`, `/icon-512.png`, and `/.well-known/assetlinks.json` (replace the placeholder certificate fingerprint with the signed release SHA-256 fingerprint before publishing).
-- Register the existing package before September 30, 2026.
-- Request only permissions actually used. The web app uses browser geolocation only after permission and does not run background GPS tracking.
+No Android Gradle project, package identifier, signing config, Digital Asset Links file, or Play Console integration exists in this repository. This source tree cannot change a separately packaged Android application or verify Play Console declarations.
 
-## Public policy URLs
+Before a store release, confirm the Android package and target SDK against the current Play Console requirements, signing, permissions, WebView location behavior, back navigation, external links, and data-safety declarations in the Android project. Use the policy URLs above in the store listing. Do not publish an asset-links file without the actual package ID and release signing fingerprint.
 
-- Privacy: `/privacy`
-- Terms: `/terms`
-- Account/data deletion: `/delete-account`
-- Support: `/support`
-- Contact: support instructions are provided through `/support`.
+## Deployment and external services
 
-The public deletion route currently provides an ownership-confirmed request flow. An authenticated, server-side delete/anonymize operation is NOT CONFIGURED because this repository has no connected auth/database implementation. Do not claim in-app deletion is complete until that backend exists.
+The app can be hosted on Vercel and uses `streetspotapp.com` as its canonical metadata and sitemap host. The deployment and Cloudflare DNS/TLS configuration were not inspected through external accounts. Confirm the custom domain is attached to the existing deployment and that HTTPS resolves before representing the site as live there.
 
-## Data safety facts observed
+Supabase server routes require `NEXT_PUBLIC_SUPABASE_URL` and the server-only `SUPABASE_SERVICE_ROLE_KEY`. No credentials are present in the repository. Do not set the service-role key with a `NEXT_PUBLIC_` prefix.
 
-- Browser location is requested for map centering only after browser permission.
-- No background location watcher was found.
-- No analytics dependency/runtime is configured.
-- The repository contains client-side stores for prototype features; they are not durable account storage.
-- No Stripe, AI, SMS, voice, paid email, or paid map service is activated.
+No beehiiv credentials or publication ID are configured. Configure them only in server-side deployment settings after a publication is available; newsletter signup and campaign operations are not active in this build.
 
-## Maps and discovery
+## Local validation
 
-- Leaflet loads the free CARTO/OSM tile layer with attribution.
-- Geolocation denial resolves safely without crashing.
-- Demo New York vendor listings were removed from the production store; vendors now appear only when supplied by the active data layer.
-- A connected production dataset is still required before claiming durable vendor discovery.
-
-## Security and performance
-
-- Security response headers include nosniff, HSTS, referrer policy, same-origin framing, permissions policy, and report-only CSP.
-- Leaflet map cleanup removes the map on unmount; geolocation uses one-shot `getCurrentPosition` with a timeout and cache age.
-- No uncontrolled polling, background job, paid provider, or external analytics was added.
-- No Android Gradle project or `ad_popup` / `DownloadImageTask` source exists in this repository, so Glide/AGP changes cannot honestly be applied here.
-
-## Manual remaining actions
-
-1. Inspect the external Android project and preserve its package ID.
-2. Set `compileSdk` and `targetSdk` to 36 with a compatible AGP/Gradle combination.
-3. Verify WebView back navigation, cookies, geolocation, file uploads, external links, keyboard, safe areas, and Android 16 behavior.
-4. Complete Play Console registration, data-safety form, content rating, privacy/deletion/support links, icon, screenshots, and signing.
-5. Connect an authenticated database/auth provider before enabling durable account, messaging, private-event, claim, review, or deletion claims.
-6. Run authenticated API/authorization tests after that backend is connected.
-
-## Known limitations
-
-This repository is a free-first web prototype with client-side stores and no Android wrapper. Authentication, server-side authorization, RLS, durable messaging, private invitations, and actual account deletion are not configured. No external credentials were invented.
-
-## Release gate
-
-Do not label the Android release Google Play compliant or production-ready until the external wrapper and backend checks above are completed and tested.
-
-## Cost controls
-
-No paid service, subscription, credit card, paid API key, or recurring job was created. No production deployment was intentionally triggered during this repair.
-
-## Verification log
-
-- `pnpm build` — PASS (Next.js 16.1.6; TypeScript and static generation completed).
-- Browser verification — REQUIRED after the preview is available; use the project preview and test public routes and neutral map behavior.
+Run `pnpm lint` and `pnpm build` after dependencies are installed. This repository currently has no test or standalone typecheck script. Android device tests, Play Console checks, Cloudflare settings, Supabase authorization, and Stripe checkout verification require their respective external projects/accounts.

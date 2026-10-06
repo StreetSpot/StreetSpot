@@ -17,11 +17,13 @@ import {
 export const metadata: Metadata = {
   title: "Privacy Policy - StreetSpot",
   description:
-    "How StreetSpot collects, uses, and protects your data including location information, vendor profiles, and payment details.",
+    "How StreetSpot handles browser location, local feature data, vendor listings, and support requests.",
+  alternates: { canonical: "https://streetspotapp.com/privacy" },
+  openGraph: { url: "https://streetspotapp.com/privacy" },
 }
 
 const EFFECTIVE_DATE = "March 4, 2026"
-const SUPPORT_EMAIL = "support@streetspot.app"
+const SUPPORT_EMAIL = "support@streetspotapp.com"
 
 interface SectionProps {
   icon: React.ReactNode
@@ -116,7 +118,7 @@ export default function PrivacyPolicyPage() {
             </div>
             <div className="rounded-xl border border-border bg-card p-4">
               <p className="text-sm leading-relaxed text-muted-foreground">
-                StreetSpot ("we," "our," or "the App") is a real-time vendor
+                StreetSpot (&quot;we,&quot; &quot;our,&quot; or &quot;the App&quot;) is a real-time vendor
                 discovery platform connecting street vendors (Founders) with
                 nearby customers (Finders). This policy explains how we
                 collect, use, store, and protect your information when you
@@ -168,11 +170,11 @@ export default function PrivacyPolicyPage() {
                 <div className="space-y-1.5">
                   <DataRow
                     label="Map center"
-                    value="If you grant browser location permission, the map centers on your position. This is processed client-side only and never sent to our servers."
+                    value="Your location is requested only when you choose the locate control. The map uses it to center in your browser; map tile requests go to the tile provider."
                   />
                   <DataRow
                     label="No storage"
-                    value="We do not store, log, or transmit Finder location data at any point."
+                    value="The app does not send the locate result to its own server. If you choose to pin a spot or go live, its coordinates are kept in the browser's current app state."
                   />
                 </div>
               </div>
@@ -273,8 +275,10 @@ export default function PrivacyPolicyPage() {
                 </table>
               </div>
               <p>
-                We do not collect email addresses, phone numbers, physical
-                addresses, or any form of government-issued identification.
+                This website&apos;s vendor dashboard does not provide a verified
+                account sign-in. Do not treat a name entered in the dashboard
+                as a verified identity. The support email is used only when you
+                choose to contact StreetSpot.
               </p>
             </PolicySection>
 
@@ -288,15 +292,15 @@ export default function PrivacyPolicyPage() {
               <div className="space-y-1.5">
                 <DataRow
                   label="Encryption in transit"
-                  value="All data transmitted between your device and StreetSpot is encrypted via TLS 1.3."
+                  value="Use StreetSpot over HTTPS. Security and request logging at external providers are governed by their own policies."
                 />
                 <DataRow
-                  label="No persistent storage"
-                  value="Vendor session data is held in application memory only and is not written to disk or any long-term database."
+                  label="Browser storage"
+                  value="Some tools save favorites, parking, spots, reviews, messages, travel records, and claim requests in this browser's local storage. These records are not synced to a StreetSpot account or shared across devices."
                 />
                 <DataRow
                   label="Payment security"
-                  value="All payment processing is handled entirely by Stripe. StreetSpot never receives, processes, or stores your credit card number, CVC, or billing address."
+                  value="The plan links open Stripe-hosted checkout. This website does not collect card details or verify or record a completed payment in a StreetSpot account."
                 />
                 <DataRow
                   label="Third-party access"
@@ -304,7 +308,7 @@ export default function PrivacyPolicyPage() {
                 />
                 <DataRow
                   label="Map tile provider"
-                  value="We use CARTO dark basemap tiles. CARTO's own privacy policy governs tile request logs."
+                  value="The map uses OpenStreetMap tiles. Tile requests are sent to its tile service, which may process request metadata under its own policies."
                 />
               </div>
             </PolicySection>
@@ -316,28 +320,16 @@ export default function PrivacyPolicyPage() {
               title="Payments & Subscriptions"
             >
               <p>
-                StreetSpot Gold is a weekly subscription priced at{" "}
-                <span className="font-medium text-foreground">
-                  $0.99 USD/week
-                </span>
-                , processed through Stripe. When you subscribe:
+                The vendor dashboard contains links to Stripe-hosted plan checkout. Those links leave StreetSpot and are governed by the checkout provider&apos;s terms:
               </p>
               <div className="space-y-1.5">
                 <DataRow
-                  label="Redirect"
-                  value="You are redirected to Stripe's hosted checkout page. StreetSpot does not handle card details."
+                  label="Checkout"
+                  value="Plan links open a Stripe-hosted checkout page. StreetSpot does not receive card details through this website."
                 />
                 <DataRow
-                  label="Statement descriptor"
-                  value='Your bank statement will show "STREETSPOT" as the charge description.'
-                />
-                <DataRow
-                  label="Tax category"
-                  value="SaaS - Personal Use, as configured in our Stripe product settings."
-                />
-                <DataRow
-                  label="Cancellation"
-                  value="You may cancel your Gold subscription at any time through Stripe's customer portal or by contacting support."
+                  label="Status"
+                  value="This website has no payment webhook or authenticated subscription state, so a return to the site does not verify payment or activate a plan."
                 />
               </div>
               <p>
@@ -372,7 +364,7 @@ export default function PrivacyPolicyPage() {
                 />
                 <DataRow
                   label="Data deletion"
-                  value="Since we do not persist data beyond your session, closing the app or your browser tab effectively deletes all your information."
+                  value="Use browser settings to clear locally stored feature data. Account deletion requests can be sent to support; self-service deletion is not available because no account backend is configured."
                 />
                 <DataRow
                   label="Cookie usage"
@@ -390,7 +382,7 @@ export default function PrivacyPolicyPage() {
               <p>
                 We may update this Privacy Policy to reflect changes in our
                 practices or applicable regulations. When we make material
-                changes, we will update the "Effective" date at the top of this
+                  changes, we will update the &quot;Effective&quot; date at the top of this
                 page. We encourage you to review this policy periodically.
               </p>
             </PolicySection>
@@ -408,9 +400,9 @@ export default function PrivacyPolicyPage() {
               <div className="space-y-1.5">
                 <DataRow
                   label="Support"
-                  value="https://v0.app/chat/street-spot-web-app"
+                  value="https://streetspotapp.com/support"
                 />
-                <DataRow label="Location" value="Manning, SC 29102" />
+                <DataRow label="Support page" value="https://streetspotapp.com/support" />
                 <DataRow label="Email" value={SUPPORT_EMAIL} />
               </div>
               <a
@@ -439,8 +431,7 @@ export default function PrivacyPolicyPage() {
       {/* Footer */}
       <footer className="border-t border-border bg-card px-4 py-5 md:px-6">
         <p className="text-center text-[10px] text-muted-foreground/60">
-          {"\u00A9"} {new Date().getFullYear()} StreetSpot. Manning, SC 29102.
-          All rights reserved.
+          {"\u00A9"} {new Date().getFullYear()} StreetSpot. All rights reserved.
         </p>
       </footer>
     </div>
