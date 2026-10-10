@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://streetspotapp.com'),
   title: {
     default: 'StreetSpot — Live Food Trucks, Street Vendors & Local Gems',
     template: '%s | StreetSpot',
@@ -14,6 +16,7 @@ export const metadata: Metadata = {
     'Real-time map of food trucks, pop-up carts, markets, flea markets, block parties, skate parks, and street vendors. Vendors go live in one tap. Anyone can pin new gems. Claim your spot.',
   keywords: [
     'StreetSpot',
+    'streetspotapp.com',
     'food trucks near me',
     'street vendors',
     'live vendor map',
@@ -24,29 +27,32 @@ export const metadata: Metadata = {
     'claim your spot',
     'street food',
     'Columbia SC',
+    'Manning SC',
   ],
   applicationName: 'StreetSpot',
-  authors: [{ name: 'StreetSpot' }],
+  authors: [{ name: 'StreetSpot', url: 'https://streetspotapp.com' }],
+  alternates: {
+    canonical: 'https://streetspotapp.com',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'StreetSpot',
     url: 'https://streetspotapp.com',
+    siteName: 'StreetSpot',
     title: 'StreetSpot — Live Food Trucks, Street Vendors & Local Gems',
     description:
-      'Find street vendors in real time. Pin food trucks, markets, skate spots, and events. Vendors go live with one tap.',
+      'Find street vendors in real time. Pin food trucks, markets, skate spots, and events. Vendors go live with one tap at streetspotapp.com.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'StreetSpot — Live map for street vendors & gems',
     description:
-      'Food trucks, carts, markets, skate parks — live on the map. Pin what you find. Claim your spot.',
+      'Food trucks, carts, markets, skate parks — live on the map. Pin what you find. Claim your spot at streetspotapp.com.',
   },
   robots: {
     index: true,
     follow: true,
   },
-  generator: 'v0.app',
   icons: {
     icon: [
       {
@@ -65,16 +71,14 @@ export const metadata: Metadata = {
     apple: '/apple-icon.png',
   },
   manifest: '/manifest.json',
-  metadataBase: new URL('https://streetspotapp.com'),
-  alternates: { canonical: '/' },
 }
 
 export const viewport: Viewport = {
   themeColor: '#0D0D0D',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -89,9 +93,31 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="StreetSpot" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              name: "StreetSpot",
+              url: "https://streetspotapp.com",
+              applicationCategory: "LifestyleApplication",
+              operatingSystem: "All",
+              description:
+                "Real-time map of food trucks, pop-up carts, markets, flea markets, and street vendors. Vendors go live in one tap.",
+              offers: {
+                "@type": "Offer",
+                price: "0.99",
+                priceCurrency: "USD",
+                category: "StreetSpot Gold Subscription",
+              },
+            }),
+          }}
+        />
       </head>
       <body className={`${_inter.variable} ${_jetbrainsMono.variable} font-sans antialiased`}>
         {children}
+        <Analytics />
       </body>
     </html>
   )

@@ -82,7 +82,7 @@ export function SpotsList({ filterType }: SpotsListProps) {
                   )}
                   {isClaimableGemType(spot.type) && !spot.claimed && (
                     <span className="ml-1.5 text-[10px] font-semibold text-amber-400">
-                      {spot.claimStatus === "PENDING_VERIFICATION" ? "Pending verification" : "Unclaimed"}
+                      Unclaimed
                     </span>
                   )}
                 </p>
@@ -90,7 +90,7 @@ export function SpotsList({ filterType }: SpotsListProps) {
                   {SPOT_TYPE_LABELS[spot.type]}
                   {spot.eventDate ? ` · ${spot.eventDate}` : ""} · spotted by{" "}
                   {spot.createdBy}
-                  {spot.claimStatus === "PENDING_VERIFICATION" ? ` · request by ${spot.claimedBy ?? "owner"}` : spot.claimedBy ? ` · claimed by ${spot.claimedBy}` : ""}
+                  {spot.claimedBy ? ` · claimed by ${spot.claimedBy}` : ""}
                 </p>
               </div>
               <button
@@ -115,14 +115,14 @@ export function SpotsList({ filterType }: SpotsListProps) {
                 <Navigation className="h-3 w-3" />
                 Navigate
               </a>
-              {isClaimableGemType(spot.type) && !spot.claimed && spot.claimStatus !== "PENDING_VERIFICATION" && (
+              {isClaimableGemType(spot.type) && !spot.claimed && (
                 <button
                   onClick={() =>
                     setClaimingId(claimingId === spot.id ? null : spot.id)
                   }
                   className="text-xs font-medium text-amber-400 hover:underline"
                 >
-                  Request claim review
+                  Claim this spot
                 </button>
               )}
             </div>
@@ -139,7 +139,7 @@ export function SpotsList({ filterType }: SpotsListProps) {
                   onClick={() => handleClaim(spot.id)}
                   className="rounded-lg bg-primary px-3 text-xs font-semibold text-primary-foreground"
                 >
-                  Request review
+                  Claim
                 </button>
               </div>
             )}

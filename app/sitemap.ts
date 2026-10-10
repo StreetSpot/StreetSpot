@@ -10,16 +10,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: `${base}/domain`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${base}/privacy`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.3,
     },
-    ...["terms", "delete-account", "support"].map((path) => ({
-      url: `${base}/${path}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.2,
-    })),
   ]
 }

@@ -1,4 +1,4 @@
-import { useEffect, useSyncExternalStore } from "react"
+import { useSyncExternalStore } from "react"
 
 export interface Vendor {
   id: string
@@ -20,33 +20,48 @@ export function getMinutesRemaining(closingTime: string): number {
   return Math.max(0, Math.floor((closing.getTime() - now.getTime()) / 60000))
 }
 
-// The map reads durable vendor records from the production API. Local writes are
-// still supported for the current dashboard UI until authenticated publishing is wired.
-let vendors: Vendor[] = []
+let vendors: Vendor[] = [
+  {
+    id: "demo-1",
+    name: "Taco Royale",
+    description: "Authentic street tacos & burritos. Fresh salsas daily.",
+    lat: 40.7128,
+    lng: -74.006,
+    closingTime: "23:00",
+    isLive: true,
+    isPremium: true,
+    createdAt: Date.now() - 3600000,
+  },
+  {
+    id: "demo-2",
+    name: "Boba Bliss",
+    description: "Premium bubble tea & fruit smoothies.",
+    lat: 40.7148,
+    lng: -74.002,
+    closingTime: "22:00",
+    isLive: true,
+    isPremium: false,
+    createdAt: Date.now() - 7200000,
+  },
+  {
+    id: "demo-3",
+    name: "Seoul Grill",
+    description: "Korean BBQ skewers & kimchi fries.",
+    lat: 40.711,
+    lng: -74.009,
+    closingTime: "21:30",
+    isLive: true,
+    isPremium: false,
+    createdAt: Date.now() - 1800000,
+  },
+]
+
 let listeners: Array<() => void> = []
-let loadStarted = false
 
 function emitChange() {
-  for (const listener of listeners) listener()
-}
-
-async function loadVendors() {
-  try {
-    const response = await fetch("/api/vendors", { cache: "no-store" })
-    if (!response.ok) return
-    const payload = (await response.json()) as { vendors?: Vendor[] }
-    if (!Array.isArray(payload.vendors)) return
-    vendors = payload.vendors
-    emitChange()
-  } catch {
-    // Keep the map usable when the backend is temporarily unavailable.
+  for (const listener of listeners) {
+    listener()
   }
-}
-
-function startVendorLoading() {
-  if (loadStarted || typeof window === "undefined") return
-  loadStarted = true
-  void loadVendors()
 }
 
 export const vendorStore = {
@@ -72,21 +87,31 @@ export const vendorStore = {
     emitChange()
   },
   getActiveVendors(): Vendor[] {
-    return vendors.filter((v) => v.isLive && getMinutesRemaining(v.closingTime) > 0)
+    const now = new Date()
+    return vendors.filter((v) => {
+      if (!v.isLive) return false
+      const [hours, minutes] = v.closingTime.split(":").map(Number)
+      const closingDate = new Date()
+      closingDate.setHours(hours, minutes, 0, 0)
+      // If closing time is earlier than current time and more than 1 hour in the past
+      // assume it was for today and has passed
+      return now < closingDate
+    })
   },
 }
 
 export function useVendors() {
-  const snapshot = useSyncExternalStore(vendorStore.subscribe, vendorStore.getSnapshot, vendorStore.getSnapshot)
-  useEffect(() => {
-    startVendorLoading()
-    const interval = window.setInterval(() => void loadVendors(), 30000)
-    return () => window.clearInterval(interval)
-  }, [])
-  return snapshot
+  return useSyncExternalStore(vendorStore.subscribe, vendorStore.getSnapshot, vendorStore.getSnapshot)
 }
 
 export function useActiveVendors() {
   const allVendors = useVendors()
-  return allVendors.filter((v) => v.isLive && getMinutesRemaining(v.closingTime) > 0)
+  const now = new Date()
+  return allVendors.filter((v) => {
+    if (!v.isLive) return false
+    const [hours, minutes] = v.closingTime.split(":").map(Number)
+    const closingDate = new Date()
+    closingDate.setHours(hours, minutes, 0, 0)
+    return now < closingDate
+  })
 }

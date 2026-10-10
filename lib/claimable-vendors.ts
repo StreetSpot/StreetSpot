@@ -13,7 +13,6 @@ export interface ClaimableVendor {
   country?: string
   area?: string
   claimed: boolean
-  claimStatus?: "UNCLAIMED" | "PENDING_VERIFICATION" | "CLAIMED"
   claimedBy?: string
   claimedAt?: number
 }

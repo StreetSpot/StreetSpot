@@ -1,0 +1,7 @@
+{
+  "name": "StreetSpot",
+  "description": "Real-time map and platform for live food trucks, street vendors, and local gems at streetspotapp.com with Cloudflare domain management and tools.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

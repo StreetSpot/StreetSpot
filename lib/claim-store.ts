@@ -8,7 +8,7 @@ const STORAGE_KEY = "streetspot_claimable_vendors"
 
 function loadClaims(): ClaimableVendor[] {
   if (typeof window === "undefined") {
-    return SEEDED_CLAIMABLE_VENDORS.map((v): ClaimableVendor => ({ ...v, claimed: false }))
+    return SEEDED_CLAIMABLE_VENDORS.map((v) => ({ ...v, claimed: false }))
   }
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -18,10 +18,7 @@ function loadClaims(): ClaimableVendor[] {
       const missing = SEEDED_CLAIMABLE_VENDORS.filter(
         (s) => !existingIds.has(s.id)
       ).map((s) => ({ ...s, claimed: false }))
-      return [...parsed.map((vendor) => {
-        const claimStatus = vendor.claimStatus ?? (vendor.claimed ? "PENDING_VERIFICATION" : "UNCLAIMED")
-        return { ...vendor, claimStatus, claimed: claimStatus === "CLAIMED" }
-      }), ...missing]
+      return [...parsed, ...missing]
     }
   } catch {}
   return SEEDED_CLAIMABLE_VENDORS.map((v) => ({ ...v, claimed: false }))
@@ -61,8 +58,8 @@ export const claimStore = {
   claim(id: string, claimedBy: string) {
     ensureInit()
     vendors = vendors.map((v) =>
-      v.id === id && !v.claimed && v.claimStatus !== "PENDING_VERIFICATION"
-        ? { ...v, claimStatus: "PENDING_VERIFICATION", claimedBy, claimedAt: Date.now() }
+      v.id === id && !v.claimed
+        ? { ...v, claimed: true, claimedBy, claimedAt: Date.now() }
         : v
     )
     saveClaims(vendors)
@@ -71,8 +68,8 @@ export const claimStore = {
   unclaim(id: string) {
     ensureInit()
     vendors = vendors.map((v) =>
-      v.id === id && v.claimStatus === "CLAIMED"
-        ? { ...v, claimed: false, claimStatus: "UNCLAIMED", claimedBy: undefined, claimedAt: undefined }
+      v.id === id
+        ? { ...v, claimed: false, claimedBy: undefined, claimedAt: undefined }
         : v
     )
     saveClaims(vendors)
@@ -80,11 +77,11 @@ export const claimStore = {
   },
   getUnclaimed() {
     ensureInit()
-    return vendors.filter((v) => !v.claimed && v.claimStatus !== "PENDING_VERIFICATION")
+    return vendors.filter((v) => !v.claimed)
   },
   getClaimed() {
     ensureInit()
-    return vendors.filter((v) => v.claimed || v.claimStatus === "CLAIMED")
+    return vendors.filter((v) => v.claimed)
   },
   /**
    * Client-side search. Ready to swap for a remote API later
@@ -112,6 +109,6 @@ export function useClaimableVendors() {
   return useSyncExternalStore(
     claimStore.subscribe,
     claimStore.getSnapshot,
-    () => SEEDED_CLAIMABLE_VENDORS.map((v): ClaimableVendor => ({ ...v, claimed: false }))
+    () => SEEDED_CLAIMABLE_VENDORS.map((v) => ({ ...v, claimed: false }))
   )
 }

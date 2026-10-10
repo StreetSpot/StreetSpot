@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import Link from "next/link"
 import {
   MapPin,
   Clock,
@@ -14,6 +15,7 @@ import {
   CheckCircle2,
   X,
   Share2,
+  Zap,
 } from "lucide-react"
 import { vendorStore, useVendors, type Vendor } from "@/lib/vendor-store"
 import { PremierPinPayment } from "./premier-pin-payment"
@@ -34,6 +36,7 @@ const SUPPORT_BODY =
 
 interface VendorDashboardProps {
   businessName: string
+  initialGold?: boolean
 }
 
 function SuccessToast({
@@ -72,6 +75,7 @@ function SuccessToast({
 
 export function VendorDashboard({
   businessName,
+  initialGold = false,
 }: VendorDashboardProps) {
   const vendors = useVendors()
   const [vendorId] = useState(() => {
@@ -83,7 +87,8 @@ export function VendorDashboard({
   })
   const [description, setDescription] = useState("")
   const [closingTime, setClosingTime] = useState("22:00")
-  const isPremium = false
+  const [isLive, setIsLive] = useState(false)
+  const [isPremium, setIsPremium] = useState(initialGold)
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
     null
   )
@@ -94,39 +99,56 @@ export function VendorDashboard({
 
   const myVendor = vendors.find((v) => v.id === vendorId)
 
-  const isLive = Boolean(myVendor?.isLive)
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const goldFlag = sessionStorage.getItem("streetspot_gold_active")
+    if (goldFlag === "true" || initialGold) {
+      setIsPremium(true)
+      setToast("Premier status activated! Your pin is now featured.")
+      sessionStorage.removeItem("streetspot_gold_active")
+    }
+    if (myVendor?.isLive) setIsLive(true)
+  }, [initialGold, myVendor?.isLive])
 
-  const getLocation = useCallback((onLocated?: (position: { lat: number; lng: number }) => void) => {
+  const getLocation = useCallback(() => {
     setIsLocating(true)
     setLocationError(null)
     if (!navigator.geolocation) {
-      setLocationError("Location is unavailable. Allow browser location access to go live.")
+      setLocationError("Geolocation is not supported by your browser")
       setIsLocating(false)
+      setLocation({ lat: 40.7128, lng: -74.006 })
       return
     }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        const position = { lat: pos.coords.latitude, lng: pos.coords.longitude }
-        setLocation(position)
-        onLocated?.(position)
+        setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude })
         setIsLocating(false)
       },
       () => {
-        setLocationError("Unable to get your location. Allow browser location access and try again.")
-        setLocation(null)
+        setLocationError("Unable to get location. Using default.")
+        setLocation({ lat: 40.7128, lng: -74.006 })
         setIsLocating(false)
       },
       { enableHighAccuracy: true, timeout: 10000 }
     )
   }, [])
 
-  function publishVendor(position: { lat: number; lng: number }) {
+  useEffect(() => {
+    getLocation()
+  }, [getLocation])
+
+  function handleGoLive() {
+    if (!location) return
+    if (isLive) {
+      vendorStore.updateVendor(vendorId, { isLive: false })
+      setIsLive(false)
+    } else {
       if (myVendor) {
         vendorStore.updateVendor(vendorId, {
           name: businessName,
           description: description || "Street vendor",
-          lat: position.lat,
-          lng: position.lng,
+          lat: location.lat,
+          lng: location.lng,
           closingTime,
           isLive: true,
           isPremium,
@@ -136,8 +158,8 @@ export function VendorDashboard({
           id: vendorId,
           name: businessName,
           description: description || "Street vendor",
-          lat: position.lat,
-          lng: position.lng,
+          lat: location.lat,
+          lng: location.lng,
           closingTime,
           isLive: true,
           isPremium,
@@ -148,27 +170,26 @@ export function VendorDashboard({
       if (typeof window !== "undefined") {
         sessionStorage.setItem("streetspot_vendor_id", vendorId)
       }
+      setIsLive(true)
       setToast("You are now live on the map!")
-  }
-
-  function handleGoLive() {
-    if (isLive) {
-      vendorStore.updateVendor(vendorId, { isLive: false })
-    } else if (location) {
-      publishVendor(location)
-    } else {
-      getLocation(publishVendor)
     }
   }
 
   function handleUpdateLocation() {
-    getLocation((position) => {
-      if (isLive) vendorStore.updateVendor(vendorId, position)
-    })
+    getLocation()
+    if (location && isLive) {
+      vendorStore.updateVendor(vendorId, {
+        lat: location.lat,
+        lng: location.lng,
+      })
+    }
   }
 
   async function handleShareLive() {
-    const url = "https://streetspotapp.com"
+    const url =
+      typeof window !== "undefined"
+        ? window.location.origin
+        : "https://streetspotapp.com"
     const text = isLive
       ? `I'm live on StreetSpot right now — ${businessName}. Find me on the map: ${url}`
       : `Check out StreetSpot — live street vendors on the map: ${url}`
@@ -338,7 +359,7 @@ export function VendorDashboard({
 
       <button
         onClick={handleGoLive}
-        disabled={isLocating}
+        disabled={!location}
         className={`mb-6 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl text-sm font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-40 ${
           isLive
             ? "border border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/20"
@@ -353,7 +374,7 @@ export function VendorDashboard({
         ) : (
           <>
             <Power className="h-4 w-4" />
-            <span>{isLocating ? "Getting location…" : "Go Live"}</span>
+            <span>Go Live</span>
           </>
         )}
       </button>
@@ -370,9 +391,16 @@ export function VendorDashboard({
 
       <div className="mb-6 rounded-xl border border-border bg-card p-5">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Settings
+          Settings & Domain
         </h3>
         <div className="flex flex-col gap-2.5">
+          <Link
+            href="/domain"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-orange-500/30 bg-orange-500/10 text-sm font-medium text-orange-400 transition-colors hover:bg-orange-500/20"
+          >
+            <Zap className="h-4 w-4" />
+            <span>Cloudflare Tools & Domain Hub (streetspotapp.com)</span>
+          </Link>
           <a
             href={`mailto:${SUPPORT_EMAIL}?subject=${SUPPORT_SUBJECT}&body=${SUPPORT_BODY}`}
             className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-border bg-secondary text-sm font-medium text-foreground transition-colors hover:bg-muted"
@@ -381,7 +409,7 @@ export function VendorDashboard({
             Contact Support
           </a>
           <p className="text-center text-[11px] text-muted-foreground">
-            Opens a pre-filled email so we can assist you quickly.
+            Have questions about your domain or account? We are here to help.
           </p>
         </div>
       </div>

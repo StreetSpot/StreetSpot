@@ -23,7 +23,7 @@ import {
 } from "@/lib/community-store"
 import { ConsentMessagePanel } from "@/components/messaging/consent-message-panel"
 import { LocateControl } from "@/components/map/locate-control"
-import { hasValidCoordinates } from "@/lib/geo"
+import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM, getUserPosition } from "@/lib/geo"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 
@@ -47,12 +47,6 @@ function formatCountdownShort(closingTime: string): string {
 
 function isClosingSoon(closingTime: string): boolean {
   return getMinutesRemaining(closingTime) <= 30
-}
-
-function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (char) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-  })[char]!)
 }
 
 function createVendorIcon(vendor: Vendor) {
@@ -160,26 +154,20 @@ export function VendorMap() {
   const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null)
   const [selectedGem, setSelectedGem] = useState<CommunitySpot | null>(null)
   const [showList, setShowList] = useState(false)
-  const [userPosition, setUserPosition] = useState<[number, number] | null>(null)
   const [, setTick] = useState(0)
   const mapRef = useRef<L.Map | null>(null)
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const markersRef = useRef<L.Marker[]>([])
   const gemMarkersRef = useRef<L.Marker[]>([])
+  const hasAutoFitted = useRef(false)
 
-  const validVendors = activeVendors.filter(hasValidCoordinates)
-  const validSpots = communitySpots.filter((spot) => spot.isActive && hasValidCoordinates(spot))
-  const sortedVendors = [...validVendors].sort((a, b) => {
+  const sortedVendors = [...activeVendors].sort((a, b) => {
     if (a.isPremium && !b.isPremium) return -1
     if (!a.isPremium && b.isPremium) return 1
     return b.createdAt - a.createdAt
   })
   const premiumVendors = sortedVendors.filter((v) => v.isPremium)
   const standardVendors = sortedVendors.filter((v) => !v.isPremium)
-  const mapAnchor = validVendors[0] ?? validSpots[0] ?? (userPosition ? { lat: userPosition[0], lng: userPosition[1] } : null)
-  const anchorLat = mapAnchor?.lat ?? null
-  const anchorLng = mapAnchor?.lng ?? null
-  const anchorIsUserLocation = Boolean(userPosition && validVendors.length === 0 && validSpots.length === 0)
 
   useEffect(() => {
     const iv = setInterval(() => setTick((t) => t + 1), 10000)
@@ -194,37 +182,38 @@ export function VendorMap() {
   }, [])
 
   useEffect(() => {
-    if (!mapContainerRef.current || mapRef.current || anchorLat === null || anchorLng === null) return
+    if (!mapContainerRef.current || mapRef.current) return
     const map = L.map(mapContainerRef.current, {
-      center: [anchorLat, anchorLng],
-      zoom: anchorIsUserLocation ? 15 : 13,
+      center: DEFAULT_MAP_CENTER,
+      zoom: DEFAULT_MAP_ZOOM,
       zoomControl: false,
       attributionControl: false,
     })
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map)
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", { maxZoom: 19 }).addTo(map)
     L.control.zoom({ position: "bottomright" }).addTo(map)
     L.control
       .attribution({ position: "bottomleft" })
       .addTo(map)
       .addAttribution(
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
       )
     mapRef.current = map
-  }, [anchorLat, anchorLng, anchorIsUserLocation])
-
-  useEffect(() => () => {
-      mapRef.current?.remove()
+    getUserPosition().then((pos) => {
+      if (pos && mapRef.current) {
+        mapRef.current.setView([pos.lat, pos.lng], DEFAULT_MAP_ZOOM, { animate: true })
+      }
+    })
+    return () => {
+      map.remove()
       mapRef.current = null
-    }, [])
+    }
+  }, [])
 
   useEffect(() => {
     if (!mapRef.current) return
     markersRef.current.forEach((m) => m.remove())
     markersRef.current = []
-    const ordered = [...activeVendors.filter(hasValidCoordinates)].sort((a, b) => {
+    const ordered = [...activeVendors].sort((a, b) => {
       if (a.isPremium && !b.isPremium) return 1
       if (!a.isPremium && b.isPremium) return -1
       return 0
@@ -243,7 +232,7 @@ export function VendorMap() {
       })
         .addTo(mapRef.current!)
         .bindPopup(
-          `<div style="background:#1a1b26;color:#e5e5e5;padding:14px 16px;border-radius:10px;min-width:210px;font-family:system-ui,sans-serif;border:1px solid ${vendor.isPremium ? "rgba(251,191,36,0.3)" : "rgba(255,255,255,0.08)"};">${premiumLabel}<p style="font-weight:700;font-size:14px;margin:0 0 4px;color:#fff;">${escapeHtml(vendor.name)}</p><p style="font-size:12px;margin:0 0 10px;color:#888;">${escapeHtml(vendor.description)}</p><div style="display:flex;justify-content:space-between;background:${countdownBg};border-radius:6px;padding:6px 10px;"><span style="font-size:11px;color:#888;">Closes ${escapeHtml(vendor.closingTime)}</span><span style="font-size:11px;font-weight:700;color:${countdownColor};">${escapeHtml(formatCountdown(vendor.closingTime))}</span></div></div>`,
+          `<div style="background:#1a1b26;color:#e5e5e5;padding:14px 16px;border-radius:10px;min-width:210px;font-family:system-ui,sans-serif;border:1px solid ${vendor.isPremium ? "rgba(251,191,36,0.3)" : "rgba(255,255,255,0.08)"};">${premiumLabel}<p style="font-weight:700;font-size:14px;margin:0 0 4px;color:#fff;">${vendor.name}</p><p style="font-size:12px;margin:0 0 10px;color:#888;">${vendor.description}</p><div style="display:flex;justify-content:space-between;background:${countdownBg};border-radius:6px;padding:6px 10px;"><span style="font-size:11px;color:#888;">Closes ${vendor.closingTime}</span><span style="font-size:11px;font-weight:700;color:${countdownColor};">${formatCountdown(vendor.closingTime)}</span></div></div>`,
           { className: "streetspot-popup", closeButton: false }
         )
       marker.on("click", () => {
@@ -252,6 +241,11 @@ export function VendorMap() {
       })
       markersRef.current.push(marker)
     })
+    if (!hasAutoFitted.current && activeVendors.length > 0 && markersRef.current.length > 0) {
+      const group = L.featureGroup(markersRef.current)
+      mapRef.current.fitBounds(group.getBounds().pad(0.3))
+      hasAutoFitted.current = true
+    }
   }, [activeVendors])
 
   useEffect(() => {
@@ -259,12 +253,10 @@ export function VendorMap() {
     gemMarkersRef.current.forEach((m) => m.remove())
     gemMarkersRef.current = []
     communitySpots
-      .filter((s) => s.isActive && hasValidCoordinates(s))
+      .filter((s) => s.isActive)
       .forEach((spot) => {
         const label = SPOT_TYPE_LABELS[spot.type] || spot.type
-        const status = spot.claimStatus === "PENDING_VERIFICATION"
-          ? "Claim pending verification"
-          : spot.claimed
+        const status = spot.claimed
           ? spot.claimedBy
             ? `Claimed by ${spot.claimedBy}`
             : "Open gem"
@@ -275,7 +267,7 @@ export function VendorMap() {
         })
           .addTo(mapRef.current!)
           .bindPopup(
-            `<div style="background:#1a1b26;color:#e5e5e5;padding:12px 14px;border-radius:10px;min-width:180px;font-family:system-ui,sans-serif;border:1px solid rgba(255,255,255,0.08);"><p style="font-weight:700;font-size:13px;margin:0 0 4px;color:#fff;">${escapeHtml(spot.name)}</p><p style="font-size:11px;margin:0 0 6px;color:#008D7C;">${escapeHtml(label)}</p><p style="font-size:11px;margin:0;color:#888;">${escapeHtml(status)}</p>${spot.description ? `<p style="font-size:11px;margin:8px 0 0;color:#aaa;">${escapeHtml(spot.description)}</p>` : ""}</div>`,
+            `<div style="background:#1a1b26;color:#e5e5e5;padding:12px 14px;border-radius:10px;min-width:180px;font-family:system-ui,sans-serif;border:1px solid rgba(255,255,255,0.08);"><p style="font-weight:700;font-size:13px;margin:0 0 4px;color:#fff;">${spot.name}</p><p style="font-size:11px;margin:0 0 6px;color:#008D7C;">${label}</p><p style="font-size:11px;margin:0;color:#888;">${status}</p>${spot.description ? `<p style="font-size:11px;margin:8px 0 0;color:#aaa;">${spot.description}</p>` : ""}</div>`,
             { className: "streetspot-popup", closeButton: false }
           )
         marker.on("click", () => {
@@ -325,18 +317,8 @@ export function VendorMap() {
 
       <div className="relative flex-1">
         <div ref={mapContainerRef} className="h-full w-full" />
-        {!mapAnchor && (
-          <div className="absolute inset-0 z-[300] flex items-center justify-center bg-muted/80 p-6 text-center">
-            <div className="max-w-sm rounded-xl border border-border bg-card p-5 shadow-lg">
-              <MapPin className="mx-auto mb-3 h-7 w-7 text-primary" />
-              <p className="font-semibold text-foreground">Choose a map location</p>
-              <p className="mt-2 text-sm text-muted-foreground">Real StreetSpot listings will appear here. You can also share your location using the locate button.</p>
-            </div>
-          </div>
-        )}
         <LocateControl
           onLocated={(lat, lng) => {
-            setUserPosition([lat, lng])
             if (mapRef.current) {
               mapRef.current.setView([lat, lng], 15, { animate: true })
             }

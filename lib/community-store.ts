@@ -9,14 +9,7 @@ export type SpotType =
   | "skate_park"
   | "skate_spot"
   | "food_truck"
-  | "food_cart"
   | "popup_cart"
-  | "pop_up"
-  | "local_business"
-  | "street_artist"
-  | "traveling_business"
-  | "parking_saver"
-  | "discovered_gem"
   | "vendor"
   | "artisan"
   | "event"
@@ -44,7 +37,6 @@ export interface CommunitySpot {
   isActive: boolean
   /** Non-skate gems start unclaimed; only the real owner should claim */
   claimed: boolean
-  claimStatus?: "UNCLAIMED" | "PENDING_VERIFICATION" | "CLAIMED"
   claimedBy?: string
   claimedAt?: number
   createdAt: number
@@ -69,16 +61,12 @@ function loadSpots(): CommunitySpot[] {
     if (!raw) return []
     const parsed = JSON.parse(raw) as CommunitySpot[]
     // Backfill older spots missing claim fields
-    return parsed.map((s) => {
-      const claimStatus = s.claimStatus ?? (isSkateType(s.type) ? "CLAIMED" : s.claimed ? "PENDING_VERIFICATION" : "UNCLAIMED")
-      return {
-        ...s,
-        claimed: claimStatus === "CLAIMED",
-        claimStatus,
-        claimedBy: s.claimedBy,
-        claimedAt: s.claimedAt,
-      }
-    })
+    return parsed.map((s) => ({
+      ...s,
+      claimed: s.claimed ?? isSkateType(s.type),
+      claimedBy: s.claimedBy,
+      claimedAt: s.claimedAt,
+    }))
   } catch {
     return []
   }
@@ -129,7 +117,6 @@ export const communityStore = {
       isActive: true,
       // Skate gems are open; business gems start unclaimed so the real owner can claim
       claimed: skate,
-      claimStatus: skate ? "CLAIMED" : "UNCLAIMED",
       createdAt: Date.now(),
     }
     spots = [newSpot, ...spots]
@@ -143,11 +130,10 @@ export const communityStore = {
     spots = spots.map((s) => {
       if (s.id !== id) return s
       if (isSkateType(s.type)) return s // skate doesn't need exclusive claim
-      if (s.claimed || s.claimStatus === "PENDING_VERIFICATION") return s
+      if (s.claimed) return s
       return {
         ...s,
-        claimed: false,
-        claimStatus: "PENDING_VERIFICATION",
+        claimed: true,
         claimedBy,
         claimedAt: Date.now(),
       }
@@ -159,7 +145,7 @@ export const communityStore = {
     ensureInit()
     spots = spots.map((s) =>
       s.id === id && isClaimableGemType(s.type)
-        ? { ...s, claimed: false, claimStatus: "UNCLAIMED", claimedBy: undefined, claimedAt: undefined }
+        ? { ...s, claimed: false, claimedBy: undefined, claimedAt: undefined }
         : s
     )
     saveSpots(spots)
@@ -181,7 +167,7 @@ export const communityStore = {
   },
   getUnclaimedGems() {
     ensureInit()
-    return spots.filter((s) => isClaimableGemType(s.type) && !s.claimed && s.claimStatus !== "PENDING_VERIFICATION")
+    return spots.filter((s) => isClaimableGemType(s.type) && !s.claimed)
   },
 }
 
@@ -197,14 +183,7 @@ export const SPOT_TYPE_LABELS: Record<SpotType, string> = {
   skate_park: "Skate Park",
   skate_spot: "Skate Spot",
   food_truck: "Food Truck",
-  food_cart: "Food Cart",
   popup_cart: "Pop-up Cart",
-  pop_up: "Pop-up",
-  local_business: "Local Business",
-  street_artist: "Street Artist",
-  traveling_business: "Traveling / Mobile Business",
-  parking_saver: "Parking Saver",
-  discovered_gem: "Discovered Gem",
   vendor: "Vendor",
   artisan: "Artisan",
   event: "Event",

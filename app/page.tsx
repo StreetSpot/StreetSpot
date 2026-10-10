@@ -1,8 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { Suspense, useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import dynamic from "next/dynamic"
-import { MapPin, Globe, Wrench } from "lucide-react"
+import Link from "next/link"
+import { MapPin, Globe, CreditCard, Wrench, Zap, Shield } from "lucide-react"
 import { AppHeader } from "@/components/app-header"
 import { RoleSelector } from "@/components/role-selector"
 import { VendorLogin } from "@/components/vendor-login"
@@ -25,52 +27,69 @@ const VendorMap = dynamic(
 )
 
 export default function HomePage() {
-  return <HomeContent />
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-dvh items-center justify-center bg-background">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
+  )
 }
 
 type AppView = "landing" | "founder-login" | "founder-dashboard" | "finder"
 type FinderTab = "map" | "tools"
 
 function HomeContent() {
+  const searchParams = useSearchParams()
+  const goldParam = searchParams.get("gold")
+
   const [view, setView] = useState<AppView>("landing")
   const [businessName, setBusinessName] = useState("")
+  const [goldActivated, setGoldActivated] = useState(false)
   const [finderTab, setFinderTab] = useState<FinderTab>("map")
 
   useEffect(() => {
-    window.history.replaceState({ streetSpotView: "landing" }, "", window.location.href)
-    const restoreView = (event: PopStateEvent) => {
-      const next = event.state?.streetSpotView
-      setView(next === "founder-login" || next === "founder-dashboard" || next === "finder" ? next : "landing")
+    if (goldParam === "activated") {
+      setGoldActivated(true)
+      const savedName =
+        typeof window !== "undefined"
+          ? sessionStorage.getItem("streetspot_business_name")
+          : null
+      if (savedName) {
+        setBusinessName(savedName)
+        setView("founder-dashboard")
+      } else {
+        setView("founder-login")
+      }
     }
-    window.addEventListener("popstate", restoreView)
-    return () => window.removeEventListener("popstate", restoreView)
-  }, [])
-
-  function navigateView(next: AppView) {
-    window.history.pushState({ streetSpotView: next }, "", window.location.href)
-    setView(next)
-  }
+  }, [goldParam])
 
   function handleRoleSelect(role: "founder" | "finder") {
     if (role === "founder") {
-      navigateView("founder-login")
+      setView("founder-login")
     } else {
-      navigateView("finder")
+      setView("finder")
       setFinderTab("map")
     }
   }
 
   function handleLogin(name: string) {
     setBusinessName(name)
-    navigateView("founder-dashboard")
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("streetspot_business_name", name)
+    }
+    setView("founder-dashboard")
   }
 
   function handleBack() {
-    if (view !== "landing" && window.history.state?.streetSpotView) {
-      window.history.back()
-      return
-    }
     setView("landing")
+    setBusinessName("")
+    setGoldActivated(false)
+    setFinderTab("map")
   }
 
   const headerMode =
@@ -91,6 +110,7 @@ function HomeContent() {
         {view === "founder-dashboard" && (
           <VendorDashboard
             businessName={businessName}
+            initialGold={goldActivated}
           />
         )}
         {view === "finder" && (
@@ -135,15 +155,36 @@ function HomeContent() {
               <span className="text-sm font-semibold text-foreground">
                 StreetSpot
               </span>
+              <span className="text-[11px] font-mono text-orange-400/90 bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
+                streetspotapp.com
+              </span>
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] text-muted-foreground">
-  <span className="flex items-center gap-1.5">
-          <MapPin className="h-3 w-3" />
-          Choose a location to discover nearby spots
-        </span>
+              <span className="flex items-center gap-1.5">
+                <MapPin className="h-3 w-3" />
+                Manning, SC 29102
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CreditCard className="h-3 w-3" />
+                StreetSpot Gold &ndash; $0.99/week
+              </span>
+              <Link
+                href="/domain"
+                className="flex items-center gap-1.5 text-orange-400 transition-colors hover:text-orange-300 font-medium"
+              >
+                <Zap className="h-3 w-3 text-orange-400" />
+                Cloudflare Domain Hub
+              </Link>
+              <Link
+                href="/privacy"
+                className="flex items-center gap-1.5 transition-colors hover:text-foreground"
+              >
+                <Shield className="h-3 w-3" />
+                Privacy Policy
+              </Link>
               <a
-                href="/support"
+                href="mailto:support@streetspotapp.com"
                 className="flex items-center gap-1.5 transition-colors hover:text-foreground"
               >
                 <Globe className="h-3 w-3" />
@@ -151,9 +192,14 @@ function HomeContent() {
               </a>
             </div>
 
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-muted-foreground/50">
+              <span>Statement Descriptor: STREETSPOT</span>
+              <span>Tax: SaaS &ndash; Personal Use</span>
+            </div>
+
             <p className="text-center text-[10px] leading-relaxed text-muted-foreground/60">
               {"\u00A9"} {new Date().getFullYear()} StreetSpot. All rights
-              reserved. Plan checkout and account status are handled outside this page.
+              reserved. Payments processed securely via Stripe.
             </p>
 
             <p className="rounded-md border border-border bg-secondary px-3 py-1.5 text-[10px] text-muted-foreground">
