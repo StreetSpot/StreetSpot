@@ -104,8 +104,7 @@ export function PremierPinPayment() {
           ) : (
             <div className="flex flex-col gap-4">
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Upgrade for better map placement. Choose Bronze, Silver, or Gold
-                — all include a 7-day free trial.
+                Upgrade for better map placement. Choose a paid Bronze, Silver, or Gold plan.
               </p>
               <div className="flex flex-col gap-2.5">
                 {[
@@ -143,7 +142,7 @@ export function PremierPinPayment() {
                 className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-sm font-semibold text-white shadow-lg shadow-amber-500/20 transition hover:brightness-110"
               >
                 <Crown className="h-4 w-4" />
-                View Plans & Start Trial
+                View Paid Plans
               </button>
             </div>
           )}

@@ -22,7 +22,6 @@ export const PREMIER_TIERS = [
     name: "Bronze",
     price: "$9.99",
     period: "/mo",
-    trial: "7-day free trial",
     stripeUrl: "https://buy.stripe.com/3cI5kF2Rs1PadzS4nu1VK01",
     features: [
       "Bronze badge on pin",
@@ -38,7 +37,6 @@ export const PREMIER_TIERS = [
     name: "Silver",
     price: "$24.99",
     period: "/mo",
-    trial: "7-day free trial",
     stripeUrl: "https://buy.stripe.com/14A5kF1NobpK9jCcU01VK02",
     features: [
       "Silver badge + glow",
@@ -55,7 +53,6 @@ export const PREMIER_TIERS = [
     name: "Gold",
     price: "$49.99",
     period: "/mo",
-    trial: "7-day free trial",
     stripeUrl: "https://buy.stripe.com/6oU3cxbnY0L61Ra2fm1VK03",
     features: [
       "Pulsing gold pin",
@@ -71,17 +68,14 @@ export const PREMIER_TIERS = [
 ]
 
 function loadState(): PremierState {
-  if (typeof window === "undefined") return { tier: "none", activatedAt: null }
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) return JSON.parse(raw)
-  } catch {}
+  // A browser-stored tier is not proof of a paid Stripe subscription.
+  // Clear legacy local activation and remain inactive until server verification exists.
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.removeItem(STORAGE_KEY)
+    } catch {}
+  }
   return { tier: "none", activatedAt: null }
-}
-
-function saveState(state: PremierState) {
-  if (typeof window === "undefined") return
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
 }
 
 let state: PremierState = { tier: "none", activatedAt: null }
@@ -112,11 +106,15 @@ export const premierStore = {
   },
   setTier(tier: PremierTier) {
     ensureInit()
-    state = {
-      tier,
-      activatedAt: tier === "none" ? null : Date.now(),
+    // Paid tiers must only be granted by a server-verified subscription.
+    // Until that integration exists, this client store can only deactivate.
+    if (tier !== "none") return
+    state = { tier: "none", activatedAt: null }
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.removeItem(STORAGE_KEY)
+      } catch {}
     }
-    saveState(state)
     emitChange()
   },
   isAtLeast(tier: PremierTier) {

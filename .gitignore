@@ -9,3 +9,10 @@ node_modules/
 .env*.local
 .DS_Store
 *.tsbuildinfo
+
+# Local release artifacts and user archives (keep on disk; never commit them)
+/app-release.aab
+/StreetSpot*.zip
+/StreetSpot 2.0 (1)/
+*.jks
+*.keystore

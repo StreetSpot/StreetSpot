@@ -7,16 +7,16 @@ const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-je
 
 export const metadata: Metadata = {
   title: {
-    default: 'StreetSpot — Live Food Trucks, Street Vendors & Local Gems',
+    default: 'StreetSpot | Discover Local Vendors, Businesses & Community Spots',
     template: '%s | StreetSpot',
   },
   description:
-    'Real-time map of food trucks, pop-up carts, markets, flea markets, block parties, skate parks, and street vendors. Vendors go live in one tap. Anyone can pin new gems. Claim your spot.',
+    'Discover food trucks, pop-up carts, markets, flea markets, block parties, skate parks, local businesses, and hidden gems. Pin places you find, explore local spots, and claim eligible listings.',
   keywords: [
     'StreetSpot',
     'food trucks near me',
     'street vendors',
-    'live vendor map',
+    'local discovery map',
     'pop-up carts',
     'flea market',
     'skate park',
@@ -32,15 +32,15 @@ export const metadata: Metadata = {
     locale: 'en_US',
     siteName: 'StreetSpot',
     url: 'https://streetspotapp.com',
-    title: 'StreetSpot — Live Food Trucks, Street Vendors & Local Gems',
+    title: 'StreetSpot | Discover Local Vendors, Businesses & Community Spots',
     description:
-      'Find street vendors in real time. Pin food trucks, markets, skate spots, and events. Vendors go live with one tap.',
+      'Explore local vendors, food trucks, markets, skate spots, events, and businesses. Save discoveries and share the places you find.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'StreetSpot — Live map for street vendors & gems',
+    title: 'StreetSpot | Local Vendors, Businesses & Hidden Gems',
     description:
-      'Food trucks, carts, markets, skate parks — live on the map. Pin what you find. Claim your spot.',
+      'Discover food trucks, carts, markets, skate parks, local businesses, and community events. Pin what you find and claim eligible spots.',
   },
   robots: {
     index: true,

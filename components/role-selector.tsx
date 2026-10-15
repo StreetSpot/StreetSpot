@@ -26,18 +26,17 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
             </div>
           </div>
           <h1 className="mb-3 text-balance text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Find street vendors. Pin gems. Go live.
+            Discover local spots. Pin gems. Build the map.
           </h1>
           <p className="mx-auto max-w-md text-pretty text-base leading-relaxed text-muted-foreground">
-            Live map for food trucks, carts, markets, skate spots, and more.
-            Vendors go live in one tap. Anyone can discover new gems.
+            Explore local vendors, businesses, markets, skate spots, and community events. Pin new gems, save places, and claim eligible listings.
           </p>
         </div>
 
         <div className="mb-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <Zap className="h-4 w-4 text-primary" />
-            <span>Real-time GPS</span>
+            <span>GPS when you choose</span>
           </div>
           <div className="flex items-center gap-2">
             <Gem className="h-4 w-4 text-primary" />
@@ -66,8 +65,8 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
                 I&apos;m a Vendor
               </h2>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Go live, claim your gem, menus, bookings, tax mileage, and
-                Premier pins.
+                Start a local preview, claim eligible spots, and explore vendor
+                tools for bookings, mileage, and Premier pins.
               </p>
             </div>
             <div className="flex items-center gap-1.5 text-sm font-medium text-primary">

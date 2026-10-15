@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 import {
   useActiveVendors,
+  useVendorLoadStatus,
   getMinutesRemaining,
   type Vendor,
 } from "@/lib/vendor-store"
@@ -156,6 +157,7 @@ function VendorListItem({
 
 export function VendorMap() {
   const activeVendors = useActiveVendors()
+  const vendorLoadStatus = useVendorLoadStatus()
   const communitySpots = useCommunitySpots()
   const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null)
   const [selectedGem, setSelectedGem] = useState<CommunitySpot | null>(null)
@@ -369,9 +371,19 @@ export function VendorMap() {
             {standardVendors.length === 0 && premiumVendors.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <MapPin className="mb-3 h-8 w-8 text-muted-foreground" />
-                <p className="text-sm font-medium text-foreground">No vendors live right now</p>
+                <p className="text-sm font-medium text-foreground">
+                  {vendorLoadStatus === "unavailable"
+                    ? "Published vendor listings couldn't be loaded"
+                    : vendorLoadStatus === "loading"
+                      ? "Loading published vendor listings…"
+                      : "No published vendor listings are available"}
+                </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Check back soon · pin gems in Discover & Tools
+                  {vendorLoadStatus === "unavailable"
+                    ? "The vendor service is temporarily unavailable. Try again shortly."
+                    : vendorLoadStatus === "loading"
+                      ? "Fetching the latest listings…"
+                      : "Pin a spot in Discover & Tools to help build the map"}
                 </p>
               </div>
             ) : (

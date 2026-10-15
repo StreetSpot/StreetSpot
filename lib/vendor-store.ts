@@ -25,6 +25,7 @@ export function getMinutesRemaining(closingTime: string): number {
 let vendors: Vendor[] = []
 let listeners: Array<() => void> = []
 let loadStarted = false
+let vendorLoadStatus: "loading" | "ready" | "unavailable" = "loading"
 
 function emitChange() {
   for (const listener of listeners) listener()
@@ -33,13 +34,24 @@ function emitChange() {
 async function loadVendors() {
   try {
     const response = await fetch("/api/vendors", { cache: "no-store" })
-    if (!response.ok) return
+    if (!response.ok) {
+      vendorLoadStatus = "unavailable"
+      emitChange()
+      return
+    }
     const payload = (await response.json()) as { vendors?: Vendor[] }
-    if (!Array.isArray(payload.vendors)) return
+    if (!Array.isArray(payload.vendors)) {
+      vendorLoadStatus = "unavailable"
+      emitChange()
+      return
+    }
     vendors = payload.vendors
+    vendorLoadStatus = "ready"
     emitChange()
   } catch {
-    // Keep the map usable when the backend is temporarily unavailable.
+    // Keep the map usable while making the unavailable backend visible in the UI.
+    vendorLoadStatus = "unavailable"
+    emitChange()
   }
 }
 
@@ -58,6 +70,9 @@ export const vendorStore = {
   },
   getSnapshot(): Vendor[] {
     return vendors
+  },
+  getLoadStatus(): "loading" | "ready" | "unavailable" {
+    return vendorLoadStatus
   },
   addVendor(vendor: Vendor) {
     vendors = [...vendors, vendor]
@@ -84,6 +99,18 @@ export function useVendors() {
     return () => window.clearInterval(interval)
   }, [])
   return snapshot
+}
+
+export function useVendorLoadStatus() {
+  const status = useSyncExternalStore(
+    vendorStore.subscribe,
+    vendorStore.getLoadStatus,
+    () => "loading" as const
+  )
+  useEffect(() => {
+    startVendorLoading()
+  }, [])
+  return status
 }
 
 export function useActiveVendors() {

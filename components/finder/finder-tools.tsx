@@ -104,7 +104,7 @@ export function FinderTools() {
 
   async function handleInvite() {
     const url = "https://streetspotapp.com"
-    const text = `StreetSpot — live street vendors, food trucks, markets & skate gems on a real-time map. Pin what you find. ${url}`
+    const text = `Discover local vendors, food trucks, markets, and skate spots with StreetSpot. Pin the places you find. ${url}`
     try {
       if (navigator.share) {
         await navigator.share({ title: "StreetSpot", text, url })
@@ -113,7 +113,8 @@ export function FinderTools() {
         setShareDone(true)
         setTimeout(() => setShareDone(false), 2000)
       }
-    } catch {
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return
       try {
         await navigator.clipboard.writeText(text)
         setShareDone(true)
@@ -133,7 +134,7 @@ export function FinderTools() {
         </p>
         <p className="mb-3 text-xs text-muted-foreground">
           Pin food trucks, markets, skate spots, and events you find. Share the
-          app so more vendors go live near you.
+          app so more local places can be discovered and claimed.
         </p>
         <button
           onClick={handleInvite}

@@ -100,7 +100,7 @@ export function VendorDashboard({
     setIsLocating(true)
     setLocationError(null)
     if (!navigator.geolocation) {
-      setLocationError("Location is unavailable. Allow browser location access to go live.")
+      setLocationError("Location is unavailable. Allow browser location access to start a preview.")
       setIsLocating(false)
       return
     }
@@ -148,7 +148,7 @@ export function VendorDashboard({
       if (typeof window !== "undefined") {
         sessionStorage.setItem("streetspot_vendor_id", vendorId)
       }
-      setToast("You are now live on the map!")
+      setToast("Local preview is active in this browser only.")
   }
 
   function handleGoLive() {
@@ -170,8 +170,8 @@ export function VendorDashboard({
   async function handleShareLive() {
     const url = "https://streetspotapp.com"
     const text = isLive
-      ? `I'm live on StreetSpot right now — ${businessName}. Find me on the map: ${url}`
-      : `Check out StreetSpot — live street vendors on the map: ${url}`
+      ? `I'm testing StreetSpot's vendor preview for ${businessName}. The preview is only in my browser and is not publicly published yet. Explore StreetSpot: ${url}`
+      : `Check out StreetSpot to discover local vendors, businesses, and community spots: ${url}`
     try {
       if (navigator.share) {
         await navigator.share({ title: "StreetSpot", text, url })
@@ -180,7 +180,8 @@ export function VendorDashboard({
         setShareCopied(true)
         setTimeout(() => setShareCopied(false), 2000)
       }
-    } catch {
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return
       try {
         await navigator.clipboard.writeText(text)
         setShareCopied(true)
@@ -209,12 +210,12 @@ export function VendorDashboard({
         />
         <div className="flex-1">
           <p className="text-sm font-medium text-foreground">
-            {isLive ? "You are live on the map" : "You are currently offline"}
+            {isLive ? "Local preview is active in this browser" : "You are currently offline"}
           </p>
           <p className="text-xs text-muted-foreground">
             {isLive
-              ? `Visible to Finders until ${closingTime}${isPremium ? " · Premier placement active" : ""}`
-              : "Go live to appear on the Finder map"}
+              ? `Browser-only preview until ${closingTime}; not published to other users${isPremium ? " · Premier placement is not active in this preview" : ""}`
+              : "Start a browser-only preview. Public vendor publishing is not connected yet."}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -348,12 +349,12 @@ export function VendorDashboard({
         {isLive ? (
           <>
             <PowerOff className="h-4 w-4" />
-            <span>Go Offline</span>
+            <span>End Preview</span>
           </>
         ) : (
           <>
             <Power className="h-4 w-4" />
-            <span>{isLocating ? "Getting location…" : "Go Live"}</span>
+            <span>{isLocating ? "Getting location…" : "Start Preview"}</span>
           </>
         )}
       </button>

@@ -41,7 +41,7 @@ export function PremiumUpgradeModal({
 
         <div className="space-y-4 p-5">
           <p className="text-sm text-muted-foreground">
-            Choose a plan. All plans include a 7-day free trial. Cancel anytime.
+            Review the price and renewal terms at Stripe checkout. StreetSpot cannot verify payment or activate paid benefits automatically yet. Keep your receipt and <a className="text-primary underline" href="mailto:support@streetspotapp.com?subject=StreetSpot%20payment%20receipt">contact support</a> after checkout.
           </p>
 
           {PREMIER_TIERS.map((tier) => {
@@ -66,9 +66,6 @@ export function PremiumUpgradeModal({
                       <h3 className="text-sm font-semibold text-foreground">
                         {tier.name}
                       </h3>
-                      <p className="text-xs text-muted-foreground">
-                        {tier.trial}
-                      </p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -105,7 +102,7 @@ export function PremiumUpgradeModal({
                     className={`flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r ${tier.color} text-sm font-semibold text-white shadow transition hover:brightness-110`}
                   >
                     <Zap className="h-4 w-4" />
-                    Start 7-Day Free Trial
+                    Continue to Stripe
                     <ExternalLink className="h-3.5 w-3.5 opacity-70" />
                   </a>
                 )}

@@ -147,15 +147,15 @@ export default function PrivacyPolicyPage() {
                 <div className="space-y-1.5">
                   <DataRow
                     label="GPS coordinates"
-                    value="Collected when you explicitly tap 'Go Live' to pin your location on the map."
+                    value="Collected only after you choose to start a browser-only vendor preview; this dashboard does not publish those coordinates to other users."
                   />
                   <DataRow
                     label="Precision"
-                    value="We use device-native geolocation APIs. Coordinates are accurate to approximately 10 meters."
+                    value="We use the browser's device-native geolocation API. Accuracy varies by device, permission settings, signal quality, and environment; the browser supplies an accuracy estimate."
                   />
                   <DataRow
                     label="Duration"
-                    value="Your pinned location is stored in-session only. When your closing time is reached or you go offline, your pin is automatically removed."
+                    value="The current dashboard preview exists in browser memory and ends when the page is reloaded or the preview is stopped. It is not a server-published vendor listing."
                   />
                   <DataRow
                     label="Background tracking"
@@ -174,7 +174,7 @@ export default function PrivacyPolicyPage() {
                   />
                   <DataRow
                     label="No storage"
-                    value="The app does not send the locate result to its own server. If you choose to pin a spot or go live, its coordinates are kept in the browser's current app state."
+                    value="The locate result is used in your browser and is not sent to StreetSpot's server. Other features may save their own data in browser storage; these records are not synced to a verified StreetSpot account."
                   />
                 </div>
               </div>
@@ -187,36 +187,32 @@ export default function PrivacyPolicyPage() {
               title="Vendor Mapping & Public Profiles"
             >
               <p>
-                When a Founder goes live, the following information is displayed
-                publicly on the StreetSpot map and is visible to all Finders:
+                The current dashboard&apos;s Start Preview action does not publish a listing to other users. The public map displays vendor records returned by the configured backend. For those records, the following information may be public:
               </p>
               <div className="space-y-1.5">
                 <DataRow
                   label="Business name"
-                  value="The vendor name you provide during login."
+                  value="The business name stored on the backend vendor record."
                 />
                 <DataRow
                   label="Description"
-                  value="Your short vendor description (up to 120 characters)."
+                  value="The description stored on the backend vendor record."
                 />
                 <DataRow
                   label="Pinned GPS location"
-                  value="Displayed as a map marker to help customers find you."
+                  value="The coordinates stored on the backend vendor record, displayed as a map marker."
                 />
                 <DataRow
                   label="Closing time"
-                  value="Shown alongside a countdown timer so customers know your availability."
+                  value="The backend record’s closing time, shown with a countdown timer."
                 />
                 <DataRow
                   label="Gold status"
-                  value="If you are a Gold subscriber, your pin receives a distinctive gold marker and appears in the Featured Vendors section."
+                  value="Gold placement is not activated by this website's checkout flow. The public map shows Gold status only when it is present on a backend vendor record."
                 />
               </div>
               <p>
-                All vendor map data is ephemeral. When your session ends or
-                your closing time passes, your pin and associated information
-                are permanently removed from the map. We do not maintain a
-                historical record of vendor locations.
+                Browser-only preview data is held in memory and is cleared when the page is reloaded or the preview is stopped. Public vendor records returned by the backend are separate and may persist according to backend configuration; the browser-only closing timer does not delete those server records.
               </p>
             </PolicySection>
 
@@ -247,21 +243,21 @@ export default function PrivacyPolicyPage() {
                       <td className="px-4 py-2.5">Business name</td>
                       <td className="px-4 py-2.5">Map display</td>
                       <td className="px-4 py-2.5 font-mono text-xs">
-                        Session only
+                        Browser preview only
                       </td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2.5">GPS coordinates</td>
                       <td className="px-4 py-2.5">Pin placement</td>
                       <td className="px-4 py-2.5 font-mono text-xs">
-                        Until closing time
+                        Browser preview only
                       </td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2.5">Closing time</td>
                       <td className="px-4 py-2.5">Auto-removal</td>
                       <td className="px-4 py-2.5 font-mono text-xs">
-                        Session only
+                        Browser preview only
                       </td>
                     </tr>
                     <tr>
@@ -360,15 +356,15 @@ export default function PrivacyPolicyPage() {
                 />
                 <DataRow
                   label="Go offline"
-                  value="Toggle your live status off at any time. Your pin and all associated data are immediately removed from the map."
+                  value="Toggle your live status off at any time. Your browser-only preview pin is removed from this browser's map state. This does not delete any separate server-side vendor record."
                 />
                 <DataRow
                   label="Data deletion"
-                  value="Use browser settings to clear locally stored feature data. Account deletion requests can be sent to support; self-service deletion is not available because no account backend is configured."
+                  value="Use the Delete Account page to clear StreetSpot-prefixed local/session data in this browser. This does not delete server-side data; account deletion requests can be sent to support because no account backend is configured."
                 />
                 <DataRow
                   label="Cookie usage"
-                  value="StreetSpot uses sessionStorage for temporary state management only (vendor ID, business name). No tracking cookies are used."
+                  value="StreetSpot uses sessionStorage for a temporary vendor ID. The business name is held in in-memory interface state rather than saved to sessionStorage. No tracking cookies are used."
                 />
               </div>
             </PolicySection>
@@ -398,12 +394,28 @@ export default function PrivacyPolicyPage() {
                 you can reach us through:
               </p>
               <div className="space-y-1.5">
-                <DataRow
-                  label="Support"
-                  value="https://streetspotapp.com/support"
-                />
-                <DataRow label="Support page" value="https://streetspotapp.com/support" />
+                <div className="flex items-baseline gap-2">
+                  <span className="inline-block h-1 w-1 shrink-0 translate-y-[-2px] rounded-full bg-primary" />
+                  <span>
+                    <span className="font-medium text-foreground">Support page:</span>{" "}
+                    <Link
+                      href="/support"
+                      className="text-primary underline decoration-primary/30 underline-offset-2 hover:text-primary/80"
+                    >
+                      https://streetspotapp.com/support
+                    </Link>
+                  </span>
+                </div>
                 <DataRow label="Email" value={SUPPORT_EMAIL} />
+                <div className="flex items-baseline gap-2">
+                  <span className="inline-block h-1 w-1 shrink-0 translate-y-[-2px] rounded-full bg-primary" />
+                  <span>
+                    <span className="font-medium text-foreground">Data deletion:</span>{" "}
+                    <Link href="/delete-account" className="text-primary underline decoration-primary/30 underline-offset-2 hover:text-primary/80">
+                      Clear local data or request deletion
+                    </Link>
+                  </span>
+                </div>
               </div>
               <a
                 href={`mailto:${SUPPORT_EMAIL}?subject=StreetSpot%20Privacy%20Inquiry`}
