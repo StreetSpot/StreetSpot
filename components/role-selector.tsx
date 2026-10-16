@@ -39,8 +39,8 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
               <span className="hustle-stamp"><Zap className="h-3.5 w-3.5" /> Real-time local discovery</span>
             </div>
             <h1 className="hustle-title mx-auto mb-5 max-w-3xl text-5xl text-foreground sm:text-6xl md:text-7xl lg:mx-0 lg:text-[5.2rem]">
-              <span className="block">$treet<span className="text-[#B6FF38]">$</span>pot</span>
-              <span className="hustle-outline mt-2 block text-4xl sm:text-5xl md:text-6xl lg:text-[4.2rem]">Bu!lt 4 Da Hu$tle</span>
+              <span className="hustle-graffiti block"><span className="text-[#B6FF38]">$</span>treet<span className="text-[#FF3CAC]">$</span><span className="text-[#00E5FF]">pot</span></span>
+              <span className="hustle-neon-rainbow mt-2 block text-4xl sm:text-5xl md:text-6xl lg:text-[4.2rem]">Bu!lt 4 Da Hu$tle</span>
             </h1>
             <p className="mb-3 text-base font-black uppercase tracking-[.11em] text-[#B6FF38] sm:text-lg">
               BU!LT 4 DA HU$TLE. BU!LT 4 DA $TREET$.
@@ -105,9 +105,9 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
                   </g>
                   <g>
                     <circle cx="105" cy="72" r="17" fill="#B6FF38" opacity=".13" /><circle cx="105" cy="72" r="7" fill="#B6FF38" />
-                    <circle cx="230" cy="95" r="20" fill="#D8A5FF" opacity=".16" /><circle cx="230" cy="95" r="8" fill="#D8A5FF" />
-                    <circle cx="135" cy="165" r="18" fill="#D6A34D" opacity=".14" /><circle cx="135" cy="165" r="7" fill="#D6A34D" />
-                    <circle cx="272" cy="151" r="15" fill="#B6FF38" opacity=".13" /><circle cx="272" cy="151" r="6" fill="#B6FF38" />
+                    <circle cx="230" cy="95" r="20" fill="#FF3CAC" opacity=".16" /><circle cx="230" cy="95" r="8" fill="#FF3CAC" />
+                    <circle cx="135" cy="165" r="18" fill="#FFE600" opacity=".14" /><circle cx="135" cy="165" r="7" fill="#FFE600" />
+                    <circle cx="272" cy="151" r="15" fill="#00E5FF" opacity=".13" /><circle cx="272" cy="151" r="6" fill="#00E5FF" />
                   </g>
                   <g fontFamily="monospace" fontSize="9" fontWeight="bold" letterSpacing="1.5">
                     <text x="120" y="60" fill="#B6FF38">FOOD TRUCK</text>
