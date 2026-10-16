@@ -53,14 +53,14 @@ function SuccessToast({
       className="fixed left-4 right-4 top-20 z-[9999] mx-auto max-w-sm"
       style={{ animation: "toast-enter .35s ease-out" }}
     >
-      <div className="flex items-center gap-3 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.08] px-4 py-3 shadow-xl shadow-black/30 backdrop-blur-md">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-500/20">
-          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+      <div className="flex items-center gap-3 rounded-xl border border-[#B6FF38]/25 bg-[#B6FF38]/[0.08] px-4 py-3 shadow-xl shadow-black/30 backdrop-blur-md">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#B6FF38]/20">
+          <CheckCircle2 className="h-4 w-4 text-[#B6FF38]" />
         </div>
-        <p className="flex-1 text-sm font-medium text-emerald-300">{message}</p>
+        <p className="flex-1 text-sm font-medium text-[#B6FF38]">{message}</p>
         <button
           onClick={onDismiss}
-          className="shrink-0 rounded-md p-1 text-emerald-400/60 transition-colors hover:text-emerald-300"
+          className="shrink-0 rounded-md p-1 text-[#B6FF38]/60 transition-colors hover:text-[#B6FF38]"
           aria-label="Dismiss"
         >
           <X className="h-4 w-4" />

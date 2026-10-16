@@ -61,21 +61,21 @@ function createVendorIcon(vendor: Vendor) {
   const isPremium = vendor.isPremium
   const countdownLabel = formatCountdownShort(vendor.closingTime)
   const size = isPremium ? 42 : 36
-  const pinColor = closing ? "#f97316" : "#38bdf8"
-  const countdownColor = closing ? "#f97316" : "#38bdf8"
-  const countdownBg = closing ? "rgba(249,115,22,0.18)" : "rgba(56,189,248,0.14)"
-  const countdownBorder = closing ? "rgba(249,115,22,0.4)" : "rgba(56,189,248,0.3)"
+  const pinColor = closing ? "#D6A34D" : "#B6FF38"
+  const countdownColor = closing ? "#D6A34D" : "#B6FF38"
+  const countdownBg = closing ? "rgba(214,163,77,0.18)" : "rgba(182,255,56,0.12)"
+  const countdownBorder = closing ? "rgba(214,163,77,0.4)" : "rgba(182,255,56,0.3)"
   let pinAnimation = ""
   if (isPremium) pinAnimation = "animation: pin-pulse-gold 2s ease-in-out infinite;"
   else if (closing) pinAnimation = "animation: pin-pulse-orange 1.8s ease-in-out infinite;"
   const countdownAnim =
     closing && !isPremium ? "animation: countdown-urgent 1.2s ease-in-out infinite;" : ""
   const premiumBadge = isPremium
-    ? `<div style="position:absolute;top:-7px;right:-7px;width:18px;height:18px;background:linear-gradient(135deg,#fbbf24,#f59e0b);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #0d1117;z-index:2;"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="#0d1117" stroke="none"><path d="M2 4l3 12h14l3-12-5 4-5-6-5 6z"/><path d="M5 16v4h14v-4"/></svg></div>`
+    ? `<div style="position:absolute;top:-7px;right:-7px;width:18px;height:18px;background:linear-gradient(135deg,#D6A34D,#b98531);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #0d1117;z-index:2;"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="#0d1117" stroke="none"><path d="M2 4l3 12h14l3-12-5 4-5-6-5 6z"/><path d="M5 16v4h14v-4"/></svg></div>`
     : ""
-  const borderStyle = isPremium ? `border:3px solid #fbbf24;` : `border:3px solid #0d1117;`
+  const borderStyle = isPremium ? `border:3px solid #D6A34D;` : `border:3px solid #0d1117;`
   return L.divIcon({
-    html: `<div style="position:relative;width:${size}px;height:${size}px;"><div style="width:${size}px;height:${size}px;background:${isPremium ? "linear-gradient(135deg,#fbbf24,#f59e0b)" : pinColor};${borderStyle}border-radius:50%;display:flex;align-items:center;justify-content:center;${pinAnimation}"><svg xmlns="http://www.w3.org/2000/svg" width="${isPremium ? 17 : 15}" height="${isPremium ? 17 : 15}" viewBox="0 0 24 24" fill="none" stroke="#0d1117" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>${premiumBadge}<div style="position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);background:${countdownBg};border:1px solid ${countdownBorder};border-radius:4px;padding:1px 6px;white-space:nowrap;font-size:10px;font-weight:700;color:${countdownColor};font-family:monospace;${countdownAnim}">${countdownLabel}</div></div>`,
+    html: `<div style="position:relative;width:${size}px;height:${size}px;"><div style="width:${size}px;height:${size}px;background:${isPremium ? "linear-gradient(135deg,#D6A34D,#b98531)" : pinColor};${borderStyle}border-radius:50%;display:flex;align-items:center;justify-content:center;${pinAnimation}"><svg xmlns="http://www.w3.org/2000/svg" width="${isPremium ? 17 : 15}" height="${isPremium ? 17 : 15}" viewBox="0 0 24 24" fill="none" stroke="#0d1117" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>${premiumBadge}<div style="position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);background:${countdownBg};border:1px solid ${countdownBorder};border-radius:4px;padding:1px 6px;white-space:nowrap;font-size:10px;font-weight:700;color:${countdownColor};font-family:monospace;${countdownAnim}">${countdownLabel}</div></div>`,
     className: "",
     iconSize: [size, size + 22],
     iconAnchor: [size / 2, size / 2],
@@ -85,7 +85,7 @@ function createVendorIcon(vendor: Vendor) {
 
 function createGemIcon(spot: CommunitySpot) {
   const isSkate = spot.type === "skate_park" || spot.type === "skate_spot"
-  const color = isSkate ? "#a78bfa" : spot.claimed ? "#008D7C" : "#CFB15D"
+  const color = isSkate ? "#D8A5FF" : spot.claimed ? "#B6FF38" : "#D6A34D"
   const size = 28
   return L.divIcon({
     html: `<div style="width:${size}px;height:${size}px;background:${color};border:2px solid #0d1117;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.4);"><span style="font-size:11px;font-weight:800;color:#0d1117;">◆</span></div>`,
@@ -234,10 +234,10 @@ export function VendorMap() {
     ordered.forEach((vendor) => {
       const icon = createVendorIcon(vendor)
       const closing = isClosingSoon(vendor.closingTime)
-      const countdownColor = closing ? "#f97316" : "#38bdf8"
-      const countdownBg = closing ? "rgba(249,115,22,0.1)" : "rgba(56,189,248,0.08)"
+      const countdownColor = closing ? "#D6A34D" : "#B6FF38"
+      const countdownBg = closing ? "rgba(214,163,77,0.1)" : "rgba(182,255,56,0.08)"
       const premiumLabel = vendor.isPremium
-        ? `<div style="display:inline-flex;align-items:center;gap:4px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;color:#fbbf24;margin-bottom:6px;">Gold Vendor</div>`
+        ? `<div style="display:inline-flex;align-items:center;gap:4px;background:rgba(214,163,77,0.12);border:1px solid rgba(214,163,77,0.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;color:#D6A34D;margin-bottom:6px;">Gold Vendor</div>`
         : ""
       const marker = L.marker([vendor.lat, vendor.lng], {
         icon,
@@ -245,7 +245,7 @@ export function VendorMap() {
       })
         .addTo(mapRef.current!)
         .bindPopup(
-          `<div style="background:#1a1b26;color:#e5e5e5;padding:14px 16px;border-radius:10px;min-width:210px;font-family:system-ui,sans-serif;border:1px solid ${vendor.isPremium ? "rgba(251,191,36,0.3)" : "rgba(255,255,255,0.08)"};">${premiumLabel}<p style="font-weight:700;font-size:14px;margin:0 0 4px;color:#fff;">${escapeHtml(vendor.name)}</p><p style="font-size:12px;margin:0 0 10px;color:#888;">${escapeHtml(vendor.description)}</p><div style="display:flex;justify-content:space-between;background:${countdownBg};border-radius:6px;padding:6px 10px;"><span style="font-size:11px;color:#888;">Closes ${escapeHtml(vendor.closingTime)}</span><span style="font-size:11px;font-weight:700;color:${countdownColor};">${escapeHtml(formatCountdown(vendor.closingTime))}</span></div></div>`,
+          `<div style="background:#19191f;color:#f4f3f7;padding:14px 16px;border-radius:10px;min-width:210px;font-family:system-ui,sans-serif;border:1px solid ${vendor.isPremium ? "rgba(214,163,77,0.3)" : "rgba(216,165,255,0.22)"};">${premiumLabel}<p style="font-weight:700;font-size:14px;margin:0 0 4px;color:#fff;">${escapeHtml(vendor.name)}</p><p style="font-size:12px;margin:0 0 10px;color:#b2afbb;">${escapeHtml(vendor.description)}</p><div style="display:flex;justify-content:space-between;background:${countdownBg};border-radius:6px;padding:6px 10px;"><span style="font-size:11px;color:#b2afbb;">Closes ${escapeHtml(vendor.closingTime)}</span><span style="font-size:11px;font-weight:700;color:${countdownColor};">${escapeHtml(formatCountdown(vendor.closingTime))}</span></div></div>`,
           { className: "streetspot-popup", closeButton: false }
         )
       marker.on("click", () => {
@@ -277,7 +277,7 @@ export function VendorMap() {
         })
           .addTo(mapRef.current!)
           .bindPopup(
-            `<div style="background:#1a1b26;color:#e5e5e5;padding:12px 14px;border-radius:10px;min-width:180px;font-family:system-ui,sans-serif;border:1px solid rgba(255,255,255,0.08);"><p style="font-weight:700;font-size:13px;margin:0 0 4px;color:#fff;">${escapeHtml(spot.name)}</p><p style="font-size:11px;margin:0 0 6px;color:#008D7C;">${escapeHtml(label)}</p><p style="font-size:11px;margin:0;color:#888;">${escapeHtml(status)}</p>${spot.description ? `<p style="font-size:11px;margin:8px 0 0;color:#aaa;">${escapeHtml(spot.description)}</p>` : ""}</div>`,
+            `<div style="background:#19191f;color:#f4f3f7;padding:12px 14px;border-radius:10px;min-width:180px;font-family:system-ui,sans-serif;border:1px solid rgba(216,165,255,0.22);"><p style="font-weight:700;font-size:13px;margin:0 0 4px;color:#fff;">${escapeHtml(spot.name)}</p><p style="font-size:11px;margin:0 0 6px;color:#B6FF38;">${escapeHtml(label)}</p><p style="font-size:11px;margin:0;color:#b2afbb;">${escapeHtml(status)}</p>${spot.description ? `<p style="font-size:11px;margin:8px 0 0;color:#b2afbb;">${escapeHtml(spot.description)}</p>` : ""}</div>`,
             { className: "streetspot-popup", closeButton: false }
           )
         marker.on("click", () => {
