@@ -81,7 +81,7 @@ export function ConsentMessagePanel({
 
       {existing?.consentGiven ? (
         <div className="flex flex-col gap-2">
-          <p className="text-xs text-[#B6FF38]">Chat open</p>
+          <p className="text-xs text-[#FF3CAC]">Chat open</p>
           {msgs.length > 0 && (
             <div className="max-h-28 space-y-1 overflow-y-auto">
               {msgs.map((m) => (

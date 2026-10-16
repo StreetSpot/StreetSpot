@@ -84,7 +84,7 @@ export function PremiumUpgradeModal({
                       key={f}
                       className="flex items-center gap-2 text-xs text-foreground/80"
                     >
-                      <Check className="h-3.5 w-3.5 shrink-0 text-[#B6FF38]" />
+                      <Check className="h-3.5 w-3.5 shrink-0 text-[#FF3CAC]" />
                       {f}
                     </li>
                   ))}

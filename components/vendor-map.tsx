@@ -61,8 +61,8 @@ function createVendorIcon(vendor: Vendor) {
   const isPremium = vendor.isPremium
   const countdownLabel = formatCountdownShort(vendor.closingTime)
   const size = isPremium ? 42 : 36
-  const pinColor = closing ? "#D6A34D" : "#B6FF38"
-  const countdownColor = closing ? "#D6A34D" : "#B6FF38"
+  const pinColor = closing ? "#D6A34D" : "#FF3CAC"
+  const countdownColor = closing ? "#D6A34D" : "#FF3CAC"
   const countdownBg = closing ? "rgba(214,163,77,0.18)" : "rgba(182,255,56,0.12)"
   const countdownBorder = closing ? "rgba(214,163,77,0.4)" : "rgba(182,255,56,0.3)"
   let pinAnimation = ""
@@ -85,7 +85,7 @@ function createVendorIcon(vendor: Vendor) {
 
 function createGemIcon(spot: CommunitySpot) {
   const isSkate = spot.type === "skate_park" || spot.type === "skate_spot"
-  const color = isSkate ? "#D8A5FF" : spot.claimed ? "#B6FF38" : "#D6A34D"
+  const color = isSkate ? "#D8A5FF" : spot.claimed ? "#FF3CAC" : "#D6A34D"
   const size = 28
   return L.divIcon({
     html: `<div style="width:${size}px;height:${size}px;background:${color};border:2px solid #0d1117;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.4);"><span style="font-size:11px;font-weight:800;color:#0d1117;">◆</span></div>`,
@@ -234,7 +234,7 @@ export function VendorMap() {
     ordered.forEach((vendor) => {
       const icon = createVendorIcon(vendor)
       const closing = isClosingSoon(vendor.closingTime)
-      const countdownColor = closing ? "#D6A34D" : "#B6FF38"
+      const countdownColor = closing ? "#D6A34D" : "#FF3CAC"
       const countdownBg = closing ? "rgba(214,163,77,0.1)" : "rgba(182,255,56,0.08)"
       const premiumLabel = vendor.isPremium
         ? `<div style="display:inline-flex;align-items:center;gap:4px;background:rgba(214,163,77,0.12);border:1px solid rgba(214,163,77,0.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;color:#D6A34D;margin-bottom:6px;">Gold Vendor</div>`
@@ -277,7 +277,7 @@ export function VendorMap() {
         })
           .addTo(mapRef.current!)
           .bindPopup(
-            `<div style="background:#19191f;color:#f4f3f7;padding:12px 14px;border-radius:10px;min-width:180px;font-family:system-ui,sans-serif;border:1px solid rgba(216,165,255,0.22);"><p style="font-weight:700;font-size:13px;margin:0 0 4px;color:#fff;">${escapeHtml(spot.name)}</p><p style="font-size:11px;margin:0 0 6px;color:#B6FF38;">${escapeHtml(label)}</p><p style="font-size:11px;margin:0;color:#b2afbb;">${escapeHtml(status)}</p>${spot.description ? `<p style="font-size:11px;margin:8px 0 0;color:#b2afbb;">${escapeHtml(spot.description)}</p>` : ""}</div>`,
+            `<div style="background:#19191f;color:#f4f3f7;padding:12px 14px;border-radius:10px;min-width:180px;font-family:system-ui,sans-serif;border:1px solid rgba(216,165,255,0.22);"><p style="font-weight:700;font-size:13px;margin:0 0 4px;color:#fff;">${escapeHtml(spot.name)}</p><p style="font-size:11px;margin:0 0 6px;color:#FF3CAC;">${escapeHtml(label)}</p><p style="font-size:11px;margin:0;color:#b2afbb;">${escapeHtml(status)}</p>${spot.description ? `<p style="font-size:11px;margin:8px 0 0;color:#b2afbb;">${escapeHtml(spot.description)}</p>` : ""}</div>`,
             { className: "streetspot-popup", closeButton: false }
           )
         marker.on("click", () => {

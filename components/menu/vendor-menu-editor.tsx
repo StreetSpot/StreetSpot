@@ -132,7 +132,7 @@ export function VendorMenuEditor() {
                   title={item.available ? "Mark unavailable" : "Mark available"}
                 >
                   {item.available ? (
-                    <ToggleRight className="h-4 w-4 text-[#B6FF38]" />
+                    <ToggleRight className="h-4 w-4 text-[#FF3CAC]" />
                   ) : (
                     <ToggleLeft className="h-4 w-4" />
                   )}

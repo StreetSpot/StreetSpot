@@ -115,7 +115,7 @@ export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps)
                 key={v.id}
                 className="flex items-center gap-2 rounded-lg bg-secondary/50 px-3 py-2 opacity-70"
               >
-                <MapPin className="h-3.5 w-3.5 shrink-0 text-[#B6FF38]" />
+                <MapPin className="h-3.5 w-3.5 shrink-0 text-[#FF3CAC]" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm text-foreground">{v.name}</p>
                   <p className="truncate text-[11px] text-muted-foreground">

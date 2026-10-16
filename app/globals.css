@@ -11,7 +11,7 @@
   --card-foreground: #f4f3f7;
   --popover: #19191f;
   --popover-foreground: #f4f3f7;
-  --primary: #B6FF38;
+  --primary: #FF3CAC;
   --primary-foreground: #111116;
   --secondary: #24232b;
   --secondary-foreground: #f4f3f7;
@@ -23,8 +23,8 @@
   --destructive-foreground: #111116;
   --border: #383640;
   --input: #24232b;
-  --ring: #B6FF38;
-  --chart-1: #B6FF38;
+  --ring: #00E5FF;
+  --chart-1: #FF3CAC;
   --chart-2: #D8A5FF;
   --chart-3: #D6A34D;
   --chart-4: #00E5FF;
@@ -38,12 +38,12 @@
   --radius: 0.75rem;
   --sidebar: #15151a;
   --sidebar-foreground: #f4f3f7;
-  --sidebar-primary: #B6FF38;
+  --sidebar-primary: #FF3CAC;
   --sidebar-primary-foreground: #111116;
   --sidebar-accent: #24232b;
   --sidebar-accent-foreground: #f4f3f7;
   --sidebar-border: #383640;
-  --sidebar-ring: #B6FF38;
+  --sidebar-ring: #00E5FF;
 }
 
 .dark {
@@ -53,7 +53,7 @@
   --card-foreground: #f4f3f7;
   --popover: #19191f;
   --popover-foreground: #f4f3f7;
-  --primary: #B6FF38;
+  --primary: #FF3CAC;
   --primary-foreground: #111116;
   --secondary: #24232b;
   --secondary-foreground: #f4f3f7;
@@ -65,20 +65,20 @@
   --destructive-foreground: #111116;
   --border: #383640;
   --input: #24232b;
-  --ring: #B6FF38;
-  --chart-1: #B6FF38;
+  --ring: #00E5FF;
+  --chart-1: #FF3CAC;
   --chart-2: #D8A5FF;
   --chart-3: #D6A34D;
   --chart-4: #72e4dc;
   --chart-5: #ff8a55;
   --sidebar: #15151a;
   --sidebar-foreground: #f4f3f7;
-  --sidebar-primary: #B6FF38;
+  --sidebar-primary: #FF3CAC;
   --sidebar-primary-foreground: #111116;
   --sidebar-accent: #24232b;
   --sidebar-accent-foreground: #f4f3f7;
   --sidebar-border: #383640;
-  --sidebar-ring: #B6FF38;
+  --sidebar-ring: #00E5FF;
 }
 
 @theme inline {
@@ -125,9 +125,10 @@
 @layer base {
   * { @apply border-border outline-ring/50; }
   html { color-scheme: dark; scroll-behavior: smooth; }
-  body { @apply bg-background text-foreground; min-height: 100%; }
-  ::selection { color: #111116; background: #B6FF38; }
-  :focus-visible { outline: 3px solid #B6FF38; outline-offset: 3px; }
+  body { @apply text-foreground; min-height:100%; background-color:#08080d; background-image:radial-gradient(ellipse at 8% 10%,rgba(255,60,172,.13),transparent 30%),radial-gradient(ellipse at 92% 15%,rgba(0,229,255,.12),transparent 28%),radial-gradient(ellipse at 78% 78%,rgba(83,123,255,.10),transparent 30%),radial-gradient(ellipse at 25% 88%,rgba(255,122,24,.08),transparent 28%),linear-gradient(145deg,#08080d 0%,#111019 52%,#08080d 100%); background-attachment:fixed; }
+  #__next { min-height:100vh; }
+  ::selection { color: #111116; background: #FF3CAC; }
+  :focus-visible { outline: 3px solid #00E5FF; outline-offset: 3px; }
 }
 
 @keyframes pin-pulse-orange {
@@ -163,7 +164,7 @@
   box-shadow: 3px 3px 0 #D8A5FF;
 }
 .brand-wordmark { letter-spacing: -.045em; }
-.brand-wordmark .brand-dollar { color: #B6FF38; }
+.brand-wordmark .brand-dollar { color: #FF3CAC; }
 .brand-kicker {
   color: #D8A5FF;
   font-family: var(--font-jetbrains-mono), monospace;
@@ -223,10 +224,10 @@
   display: inline-flex;
   align-items: center;
   gap: .5rem;
-  border: 1px solid rgba(182,255,56,.45);
+  border: 1px solid rgba(255,60,172,.55);
   border-radius: 999px;
   padding: .48rem .8rem;
-  background: rgba(182,255,56,.07);
+  background: rgba(255,60,172,.09);
   color: #B6FF38;
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: .7rem;
@@ -252,7 +253,7 @@
   box-shadow: 0 16px 42px rgba(0,0,0,.18);
 }
 .hustle-card:hover {
-  border-color: rgba(182,255,56,.65);
+  border-color: rgba(0,229,255,.72);
   transform: translateY(-2px);
 }
 .hustle-card, .hustle-card * { transition-property: border-color, background-color, color, transform, box-shadow; transition-duration: 180ms; }
@@ -272,3 +273,9 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* Global StreetSpot night-city atmosphere: restrained neon, black asphalt, urban glass. */
+html, body { background-color:#08080d; }
+body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.14; background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),repeating-linear-gradient(90deg,transparent 0 7%,rgba(0,229,255,.12) 7.1% 7.25%,transparent 7.4% 13%,rgba(255,60,172,.10) 13.1% 13.25%,transparent 13.4% 19%); background-size:38px 38px,38px 38px,100% 100%; mask-image:linear-gradient(to bottom,black,transparent 92%); }
+.hustle-neon-rainbow { background-image:linear-gradient(100deg,#FF3CAC 0%,#D8A5FF 22%,#537BFF 42%,#00E5FF 61%,#FFE600 80%,#FF7A18 100%); }

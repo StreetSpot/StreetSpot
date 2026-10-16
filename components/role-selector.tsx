@@ -39,10 +39,10 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
               <span className="hustle-stamp"><Zap className="h-3.5 w-3.5" /> Real-time local discovery</span>
             </div>
             <h1 className="hustle-title mx-auto mb-5 max-w-3xl text-5xl text-foreground sm:text-6xl md:text-7xl lg:mx-0 lg:text-[5.2rem]">
-              <span className="hustle-graffiti block"><span className="text-[#B6FF38]">$</span>treet<span className="text-[#FF3CAC]">$</span><span className="text-[#00E5FF]">pot</span></span>
+              <span className="hustle-graffiti block"><span className="text-[#FF3CAC]">$</span>treet<span className="text-[#FF3CAC]">$</span><span className="text-[#00E5FF]">pot</span></span>
               <span className="hustle-neon-rainbow mt-2 block text-4xl sm:text-5xl md:text-6xl lg:text-[4.2rem]">Bu!lt 4 Da Hu$tle</span>
             </h1>
-            <p className="mb-3 text-base font-black uppercase tracking-[.11em] text-[#B6FF38] sm:text-lg">
+            <p className="mb-3 text-base font-black uppercase tracking-[.11em] text-[#FF3CAC] sm:text-lg">
               BU!LT 4 DA HU$TLE. BU!LT 4 DA $TREET$.
             </p>
             <p className="mx-auto mb-8 max-w-xl text-pretty text-base leading-relaxed text-[#c4c1cd] sm:text-lg lg:mx-0">
@@ -69,7 +69,7 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-xs font-semibold text-muted-foreground lg:justify-start">
-              <span className="inline-flex items-center gap-2"><Zap className="h-4 w-4 text-[#B6FF38]" /> GPS when you choose</span>
+              <span className="inline-flex items-center gap-2"><Zap className="h-4 w-4 text-[#FF3CAC]" /> GPS when you choose</span>
               <span className="inline-flex items-center gap-2"><Gem className="h-4 w-4 text-[#D8A5FF]" /> Pin local gems</span>
               <span className="inline-flex items-center gap-2"><Users className="h-4 w-4 text-[#D6A34D]" /> Community powered</span>
             </div>
@@ -104,19 +104,19 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
                     <path d="M-10 111 L70 104 L139 113 L195 83 L270 101 L370 83" />
                   </g>
                   <g>
-                    <circle cx="105" cy="72" r="17" fill="#B6FF38" opacity=".13" /><circle cx="105" cy="72" r="7" fill="#B6FF38" />
+                    <circle cx="105" cy="72" r="17" fill="#FF3CAC" opacity=".13" /><circle cx="105" cy="72" r="7" fill="#FF3CAC" />
                     <circle cx="230" cy="95" r="20" fill="#FF3CAC" opacity=".16" /><circle cx="230" cy="95" r="8" fill="#FF3CAC" />
                     <circle cx="135" cy="165" r="18" fill="#FFE600" opacity=".14" /><circle cx="135" cy="165" r="7" fill="#FFE600" />
                     <circle cx="272" cy="151" r="15" fill="#00E5FF" opacity=".13" /><circle cx="272" cy="151" r="6" fill="#00E5FF" />
                   </g>
                   <g fontFamily="monospace" fontSize="9" fontWeight="bold" letterSpacing="1.5">
-                    <text x="120" y="60" fill="#B6FF38">FOOD TRUCK</text>
+                    <text x="120" y="60" fill="#FF3CAC">FOOD TRUCK</text>
                     <text x="244" y="84" fill="#D8A5FF">LIVE EVENT</text>
                     <text x="148" y="184" fill="#D6A34D">HIDDEN GEM</text>
                   </g>
                 </svg>
                 <div className="relative mt-2 flex items-center justify-between gap-2 text-[10px] font-bold uppercase tracking-[.13em] text-muted-foreground">
-                  <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-[#B6FF38]" /> Vendors</span>
+                  <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-[#FF3CAC]" /> Vendors</span>
                   <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-[#D8A5FF]" /> Events</span>
                   <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-[#D6A34D]" /> Gems</span>
                 </div>

@@ -62,7 +62,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#B6FF38',
+  themeColor: '#FF3CAC',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -81,7 +81,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="$treet$pot" />
-        <meta name="theme-color" content="#B6FF38" />
+        <meta name="theme-color" content="#FF3CAC" />
       </head>
       <body className={`${_inter.variable} ${_jetbrainsMono.variable} font-sans antialiased`}>
         {children}
