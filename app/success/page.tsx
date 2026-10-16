@@ -9,10 +9,10 @@ export default function PaymentReturnPage() {
       </div>
       <h1 className="text-2xl font-bold text-foreground">Payment return</h1>
       <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">
-        StreetSpot cannot verify checkout or activate a paid plan from this page. If you completed a payment and need help, contact support with your receipt.
+        $treet$pot cannot verify checkout or activate a paid plan from this page. If you completed a payment and need help, contact support with your receipt.
       </p>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <Link href="/" className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Back to StreetSpot</Link>
+        <Link href="/" className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Back to $treet$pot</Link>
         <Link href="/support" className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground"><CircleHelp className="h-4 w-4" />Support</Link>
       </div>
     </main>

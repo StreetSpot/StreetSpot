@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
+import Link from "next/link"
 import { MapPin, Globe, Wrench } from "lucide-react"
 import { AppHeader } from "@/components/app-header"
 import { RoleSelector } from "@/components/role-selector"
@@ -128,14 +129,16 @@ function HomeContent() {
       {showFooter && (
         <footer className="border-t border-border bg-card px-4 py-6 md:px-6">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary">
-                <MapPin className="h-3 w-3 text-primary-foreground" />
-              </div>
-              <span className="text-sm font-semibold text-foreground">
-                StreetSpot
+            <Link href="/" className="flex items-center gap-2.5" aria-label="$treet$pot home">
+              <span className="brand-mark relative flex h-7 w-7 items-center justify-center rounded-lg">
+                <MapPin className="h-4 w-4" strokeWidth={2.8} />
+                <span className="absolute text-[9px] font-black">$</span>
               </span>
-            </div>
+              <span className="brand-wordmark text-sm font-black text-foreground">
+                <span className="brand-dollar">$</span>treet<span className="brand-dollar">$</span>pot
+                <span className="ml-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Bu!lt 4 Da Hu$tle</span>
+              </span>
+            </Link>
 
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] text-muted-foreground">
   <span className="flex items-center gap-1.5">
@@ -152,12 +155,11 @@ function HomeContent() {
             </div>
 
             <p className="text-center text-[10px] leading-relaxed text-muted-foreground/60">
-              {"\u00A9"} {new Date().getFullYear()} StreetSpot. All rights
-              reserved. Plan checkout and account status are handled outside this page.
+              {"\u00A9"} {new Date().getFullYear()} $treet$pot. BU!LT 4 DA HU$TLE. BU!LT 4 DA $TREET$.
             </p>
 
             <p className="rounded-md border border-border bg-secondary px-3 py-1.5 text-[10px] text-muted-foreground">
-              Tip: Add StreetSpot to your Home Screen for a native app
+              Tip: Add $treet$pot to your Home Screen for a native app
               experience.
             </p>
           </div>

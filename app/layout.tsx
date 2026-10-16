@@ -5,64 +5,56 @@ import './globals.css'
 const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' })
 
+const brandName = '$treet$pot: Bu!lt 4 Da Hu$tle'
+const brandDescription =
+  'REAL SPOTS. REAL PEOPLE. REAL HUSTLE. Discover food trucks, street vendors, pop-ups, local businesses, skate spots, community events, and hidden gems on a real-time local map.'
+
 export const metadata: Metadata = {
   title: {
-    default: 'StreetSpot | Discover Local Vendors, Businesses & Community Spots',
-    template: '%s | StreetSpot',
+    default: brandName,
+    template: '%s | $treet$pot',
   },
-  description:
-    'Discover food trucks, pop-up carts, markets, flea markets, block parties, skate parks, local businesses, and hidden gems. Pin places you find, explore local spots, and claim eligible listings.',
+  description: brandDescription,
   keywords: [
-    'StreetSpot',
+    '$treet$pot',
     'food trucks near me',
     'street vendors',
     'local discovery map',
     'pop-up carts',
     'flea market',
-    'skate park',
-    'block party',
-    'claim your spot',
+    'skate spots',
+    'community events',
+    'local businesses',
     'street food',
-    'Columbia SC',
+    'hidden gems',
   ],
-  applicationName: 'StreetSpot',
-  authors: [{ name: 'StreetSpot' }],
+  applicationName: '$treet$pot',
+  authors: [{ name: '$treet$pot' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'StreetSpot',
+    siteName: '$treet$pot: Bu!lt 4 Da Hu$tle',
     url: 'https://streetspotapp.com',
-    title: 'StreetSpot | Discover Local Vendors, Businesses & Community Spots',
-    description:
-      'Explore local vendors, food trucks, markets, skate spots, events, and businesses. Save discoveries and share the places you find.',
+    title: '$treet$pot: Bu!lt 4 Da Hu$tle',
+    description: brandDescription,
+    images: [{ url: '/brand-social.png', width: 1200, height: 630, alt: '$treet$pot: Bu!lt 4 Da Hu$tle' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'StreetSpot | Local Vendors, Businesses & Hidden Gems',
-    description:
-      'Discover food trucks, carts, markets, skate parks, local businesses, and community events. Pin what you find and claim eligible spots.',
+    title: '$treet$pot: Bu!lt 4 Da Hu$tle',
+    description: brandDescription,
+    images: ['/brand-social.png'],
   },
   robots: {
     index: true,
     follow: true,
   },
-  generator: 'v0.app',
   icons: {
     icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
+      { url: '/brand-icon-192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
     ],
-    apple: '/apple-icon.png',
+    apple: '/brand-apple-icon.png',
   },
   manifest: '/manifest.json',
   metadataBase: new URL('https://streetspotapp.com'),
@@ -70,7 +62,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0D0D0D',
+  themeColor: '#B6FF38',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -88,7 +80,8 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="StreetSpot" />
+        <meta name="apple-mobile-web-app-title" content="$treet$pot" />
+        <meta name="theme-color" content="#B6FF38" />
       </head>
       <body className={`${_inter.variable} ${_jetbrainsMono.variable} font-sans antialiased`}>
         {children}
