@@ -37,7 +37,7 @@ export function VendorBookingsList() {
                   b.status === "pending"
                     ? "bg-amber-500/15 text-amber-400"
                     : b.status === "accepted"
-                      ? "bg-[#FF3CAC]/15 text-[#FF3CAC]"
+                      ? "bg-[#f06435]/15 text-[#f06435]"
                       : b.status === "declined"
                         ? "bg-destructive/15 text-destructive"
                         : "bg-secondary text-muted-foreground"
@@ -57,7 +57,7 @@ export function VendorBookingsList() {
               <div className="mt-2 flex gap-2">
                 <button
                   onClick={() => bookingStore.updateStatus(b.id, "accepted")}
-                  className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-[#FF3CAC]/15 py-1.5 text-xs font-medium text-[#FF3CAC] transition hover:bg-[#FF3CAC]/25"
+                  className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-[#f06435]/15 py-1.5 text-xs font-medium text-[#f06435] transition hover:bg-[#f06435]/25"
                 >
                   <Check className="h-3.5 w-3.5" />
                   Accept

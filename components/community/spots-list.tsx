@@ -75,7 +75,7 @@ export function SpotsList({ filterType }: SpotsListProps) {
                 <p className="truncate text-sm font-medium text-foreground">
                   {spot.name}
                   {spot.claimed && isClaimableGemType(spot.type) && (
-                    <span className="ml-1.5 inline-flex items-center gap-0.5 text-[10px] font-semibold text-[#FF3CAC]">
+                    <span className="ml-1.5 inline-flex items-center gap-0.5 text-[10px] font-semibold text-[#f06435]">
                       <BadgeCheck className="h-3 w-3" />
                       Claimed
                     </span>

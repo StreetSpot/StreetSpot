@@ -132,7 +132,6 @@ function HomeContent() {
             <Link href="/" className="flex items-center gap-2.5" aria-label="StreetSpot home">
               <span className="brand-mark relative flex h-7 w-7 items-center justify-center rounded-lg">
                 <MapPin className="h-4 w-4" strokeWidth={2.8} />
-                <span className="absolute text-[9px] font-black">$</span>
               </span>
               <span className="brand-wordmark text-sm font-black text-foreground">
                 StreetSpot

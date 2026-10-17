@@ -36,7 +36,7 @@ export function HustleAudioToggle() {
         aria-pressed={enabled}
         aria-label={enabled ? "Stop looping brand intro audio" : "Play looping brand intro audio"}
         title={enabled ? "Stop looping brand intro audio" : "Play looping brand intro audio"}
-        className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-[#D8A5FF]/35 bg-[#D8A5FF]/5 px-2.5 text-[10px] font-bold text-[#e5c7ff] transition hover:bg-[#D8A5FF]/12 sm:px-3 sm:text-xs"
+        className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-[#8358c9]/35 bg-[#8358c9]/5 px-2.5 text-[10px] font-bold text-[#e5c7ff] transition hover:bg-[#8358c9]/12 sm:px-3 sm:text-xs"
       >
         {enabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
         <span className="hidden sm:inline">{enabled ? "Sound on · Loop" : "Play intro audio"}</span>

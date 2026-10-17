@@ -42,7 +42,7 @@ export function PremierPinPayment() {
                   Premier Pin
                 </h4>
                 {isActive ? (
-                  <span className="flex items-center gap-1 rounded-full bg-[#FF3CAC]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#FF3CAC] ring-1 ring-[#FF3CAC]/20">
+                  <span className="flex items-center gap-1 rounded-full bg-[#f06435]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#f06435] ring-1 ring-[#f06435]/20">
                     <Check className="h-2.5 w-2.5" />
                     {currentTierData?.name}
                   </span>
