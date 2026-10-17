@@ -292,3 +292,57 @@ body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:n
 .streetspot-app-shell { position: relative; isolation: isolate; background-color: #08080d; background-image: linear-gradient(rgba(8,8,13,.90),rgba(8,8,13,.94)),url('/images/streetspot-city-night.svg'); background-position: center, center; background-size: cover, cover; background-attachment: fixed; }
 .streetspot-app-shell > header, .streetspot-app-shell > main, .streetspot-app-shell > footer { position: relative; }
 @media (max-width: 640px) { .streetspot-app-shell { background-position: center, 55% center; background-attachment: scroll; } }
+
+﻿
+/* StreetSpot Market Pulse: clean neighborhood editorial design, high contrast and conversion-first. */
+:root {
+  --background: #f6f7f2; --foreground: #17231f; --card: #ffffff; --card-foreground: #17231f;
+  --popover: #ffffff; --popover-foreground: #17231f; --primary: #f06435; --primary-foreground: #ffffff;
+  --secondary: #e9ede5; --secondary-foreground: #17231f; --muted: #e9ede5; --muted-foreground: #647168;
+  --accent: #285ee8; --accent-foreground: #ffffff; --destructive: #c83f35; --destructive-foreground: #ffffff;
+  --border: #dce1d8; --input: #ffffff; --ring: #f06435; --chart-1: #f06435; --chart-2: #285ee8;
+  --chart-3: #258052; --chart-4: #8358c9; --chart-5: #e4a629; --radius: 1rem;
+  --sidebar: #ffffff; --sidebar-foreground: #17231f; --sidebar-primary: #f06435;
+  --sidebar-primary-foreground: #ffffff; --sidebar-accent: #e9ede5; --sidebar-accent-foreground: #17231f;
+  --sidebar-border: #dce1d8; --sidebar-ring: #f06435;
+}
+.dark {
+  --background: #f6f7f2; --foreground: #17231f; --card: #ffffff; --card-foreground: #17231f;
+  --popover: #ffffff; --popover-foreground: #17231f; --primary: #f06435; --primary-foreground: #ffffff;
+  --secondary: #e9ede5; --secondary-foreground: #17231f; --muted: #e9ede5; --muted-foreground: #647168;
+  --accent: #285ee8; --accent-foreground: #ffffff; --destructive: #c83f35; --destructive-foreground: #ffffff;
+  --border: #dce1d8; --input: #ffffff; --ring: #f06435; --sidebar: #ffffff; --sidebar-foreground: #17231f;
+  --sidebar-primary: #f06435; --sidebar-primary-foreground: #ffffff; --sidebar-accent: #e9ede5;
+  --sidebar-accent-foreground: #17231f; --sidebar-border: #dce1d8; --sidebar-ring: #f06435;
+}
+@layer base {
+  html { color-scheme: light; scroll-behavior: smooth; }
+  body { color: var(--foreground); background: #f6f7f2; background-image: radial-gradient(ellipse at 7% 0%, rgba(240,100,53,.07), transparent 34%), radial-gradient(ellipse at 92% 14%, rgba(40,94,232,.05), transparent 30%); background-attachment: fixed; }
+  ::selection { color: #fff; background: #f06435; }
+  :focus-visible { outline: 3px solid #285ee8; outline-offset: 3px; }
+}
+.brand-header { background: rgba(255,255,255,.94); border-color: #e0e5dd; backdrop-filter: blur(18px); box-shadow: 0 2px 12px rgba(23,35,31,.035); }
+.brand-mark { background: #f06435; color: white; box-shadow: none; }
+.brand-wordmark { letter-spacing: -.055em; }
+.brand-wordmark .brand-dollar { color: #f06435; }
+.brand-kicker { color: #258052; font-family: var(--font-jetbrains-mono), monospace; font-size: .68rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.market-landing { color: #17231f; background: #f6f7f2; }
+.market-headline-accent { color: #f06435; }
+.market-button-primary { color: #fff; background: #f06435; }
+.market-button-primary:hover { background: #db4f24; }
+.market-map-card { background: rgba(255,255,255,.96); }
+.market-map-art { background: #edf1e8; }
+.market-feature-card { box-shadow: 0 5px 18px rgba(23,35,31,.025); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.market-feature-card:hover { transform: translateY(-3px); border-color: #c6d0c5; box-shadow: 0 12px 28px rgba(23,35,31,.07); }
+.market-feature-icon { background: #e9ede5; }
+.market-tone-orange { color: #f06435; background: #fff0e8; }
+.market-tone-blue { color: #285ee8; background: #edf2ff; }
+.market-tone-green { color: #258052; background: #eaf5ed; }
+.market-tone-purple { color: #8358c9; background: #f1ebfc; }
+.leaflet-container { background: #edf1e8; color: #17231f; font-family: var(--font-inter), Inter, sans-serif; }
+.leaflet-tile-pane { filter: none; }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #fff; color: #17231f; border: 1px solid #dce1d8; }
+.leaflet-control-zoom a { background: #fff !important; color: #f06435 !important; border-color: #dce1d8 !important; }
+.leaflet-control-attribution { background: rgba(255,255,255,.88) !important; color: #647168 !important; }
+.leaflet-control-attribution a { color: #285ee8 !important; }
+.hustle-landing, .hustle-card { background: #f6f7f2; }

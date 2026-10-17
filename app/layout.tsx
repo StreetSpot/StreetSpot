@@ -5,14 +5,14 @@ import './globals.css'
 const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' })
 
-const brandName = '$treet$pot: Bu!lt 4 Da Hu$tle'
+const brandName = 'StreetSpot | Discover What’s Happening Nearby'
 const brandDescription =
-  'REAL SPOTS. REAL PEOPLE. REAL HUSTLE. Discover food trucks, street vendors, pop-ups, local businesses, skate spots, community events, and hidden gems on a real-time local map.'
+  'Discover food trucks, pop-up shops, local businesses, neighborhood events, skate spots, and hidden gems near you. Explore the live map and connect with local businesses.'
 
 export const metadata: Metadata = {
   title: {
     default: brandName,
-    template: '%s | $treet$pot',
+    template: '%s | StreetSpot',
   },
   description: brandDescription,
   keywords: [
@@ -28,16 +28,16 @@ export const metadata: Metadata = {
     'street food',
     'hidden gems',
   ],
-  applicationName: '$treet$pot',
-  authors: [{ name: '$treet$pot' }],
+  applicationName: 'StreetSpot',
+  authors: [{ name: 'StreetSpot' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: '$treet$pot: Bu!lt 4 Da Hu$tle',
+    siteName: 'StreetSpot',
     url: 'https://streetspotapp.com',
-    title: '$treet$pot: Bu!lt 4 Da Hu$tle',
+    title: 'StreetSpot | Discover What’s Happening Nearby',
     description: brandDescription,
-    images: [{ url: '/brand-social.png', width: 1200, height: 630, alt: '$treet$pot: Bu!lt 4 Da Hu$tle' }],
+    images: [{ url: '/brand-social.png', width: 1200, height: 630, alt: 'StreetSpot local discovery map' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#FF3CAC',
+  themeColor: '#f06435',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -81,7 +81,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="$treet$pot" />
-        <meta name="theme-color" content="#FF3CAC" />
+        <meta name="theme-color" content="#f06435" />
       </head>
       <body className={`${_inter.variable} ${_jetbrainsMono.variable} font-sans antialiased`}>
         {children}

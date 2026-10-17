@@ -32,14 +32,14 @@ export function AppHeader({ mode, onBack }: AppHeaderProps) {
             <ArrowLeft className="h-5 w-5" />
           </button>
         )}
-        <Link href="/" className="flex min-w-0 items-center gap-2.5 rounded-sm" aria-label="$treet$pot home">
+        <Link href="/" className="flex min-w-0 items-center gap-2.5 rounded-sm" aria-label="StreetSpot home">
           <BrandMark />
           <span className="min-w-0">
             <span className="brand-wordmark block truncate text-lg font-black leading-none text-foreground md:text-xl">
-              <span className="brand-dollar">$</span>treet<span className="brand-dollar">$</span>pot
+              StreetSpot
             </span>
             <span className="mt-1 block truncate text-[9px] font-extrabold uppercase tracking-[.14em] text-muted-foreground sm:text-[10px]">
-              Bu!lt 4 Da Hu$tle
+              LOCAL DISCOVERY • LIVE MAP
             </span>
           </span>
         </Link>

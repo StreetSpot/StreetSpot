@@ -61,21 +61,21 @@ function createVendorIcon(vendor: Vendor) {
   const isPremium = vendor.isPremium
   const countdownLabel = formatCountdownShort(vendor.closingTime)
   const size = isPremium ? 42 : 36
-  const pinColor = closing ? "#FFE600" : "#B6FF38"
-  const countdownColor = closing ? "#FFE600" : "#00E5FF"
-  const countdownBg = closing ? "rgba(255,230,0,0.18)" : "rgba(0,229,255,0.12)"
-  const countdownBorder = closing ? "rgba(255,230,0,0.4)" : "rgba(0,229,255,0.3)"
+  const pinColor = closing ? "#e4a629" : "#f06435"
+  const countdownColor = closing ? "#e4a629" : "#285ee8"
+  const countdownBg = closing ? "rgba(255,230,0,0.18)" : "rgba(40,94,232,0.12)"
+  const countdownBorder = closing ? "rgba(255,230,0,0.4)" : "rgba(40,94,232,0.3)"
   let pinAnimation = ""
   if (isPremium) pinAnimation = "animation: pin-pulse-gold 2s ease-in-out infinite;"
   else if (closing) pinAnimation = "animation: pin-pulse-orange 1.8s ease-in-out infinite;"
   const countdownAnim =
     closing && !isPremium ? "animation: countdown-urgent 1.2s ease-in-out infinite;" : ""
   const premiumBadge = isPremium
-    ? `<div style="position:absolute;top:-7px;right:-7px;width:18px;height:18px;background:linear-gradient(135deg,#D6A34D,#b98531);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #0d1117;z-index:2;"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="#0d1117" stroke="none"><path d="M2 4l3 12h14l3-12-5 4-5-6-5 6z"/><path d="M5 16v4h14v-4"/></svg></div>`
+    ? `<div style="position:absolute;top:-7px;right:-7px;width:18px;height:18px;background:linear-gradient(135deg,#e4a629,#b98531);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #17231f;z-index:2;"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="#17231f" stroke="none"><path d="M2 4l3 12h14l3-12-5 4-5-6-5 6z"/><path d="M5 16v4h14v-4"/></svg></div>`
     : ""
-  const borderStyle = isPremium ? `border:3px solid #FFE600;box-shadow:0 0 18px rgba(255,230,0,.75),0 0 34px rgba(255,60,172,.3);` : `border:3px solid #0d1117;box-shadow:0 0 15px ${pinColor}99,0 0 28px rgba(0,229,255,.2);`
+  const borderStyle = isPremium ? `border:3px solid #e4a629;box-shadow:0 0 18px rgba(255,230,0,.75),0 0 34px rgba(240,100,53,.3);` : `border:3px solid #17231f;box-shadow:0 0 15px ${pinColor}99,0 0 28px rgba(40,94,232,.2);`
   return L.divIcon({
-    html: `<div style="position:relative;width:${size}px;height:${size}px;"><div style="width:${size}px;height:${size}px;background:${isPremium ? "linear-gradient(135deg,#D6A34D,#b98531)" : pinColor};${borderStyle}border-radius:50%;display:flex;align-items:center;justify-content:center;${pinAnimation}"><svg xmlns="http://www.w3.org/2000/svg" width="${isPremium ? 17 : 15}" height="${isPremium ? 17 : 15}" viewBox="0 0 24 24" fill="none" stroke="#0d1117" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>${premiumBadge}<div style="position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);background:${countdownBg};border:1px solid ${countdownBorder};border-radius:4px;padding:1px 6px;white-space:nowrap;font-size:10px;font-weight:700;color:${countdownColor};font-family:monospace;${countdownAnim}">${countdownLabel}</div></div>`,
+    html: `<div style="position:relative;width:${size}px;height:${size}px;"><div style="width:${size}px;height:${size}px;background:${isPremium ? "linear-gradient(135deg,#e4a629,#b98531)" : pinColor};${borderStyle}border-radius:50%;display:flex;align-items:center;justify-content:center;${pinAnimation}"><svg xmlns="http://www.w3.org/2000/svg" width="${isPremium ? 17 : 15}" height="${isPremium ? 17 : 15}" viewBox="0 0 24 24" fill="none" stroke="#17231f" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>${premiumBadge}<div style="position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);background:${countdownBg};border:1px solid ${countdownBorder};border-radius:4px;padding:1px 6px;white-space:nowrap;font-size:10px;font-weight:700;color:${countdownColor};font-family:monospace;${countdownAnim}">${countdownLabel}</div></div>`,
     className: "",
     iconSize: [size, size + 22],
     iconAnchor: [size / 2, size / 2],
@@ -85,10 +85,10 @@ function createVendorIcon(vendor: Vendor) {
 
 function createGemIcon(spot: CommunitySpot) {
   const isSkate = spot.type === "skate_park" || spot.type === "skate_spot"
-  const color = isSkate ? "#00E5FF" : spot.claimed ? "#FF3CAC" : "#B6FF38"
+  const color = isSkate ? "#285ee8" : spot.claimed ? "#f06435" : "#f06435"
   const size = 28
   return L.divIcon({
-    html: `<div style="width:${size}px;height:${size}px;background:${color};border:2px solid #0d1117;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.4);"><span style="font-size:11px;font-weight:800;color:#0d1117;">◆</span></div>`,
+    html: `<div style="width:${size}px;height:${size}px;background:${color};border:2px solid #17231f;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.4);"><span style="font-size:11px;font-weight:800;color:#17231f;">◆</span></div>`,
     className: "",
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
@@ -203,7 +203,7 @@ export function VendorMap() {
       zoomControl: false,
       attributionControl: false,
     })
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map)
@@ -234,10 +234,10 @@ export function VendorMap() {
     ordered.forEach((vendor) => {
       const icon = createVendorIcon(vendor)
       const closing = isClosingSoon(vendor.closingTime)
-      const countdownColor = closing ? "#FFE600" : "#00E5FF"
-      const countdownBg = closing ? "rgba(255,230,0,0.1)" : "rgba(0,229,255,0.08)"
+      const countdownColor = closing ? "#e4a629" : "#285ee8"
+      const countdownBg = closing ? "rgba(255,230,0,0.1)" : "rgba(40,94,232,0.08)"
       const premiumLabel = vendor.isPremium
-        ? `<div style="display:inline-flex;align-items:center;gap:4px;background:rgba(214,163,77,0.12);border:1px solid rgba(214,163,77,0.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;color:#D6A34D;margin-bottom:6px;">Gold Vendor</div>`
+        ? `<div style="display:inline-flex;align-items:center;gap:4px;background:rgba(214,163,77,0.12);border:1px solid rgba(214,163,77,0.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;color:#e4a629;margin-bottom:6px;">Gold Vendor</div>`
         : ""
       const marker = L.marker([vendor.lat, vendor.lng], {
         icon,
@@ -245,7 +245,7 @@ export function VendorMap() {
       })
         .addTo(mapRef.current!)
         .bindPopup(
-          `<div style="background:#19191f;color:#f4f3f7;padding:14px 16px;border-radius:10px;min-width:210px;font-family:system-ui,sans-serif;border:1px solid ${vendor.isPremium ? "rgba(214,163,77,0.3)" : "rgba(216,165,255,0.22)"};">${premiumLabel}<p style="font-weight:700;font-size:14px;margin:0 0 4px;color:#fff;">${escapeHtml(vendor.name)}</p><p style="font-size:12px;margin:0 0 10px;color:#b2afbb;">${escapeHtml(vendor.description)}</p><div style="display:flex;justify-content:space-between;background:${countdownBg};border-radius:6px;padding:6px 10px;"><span style="font-size:11px;color:#b2afbb;">Closes ${escapeHtml(vendor.closingTime)}</span><span style="font-size:11px;font-weight:700;color:${countdownColor};">${escapeHtml(formatCountdown(vendor.closingTime))}</span></div></div>`,
+          `<div style="background:#ffffff;color:#17231f;padding:14px 16px;border-radius:10px;min-width:210px;font-family:system-ui,sans-serif;border:1px solid ${vendor.isPremium ? "rgba(214,163,77,0.3)" : "rgba(131,88,201,0.22)"};">${premiumLabel}<p style="font-weight:700;font-size:14px;margin:0 0 4px;color:#fff;">${escapeHtml(vendor.name)}</p><p style="font-size:12px;margin:0 0 10px;color:#647168;">${escapeHtml(vendor.description)}</p><div style="display:flex;justify-content:space-between;background:${countdownBg};border-radius:6px;padding:6px 10px;"><span style="font-size:11px;color:#647168;">Closes ${escapeHtml(vendor.closingTime)}</span><span style="font-size:11px;font-weight:700;color:${countdownColor};">${escapeHtml(formatCountdown(vendor.closingTime))}</span></div></div>`,
           { className: "streetspot-popup", closeButton: false }
         )
       marker.on("click", () => {
@@ -277,7 +277,7 @@ export function VendorMap() {
         })
           .addTo(mapRef.current!)
           .bindPopup(
-            `<div style="background:#19191f;color:#f4f3f7;padding:12px 14px;border-radius:10px;min-width:180px;font-family:system-ui,sans-serif;border:1px solid rgba(216,165,255,0.22);"><p style="font-weight:700;font-size:13px;margin:0 0 4px;color:#fff;">${escapeHtml(spot.name)}</p><p style="font-size:11px;margin:0 0 6px;color:#FF3CAC;">${escapeHtml(label)}</p><p style="font-size:11px;margin:0;color:#b2afbb;">${escapeHtml(status)}</p>${spot.description ? `<p style="font-size:11px;margin:8px 0 0;color:#b2afbb;">${escapeHtml(spot.description)}</p>` : ""}</div>`,
+            `<div style="background:#ffffff;color:#17231f;padding:12px 14px;border-radius:10px;min-width:180px;font-family:system-ui,sans-serif;border:1px solid rgba(131,88,201,0.22);"><p style="font-weight:700;font-size:13px;margin:0 0 4px;color:#fff;">${escapeHtml(spot.name)}</p><p style="font-size:11px;margin:0 0 6px;color:#f06435;">${escapeHtml(label)}</p><p style="font-size:11px;margin:0;color:#647168;">${escapeHtml(status)}</p>${spot.description ? `<p style="font-size:11px;margin:8px 0 0;color:#647168;">${escapeHtml(spot.description)}</p>` : ""}</div>`,
             { className: "streetspot-popup", closeButton: false }
           )
         marker.on("click", () => {

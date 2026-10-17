@@ -129,14 +129,14 @@ function HomeContent() {
       {showFooter && (
         <footer className="border-t border-border bg-card px-4 py-6 md:px-6">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-4">
-            <Link href="/" className="flex items-center gap-2.5" aria-label="$treet$pot home">
+            <Link href="/" className="flex items-center gap-2.5" aria-label="StreetSpot home">
               <span className="brand-mark relative flex h-7 w-7 items-center justify-center rounded-lg">
                 <MapPin className="h-4 w-4" strokeWidth={2.8} />
                 <span className="absolute text-[9px] font-black">$</span>
               </span>
               <span className="brand-wordmark text-sm font-black text-foreground">
-                <span className="brand-dollar">$</span>treet<span className="brand-dollar">$</span>pot
-                <span className="ml-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Bu!lt 4 Da Hu$tle</span>
+                StreetSpot
+                <span className="ml-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">LOCAL DISCOVERY • LIVE MAP</span>
               </span>
             </Link>
 
@@ -155,7 +155,7 @@ function HomeContent() {
             </div>
 
             <p className="text-center text-[10px] leading-relaxed text-muted-foreground/60">
-              {"\u00A9"} {new Date().getFullYear()} $treet$pot. BU!LT 4 DA HU$TLE. BU!LT 4 DA $TREET$.
+              {"\u00A9"} {new Date().getFullYear()} $treet$pot. FIND LOCAL. SHOP SMALL. SHOW UP.
             </p>
 
             <p className="rounded-md border border-border bg-secondary px-3 py-1.5 text-[10px] text-muted-foreground">
