@@ -84,7 +84,7 @@ function HomeContent() {
   const showFooter = view !== "finder"
 
   return (
-    <div className="flex min-h-dvh flex-col bg-background">
+    <div className="streetspot-app-shell flex min-h-dvh flex-col bg-background">
       <AppHeader mode={headerMode} onBack={handleBack} />
       <main className="flex-1">
         {view === "landing" && <RoleSelector onSelect={handleRoleSelect} />}

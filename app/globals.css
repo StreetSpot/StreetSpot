@@ -286,3 +286,9 @@ body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:n
 .hustle-landing::after { opacity:.14; }
 @media(max-width:640px){.hustle-landing{background-position:center,55% top,center;background-size:cover,auto 100%,cover;}}
 
+
+
+/* Carry the original StreetSpot city-night, graffiti and dollar art through app views. */
+.streetspot-app-shell { position: relative; isolation: isolate; background-color: #08080d; background-image: linear-gradient(rgba(8,8,13,.90),rgba(8,8,13,.94)),url('/images/streetspot-city-night.svg'); background-position: center, center; background-size: cover, cover; background-attachment: fixed; }
+.streetspot-app-shell > header, .streetspot-app-shell > main, .streetspot-app-shell > footer { position: relative; }
+@media (max-width: 640px) { .streetspot-app-shell { background-position: center, 55% center; background-attachment: scroll; } }
