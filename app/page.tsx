@@ -81,7 +81,7 @@ function HomeContent() {
         ? "finder"
         : "founder"
 
-  const showFooter = view !== "finder"
+  const showFooter = true
 
   return (
     <div className="streetspot-app-shell flex min-h-dvh flex-col bg-background">
@@ -145,6 +145,9 @@ function HomeContent() {
           Choose a location to discover nearby spots
         </span>
               <a href="/themes" className="transition-colors hover:text-foreground">Theme Studio</a>
+              <a href="/host/invitations" className="transition-colors hover:text-foreground">Private Invitations</a>
+              <a href="/vendor-studio" className="transition-colors hover:text-foreground">Vendor Studio</a>
+              <a href="/agents" className="transition-colors hover:text-foreground">Agent Control</a>
               <a
                 href="/support"
                 className="flex items-center gap-1.5 transition-colors hover:text-foreground"
