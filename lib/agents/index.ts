@@ -8,6 +8,7 @@ export type AgentId =
   | "console-compliance"
   | "marketing-growth"
   | "advertising"
+  | "advertising-search-analyst"
   | "media-content"
   | "store-management"
   | "support"
@@ -53,7 +54,8 @@ export const AGENTS: readonly AgentCard[] = [
   { id: "play-store", name: "Play Store Agent", status: "needs-configuration", description: "Local release-readiness and policy URL checks; no Play Console access.", capabilities: ["release-readiness", "store-metadata", "policy-links"], externalAccess: false },
   { id: "console-compliance", name: "Console / Compliance Agent", status: "needs-configuration", description: "Prepares local compliance checklists; cannot inspect Console declarations or warnings.", capabilities: ["compliance-preflight", "release-blockers"], externalAccess: false },
   { id: "marketing-growth", name: "Marketing / Growth Agent", status: "ready", description: "Drafts discovery and growth content for customers, vendors, businesses, event hosts, and communities.", capabilities: ["seo", "audience-planning", "campaign-drafts"], externalAccess: false },
-  { id: "advertising", name: "Advertising Agent", status: "disabled", description: "Campaign planning only; ad accounts, spending, and launches are not connected.", capabilities: ["audience-segments", "ad-copy-drafts", "performance-review-from-supplied-data"], externalAccess: false },
+  { id: "advertising", name: "Advertising Agent", status: "needs-configuration", description: "Campaign planning only; ad accounts, spending, and launches are not connected.", capabilities: ["audience-segments", "ad-copy-drafts", "performance-review-from-supplied-data"], externalAccess: false },
+  { id: "advertising-search-analyst", name: "Advertising Search Analyst AI Agent", status: "ready", description: "Creates local SEO and ad strategy with Vercel AI Gateway when available, plus a deterministic fallback. Live search-volume data and ad account connections are not yet configured.", capabilities: ["local-seo", "keyword-ideation", "ad-copy", "landing-page-optimization", "campaign-measurement"], externalAccess: false },
   { id: "media-content", name: "Media / Content Agent", status: "ready", description: "Prepares social, video, YouTube, and store-asset briefs without publishing.", capabilities: ["social-drafts", "video-briefs", "creative-requests"], externalAccess: false },
   { id: "store-management", name: "Store Management Agent", status: "needs-configuration", description: "Reviews local app/store assets; ratings, reviews, and release health require external access.", capabilities: ["asset-inventory", "metadata-review"], externalAccess: false },
   { id: "support", name: "Support Agent", status: "ready", description: "Matches questions to local help content and escalates to official support.", capabilities: ["help-content", "escalation"], externalAccess: false },
