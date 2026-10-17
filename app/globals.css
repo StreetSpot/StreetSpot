@@ -275,25 +275,13 @@
 }
 
 
-/* Global StreetSpot night-city atmosphere: restrained neon, black asphalt, urban glass. */
-html, body { background-color:#08080d; }
-body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.14; background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),repeating-linear-gradient(90deg,transparent 0 7%,rgba(0,229,255,.12) 7.1% 7.25%,transparent 7.4% 13%,rgba(255,60,172,.10) 13.1% 13.25%,transparent 13.4% 19%); background-size:38px 38px,38px 38px,100% 100%; mask-image:linear-gradient(to bottom,black,transparent 92%); }
-.hustle-neon-rainbow { background-image:linear-gradient(100deg,#FF3CAC 0%,#D8A5FF 22%,#537BFF 42%,#00E5FF 61%,#FFE600 80%,#FF7A18 100%); }
+/* Market Pulse cleanup: disable all legacy neon/city-night backgrounds. */
+html, body { background-color: #f6f7f2; }
+body::before { content: none !important; display: none !important; background-image: none !important; }
+.hustle-landing { background: #f6f7f2 !important; background-image: none !important; }
+.hustle-landing::before, .hustle-landing::after { content: none !important; display: none !important; background-image: none !important; }
+.streetspot-app-shell { background: #f6f7f2 !important; background-image: none !important; background-attachment: scroll !important; }
 
-/* StreetSpot original vector city-night art: neon skyline, graffiti lettering, cash, dollar-pin motif. */
-.hustle-landing { background-color:#07070d; background-image:linear-gradient(180deg,rgba(5,5,10,.20),rgba(5,5,10,.62)),url('/images/streetspot-city-night.svg'),radial-gradient(ellipse at 50% 20%,rgba(255,60,172,.16),transparent 60%); background-position:center,center top,center; background-size:cover,cover,cover; background-repeat:no-repeat; }
-.hustle-landing::before { opacity:.08; }
-.hustle-landing::after { opacity:.14; }
-@media(max-width:640px){.hustle-landing{background-position:center,55% top,center;background-size:cover,auto 100%,cover;}}
-
-
-
-/* Carry the original StreetSpot city-night, graffiti and dollar art through app views. */
-.streetspot-app-shell { position: relative; isolation: isolate; background-color: #08080d; background-image: linear-gradient(rgba(8,8,13,.90),rgba(8,8,13,.94)),url('/images/streetspot-city-night.svg'); background-position: center, center; background-size: cover, cover; background-attachment: fixed; }
-.streetspot-app-shell > header, .streetspot-app-shell > main, .streetspot-app-shell > footer { position: relative; }
-@media (max-width: 640px) { .streetspot-app-shell { background-position: center, 55% center; background-attachment: scroll; } }
-
-﻿
 /* StreetSpot Market Pulse: clean neighborhood editorial design, high contrast and conversion-first. */
 :root {
   --background: #f6f7f2; --foreground: #17231f; --card: #ffffff; --card-foreground: #17231f;
