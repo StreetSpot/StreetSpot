@@ -144,6 +144,7 @@ function HomeContent() {
           <MapPin className="h-3 w-3" />
           Choose a location to discover nearby spots
         </span>
+              <a href="/themes" className="transition-colors hover:text-foreground">Theme Studio</a>
               <a
                 href="/support"
                 className="flex items-center gap-1.5 transition-colors hover:text-foreground"
