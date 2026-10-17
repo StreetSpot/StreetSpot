@@ -29,6 +29,18 @@ const ReportSchema = z.object({
 const audiences = { customers: "local customers", vendors: "food trucks, pop-up vendors, and street businesses", "event-hosts": "people hosting weddings, birthdays, graduations, and community events", businesses: "local businesses and pop-up retailers", all: "customers, vendors, businesses, and event hosts" }
 const goals = { awareness: "increase local awareness", "app-installs": "earn relevant app installs", "vendor-claims": "encourage verified vendor listing claims", "event-hosting": "convert personal and community event hosts", retention: "increase repeat discovery and engagement" }
 const unique = (values: string[]) => [...new Set(values.map(x => x.trim()).filter(Boolean))]
+const requestBuckets = new Map<string, { count: number; resetAt: number }>()
+function isRateLimited(request: Request) {
+  const ip = request.headers.get("x-real-ip") || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown"
+  const now = Date.now()
+  const current = requestBuckets.get(ip)
+  if (!current || current.resetAt <= now) {
+    requestBuckets.set(ip, { count: 1, resetAt: now + 60_000 })
+    return false
+  }
+  current.count += 1
+  return current.count > 6
+}
 
 function createFallback(input: z.infer<typeof InputSchema>) {
   const place = input.location ? ` in ${input.location}` : " near me"
@@ -81,6 +93,7 @@ async function createAiReport(input: z.infer<typeof InputSchema>, request: Reque
       model,
       stream: false,
       temperature: 0.3,
+      max_tokens: 1800,
       messages: [
         { role: "system", content: "You are StreetSpot's search and advertising analyst. Return only valid JSON matching this structure: objective string; keywordIdeas string[] (5-20); adHeadlines string[] (3-10); adDescriptions string[] (2-6); recommendedLandingPage object with title, metaDescription, primaryCallToAction strings; channelPlan array of {channel,action} (3-8); measurementPlan string[] (3-8); guardrails string[] (2-6). Make practical, specific recommendations. Never invent search volumes, rankings, analytics, competitor facts, or results. Mark unverified keyword suggestions as ideas. Do not suggest publishing campaigns or spending money automatically." },
         { role: "user", content: JSON.stringify(input) },
@@ -98,6 +111,7 @@ async function createAiReport(input: z.infer<typeof InputSchema>, request: Reque
 }
 
 export async function POST(request: Request) {
+  if (isRateLimited(request)) return NextResponse.json({ error: "Too many analyses in a short period. Try again in a minute." }, { status: 429 })
   const parsed = InputSchema.safeParse(await request.json().catch(() => null))
   if (!parsed.success) return NextResponse.json({ error: "Check the business name and field lengths." }, { status: 400 })
   const input = parsed.data
