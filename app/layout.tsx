@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '$treet$pot: Bu!lt 4 Da Hu$tle',
+    title: 'StreetSpot | Discover What’s Happening Nearby',
     description: brandDescription,
     images: ['/brand-social.png'],
   },
@@ -80,7 +80,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="$treet$pot" />
+        <meta name="apple-mobile-web-app-title" content="StreetSpot" />
         <meta name="theme-color" content="#f06435" />
       </head>
       <body className={`${_inter.variable} ${_jetbrainsMono.variable} font-sans antialiased`}>
