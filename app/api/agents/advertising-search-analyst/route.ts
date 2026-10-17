@@ -70,8 +70,8 @@ function createFallback(input: z.infer<typeof InputSchema>) {
   }
 }
 
-async function createAiReport(input: z.infer<typeof InputSchema>) {
-  const apiKey = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN
+async function createAiReport(input: z.infer<typeof InputSchema>, request: Request) {
+  const apiKey = process.env.AI_GATEWAY_API_KEY || request.headers.get("x-vercel-oidc-token") || process.env.VERCEL_OIDC_TOKEN
   if (!apiKey) return null
   const model = process.env.STREETSPOT_AI_MODEL || "openai/gpt-5.6-sol"
   const response = await fetch("https://ai-gateway.vercel.sh/v1/chat/completions", {
@@ -104,7 +104,7 @@ export async function POST(request: Request) {
   let report: z.infer<typeof ReportSchema>
   let mode: "ai" | "fallback" = "fallback"
   try {
-    const aiReport = await createAiReport(input)
+    const aiReport = await createAiReport(input, request)
     if (aiReport) { report = aiReport; mode = "ai" }
     else report = createFallback(input)
   } catch (error) {
