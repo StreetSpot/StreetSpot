@@ -286,9 +286,3 @@ body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:n
 .hustle-landing::after { opacity:.14; }
 @media(max-width:640px){.hustle-landing{background-position:center,55% top,center;background-size:cover,auto 100%,cover;}}
 
-/* Photographic urban backgrounds shared across StreetSpot's landing and app surfaces. */
-.hustle-landing { background-image: linear-gradient(180deg,rgba(5,5,10,.36),rgba(5,5,10,.78)),url('/images/photo-backgrounds/graffiti-wall.jpg'),url('/images/photo-backgrounds/city-night.jpg'); background-position:center,center,center; background-size:cover,cover,cover; background-repeat:no-repeat; background-attachment:scroll; }
-.hustle-landing::before { opacity:.06; }
-.hustle-landing::after { opacity:.12; }
-body::before { background-image:linear-gradient(rgba(5,5,10,.78),rgba(5,5,10,.86)),url('/images/photo-backgrounds/city-night.jpg'); background-position:center,center; background-size:cover; background-repeat:no-repeat; opacity:.28; }
-.hustle-card { background-image:linear-gradient(155deg,rgba(12,12,20,.91),rgba(12,12,18,.94)),url('/images/photo-backgrounds/street-night.jpg'); background-position:center; background-size:cover; }
