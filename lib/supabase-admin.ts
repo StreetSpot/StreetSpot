@@ -96,6 +96,9 @@ export function errorResponse(error: unknown) {
   if (error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError")) {
     return Response.json({ ok: false, code: "BACKEND_TIMEOUT", message: "The backend took too long to respond. Please try again." }, { status: 503, headers: { "Retry-After": "5" } })
   }
+  if (error instanceof TypeError && error.message.toLowerCase().includes("fetch failed")) {
+    return Response.json({ ok: false, code: "BACKEND_UNREACHABLE", message: "The server backend is unreachable. Live listings and account actions are temporarily unavailable." }, { status: 503, headers: { "Retry-After": "30" } })
+  }
   console.error("[v0] Supabase API error", error)
   return Response.json({ ok: false, code: "DATABASE_ERROR", message: "The request could not be completed." }, { status: 500 })
 }
