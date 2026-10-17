@@ -13,6 +13,7 @@ export type AgentId =
   | "support"
   | "analytics-data"
   | "beehiiv-newsletter"
+  | "stripe-payments"
 
 export type AgentStatus = "ready" | "disabled" | "needs-configuration"
 export type AgentJobStatus = "queued" | "running" | "completed" | "blocked"
@@ -58,6 +59,7 @@ export const AGENTS: readonly AgentCard[] = [
   { id: "support", name: "Support Agent", status: "ready", description: "Matches questions to local help content and escalates to official support.", capabilities: ["help-content", "escalation"], externalAccess: false },
   { id: "analytics-data", name: "Analytics / Data Agent", status: "disabled", description: "Can summarize only metrics supplied to a task; no analytics source is connected.", capabilities: ["supplied-data-summary", "report-outline"], externalAccess: false },
   { id: "beehiiv-newsletter", name: "beehiiv Newsletter Agent", status: "needs-configuration", description: "Newsletter preparation architecture; beehiiv credentials and publication are not configured.", capabilities: ["signup-architecture", "content-preparation", "segmentation-plan"], externalAccess: false },
+  { id: "stripe-payments", name: "Stripe Payments Agent", status: "needs-configuration", description: "Audits Stripe products, prices, payment links, and payment verification flow; live changes require explicit review.", capabilities: ["catalog-audit", "checkout-troubleshooting", "subscription-billing", "payment-verification-review"], externalAccess: false },
 ]
 
 const jobs = new Map<string, AgentJob>()

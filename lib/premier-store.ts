@@ -22,7 +22,7 @@ export const PREMIER_TIERS = [
     name: "Bronze",
     price: "$9.99",
     period: "/mo",
-    stripeUrl: "https://buy.stripe.com/3cI5kF2Rs1PadzS4nu1VK01",
+    stripeUrl: "https://buy.stripe.com/7sYdRb77I9hCdzSf281VK07",
     features: [
       "Bronze badge on pin",
       "Priority listing boost",
@@ -37,7 +37,7 @@ export const PREMIER_TIERS = [
     name: "Silver",
     price: "$24.99",
     period: "/mo",
-    stripeUrl: "https://buy.stripe.com/14A5kF1NobpK9jCcU01VK02",
+    stripeUrl: "https://buy.stripe.com/bJe7sNcs28dy3ZibPW1VK08",
     features: [
       "Silver badge + glow",
       "Higher map placement",
@@ -53,7 +53,7 @@ export const PREMIER_TIERS = [
     name: "Gold",
     price: "$49.99",
     period: "/mo",
-    stripeUrl: "https://buy.stripe.com/6oU3cxbnY0L61Ra2fm1VK03",
+    stripeUrl: "https://buy.stripe.com/14A8wR77IdxScvObPW1VK09",
     features: [
       "Pulsing gold pin",
       "Top-of-map placement",

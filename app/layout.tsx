@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
+import { SupportChatWidget } from '@/components/support-chat-widget'
 
 const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' })
@@ -51,10 +52,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/brand-icon-192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
       { url: '/icon.svg', type: 'image/svg+xml' },
     ],
-    apple: '/brand-apple-icon.png',
+    apple: '/apple-icon.png',
   },
   manifest: '/manifest.json',
   metadataBase: new URL('https://streetspotapp.com'),
@@ -85,6 +86,7 @@ export default function RootLayout({
       </head>
       <body className={`${_inter.variable} ${_jetbrainsMono.variable} font-sans antialiased`}>
         {children}
+        <SupportChatWidget />
       </body>
     </html>
   )
