@@ -84,7 +84,7 @@ export default function PrivateInvitationsPage() {
           </article>
         })}
       </div>
-      <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950"><strong>Payment status:</strong> these prices and package choices are now displayed in the app, but Stripe checkout is not connected for host packages yet. Choosing a package only saves the selection in your local draft; no payment is taken, invitations are not sent, and hosted map pins are not published until secure checkout and event services are connected.</p>
+      <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950"><strong>Payment status:</strong> these prices and package choices are now displayed in the app, but Stripe checkout is not connected for host packages yet. Choosing a package updates the selection; click Save private draft to store it on this device. No payment is taken, invitations are not sent, and hosted map pins are not published until secure checkout and event services are connected.</p>
     </section>
   </div></main>
 }
