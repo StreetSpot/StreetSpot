@@ -1,5 +1,14 @@
 User-agent: *
 Allow: /
+Allow: /.well-known/
+Allow: /api/mcp
+Allow: /api/agents/a2a
+Allow: /api/health
 Disallow: /api/
+Disallow: /agents/
+Disallow: /host/invitations
+Disallow: /vendor-studio
+
+Content-Signal: ai-train=no, search=yes, ai-input=no
 
 Sitemap: https://streetspotapp.com/sitemap.xml

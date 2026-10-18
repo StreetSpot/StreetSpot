@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "streetspot-discovery",
+      "type": "skill-md",
+      "description": "Safely describe StreetSpot's public discovery platform, official links, and agent-access boundaries.",
+      "url": "https://streetspotapp.com/agent-skills/streetspot-discovery/SKILL.md",
+      "digest": "sha256:ba85aa0a97694de53f08dd625fd48ad2fb670fe1f4e1883db083f74f6c6344da"
+    }
+  ]
+}

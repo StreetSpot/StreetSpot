@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "smoke:agents": "node scripts/smoke-agent-discovery.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

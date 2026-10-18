@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { SupportChatWidget } from '@/components/support-chat-widget'
+import { WebMCPRegistration } from '@/components/webmcp-registration'
 
 const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' })
@@ -86,6 +87,7 @@ export default function RootLayout({
       </head>
       <body className={`${_inter.variable} ${_jetbrainsMono.variable} font-sans antialiased`}>
         {children}
+        <WebMCPRegistration />
         <SupportChatWidget />
       </body>
     </html>

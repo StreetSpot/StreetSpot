@@ -6,6 +6,17 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/",
+        headers: [
+          { key: "Link", value: '<https://streetspotapp.com/.well-known/api-catalog>; rel="api-catalog", <https://streetspotapp.com/openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json;version=3.1.0", <https://streetspotapp.com/agent-docs.md>; rel="service-doc"; type="text/markdown", <https://streetspotapp.com/auth.md>; rel="describedby"; type="text/markdown"' },
+          { key: "Vary", value: "Accept" },
+        ],
+      },
+      {
+        source: "/.well-known/api-catalog",
+        headers: [{ key: "Content-Type", value: "application/linkset+json; charset=utf-8" }],
+      },
+      {
         source: "/(.*)",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },

@@ -16,6 +16,9 @@ function safeEqual(left: string, right: string) {
 export function proxy(request: NextRequest) {
   const secret = process.env.STREETSPOT_AGENT_ACCESS_PASSWORD
   const pathname = request.nextUrl.pathname
+  if (pathname === "/" && request.headers.get("accept")?.toLowerCase().includes("text/markdown")) {
+    return NextResponse.rewrite(new URL("/agent-markdown", request.url))
+  }
   const protectedPath =
     pathname === "/agents" ||
     pathname.startsWith("/agents/") && pathname !== "/agents/login" ||
@@ -24,7 +27,7 @@ export function proxy(request: NextRequest) {
     pathname === "/vendor-studio" ||
     pathname.startsWith("/vendor-studio/") ||
     pathname === "/api/agents" ||
-    pathname.startsWith("/api/agents/") && pathname !== "/api/agents/auth"
+    pathname.startsWith("/api/agents/") && pathname !== "/api/agents/auth" && pathname !== "/api/agents/a2a"
 
   if (!protectedPath) return NextResponse.next()
 
@@ -45,5 +48,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/agents/:path*", "/host/invitations/:path*", "/vendor-studio/:path*", "/api/agents/:path*"],
+  matcher: ["/", "/agents/:path*", "/host/invitations/:path*", "/vendor-studio/:path*", "/api/agents/:path*"],
 }
