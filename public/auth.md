@@ -19,4 +19,16 @@ StreetSpot is a local discovery platform for vendors, pop-up retailers, business
 
 Do not submit secrets, personal data, payment credentials, or private event details to public tools. Vendor claims, account changes, payments, publishing, and production operations require separately supported authenticated workflows and human review. Do not represent informational responses as verified analytics, live search volume, account access, or completed actions.
 
+## Machine-readable agent_auth declaration
+
+```yaml
+agent_auth:
+  skill: streetspot-discovery
+  register_uri: mailto:support@streetspotapp.com
+  registration_methods:
+    - type: manual-support-request
+      description: Request future integration access from StreetSpot support. This is a human-reviewed request, not an automated account or credential-issuance endpoint.
+  credential_use: Public discovery tools require no credentials. No general-purpose agent credentials are currently issued.
+```
+
 For help, use https://streetspotapp.com/support or email support@streetspotapp.com.

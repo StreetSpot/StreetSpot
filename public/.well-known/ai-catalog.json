@@ -3,6 +3,32 @@
   "name": "StreetSpot",
   "description": "Local discovery for vendors, pop-ups, businesses, events, and community spots.",
   "version": "1.0.0",
+  "entries": [
+    {
+      "id": "streetspot-mcp",
+      "name": "StreetSpot Public MCP Server",
+      "type": "mcp",
+      "description": "Read-only tools for public StreetSpot information, official links, and general support guidance.",
+      "url": "https://streetspotapp.com/api/mcp",
+      "protocol": "MCP"
+    },
+    {
+      "id": "streetspot-a2a",
+      "name": "StreetSpot Informational A2A Agent",
+      "type": "a2a",
+      "description": "Informational agent responses about StreetSpot and public support links. No external actions or private data access.",
+      "url": "https://streetspotapp.com/api/agents/a2a",
+      "protocol": "A2A"
+    },
+    {
+      "id": "streetspot-agent-docs",
+      "name": "StreetSpot Agent Documentation",
+      "type": "documentation",
+      "description": "Integration documentation and security boundaries for compatible agents.",
+      "url": "https://streetspotapp.com/agent-docs.md",
+      "protocol": "HTTP"
+    }
+  ],
   "catalogs": [
     {
       "name": "Public API catalog",
