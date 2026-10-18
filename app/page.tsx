@@ -53,6 +53,16 @@ function HomeContent() {
           } else sessionStorage.removeItem("streetspot_auth_session")
         }
       } catch { sessionStorage.removeItem("streetspot_auth_session") }
+      if (!sessionStorage.getItem("streetspot_auth_session")) {
+        const mode = new URLSearchParams(window.location.search).get("mode")
+        if (mode === "vendor") {
+          setView("founder-login")
+          window.history.replaceState({ streetSpotView: "founder-login" }, "", window.location.pathname)
+        } else if (mode === "discover") {
+          setView("finder")
+          window.history.replaceState({ streetSpotView: "finder" }, "", window.location.pathname)
+        }
+      }
     }
     const restoreTimer = window.setTimeout(restoreSession, 0)
     const restoreView = (event: PopStateEvent) => {

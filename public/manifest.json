@@ -6,10 +6,14 @@
   "id": "https://streetspotapp.com/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f6f7f2",
-  "theme_color": "#f06435",
+  "background_color": "#111116",
+  "theme_color": "#111116",
   "orientation": "any",
   "categories": ["food", "lifestyle", "navigation", "shopping", "social"],
+  "shortcuts": [
+    { "name": "Go Live as a Vendor", "short_name": "Go Live", "url": "/?mode=vendor", "description": "Manage your business listing on StreetSpot" },
+    { "name": "Host a Private Event", "short_name": "Host Event", "url": "/host/invitations", "description": "Create a private invitation and guest-only venue pin" }
+  ],
   "lang": "en-US",
   "prefer_related_applications": false,
   "icons": [
