@@ -1,23 +1,22 @@
 # auth.md — StreetSpot Agent Registration and Authentication
 
-StreetSpot is a local discovery platform for vendors, pop-up retailers, businesses, events, and community places.
+StreetSpot is a local discovery platform for vendors, pop-up retailers, businesses, events, and community places. This document is for software agents seeking to discover StreetSpot's public information and understand the supported registration and authentication methods.
 
-## Agent audience
+## Agent registration and provisioning
 
-This document is for software agents seeking to discover StreetSpot's public information and documented integration capabilities.
+- **Agent registration endpoint:** Not currently available. StreetSpot does not offer public machine registration or dynamic client registration.
+- **Credential provisioning endpoint:** Not currently available. Do not probe undocumented endpoints or attempt to create accounts through this document.
+- **Manual registration request:** Human operators can contact support@streetspotapp.com to ask about future integration access. A support request does not automatically create an account or issue credentials.
+- **Supported agent method today:** Public, read-only discovery tools at https://streetspotapp.com/api/mcp and informational requests at https://streetspotapp.com/api/agents/a2a. These methods require no credentials and expose no private user data.
 
-## Registration and credentials
+## Supported authentication methods and credential use
 
-StreetSpot does not currently provide a public self-service OAuth client-registration endpoint or issue general-purpose agent API credentials. Do not attempt to register accounts or obtain credentials through undocumented endpoints. Public discovery resources and the read-only MCP tools documented by the server card are available without account credentials. Operator-only workflows and user data remain access-controlled.
-
-## Supported authentication methods
-
-- Public discovery and read-only MCP tools: no credentials required; no private user data is exposed.
-- StreetSpot operator console: interactive human sign-in only. The console password and session cookie are not an API credential and must not be reused by agents.
-- OAuth/OIDC agent authorization: not currently offered. No OAuth authorization server, token endpoint, or JWKS is advertised.
+1. **Public read-only tools:** No credentials required. Use only for public platform information, official links, and general support routing.
+2. **Operator console:** Interactive human sign-in at https://streetspotapp.com/agents/login. Its password and browser session cookie are for human operators only, are not API credentials, and must never be reused by agents.
+3. **OAuth 2.0 / OpenID Connect:** Not currently offered. StreetSpot does not advertise an authorization server, authorization endpoint, token endpoint, JWKS, or public OAuth client-registration endpoint. Do not infer or fabricate issuer URLs.
 
 ## Safe use
 
-Do not submit secrets, personal data, payment credentials, or private event details to public tools. Vendor claims, account changes, payments, publishing, and production operations require supported authenticated workflows and human review.
+Do not submit secrets, personal data, payment credentials, or private event details to public tools. Vendor claims, account changes, payments, publishing, and production operations require separately supported authenticated workflows and human review. Do not represent informational responses as verified analytics, live search volume, account access, or completed actions.
 
 For help, use https://streetspotapp.com/support or email support@streetspotapp.com.

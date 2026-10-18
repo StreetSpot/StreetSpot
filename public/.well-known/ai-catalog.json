@@ -1,4 +1,5 @@
 {
+  "specVersion": "1.0.0",
   "name": "StreetSpot",
   "description": "Local discovery for vendors, pop-ups, businesses, events, and community spots.",
   "version": "1.0.0",
