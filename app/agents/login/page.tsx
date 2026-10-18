@@ -1,14 +1,14 @@
 "use client"
 
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useState } from "react"
 import { LockKeyhole, ShieldCheck } from "lucide-react"
 
 export default function AgentLoginPage() {
-  const [nextPath, setNextPath] = useState("/agents")
-  useEffect(() => {
+  const [nextPath] = useState(() => {
+    if (typeof window === "undefined") return "/agents"
     const requestedNext = new URLSearchParams(window.location.search).get("next") || "/agents"
-    setNextPath(requestedNext.startsWith("/") && !requestedNext.startsWith("//") && !requestedNext.startsWith("/\\") ? requestedNext : "/agents")
-  }, [])
+    return requestedNext.startsWith("/") && !requestedNext.startsWith("//") && !requestedNext.startsWith("/\\") ? requestedNext : "/agents"
+  })
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [busy, setBusy] = useState(false)

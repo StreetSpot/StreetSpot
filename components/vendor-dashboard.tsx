@@ -34,6 +34,10 @@ const SUPPORT_BODY =
 
 interface VendorDashboardProps {
   businessName: string
+  userId: string
+  accessToken: string
+  email: string
+  onSignOut: () => void
 }
 
 function SuccessToast({
@@ -71,19 +75,12 @@ function SuccessToast({
 }
 
 export function VendorDashboard({
-  businessName,
+  businessName, userId, accessToken, email, onSignOut,
 }: VendorDashboardProps) {
   const vendors = useVendors()
-  const [vendorId] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = sessionStorage.getItem("streetspot_vendor_id")
-      if (saved) return saved
-    }
-    return `vendor-${Date.now()}`
-  })
+  const [vendorId, setVendorId] = useState("")
   const [description, setDescription] = useState("")
   const [closingTime, setClosingTime] = useState("22:00")
-  const isPremium = false
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
     null
   )
@@ -91,16 +88,45 @@ export function VendorDashboard({
   const [isLocating, setIsLocating] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
   const [shareCopied, setShareCopied] = useState(false)
+  const [accountLoading, setAccountLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    async function loadAccount() {
+      try {
+        const response = await fetch("/api/vendor/me", { headers: { Authorization: `Bearer ${accessToken}` }, cache: "no-store" })
+        const result = await response.json().catch(() => null)
+        if (!response.ok) throw new Error(result?.message || "Unable to load your vendor account.")
+        if (cancelled) return
+        const vendor = result?.vendor
+        if (vendor && typeof vendor.id === "string" && typeof vendor.lat === "number" && typeof vendor.lng === "number") {
+          const mapped: Vendor = { id: vendor.id, name: vendor.name, description: vendor.description ?? "", lat: vendor.lat, lng: vendor.lng, closingTime: vendor.closingTime, isLive: Boolean(vendor.isLive), isPremium: Boolean(vendor.isPremium), createdAt: Number.isFinite(vendor.createdAt) ? vendor.createdAt : Date.now() }
+          if (vendorStore.getSnapshot().some((item) => item.id === mapped.id)) vendorStore.updateVendor(mapped.id, mapped)
+          else vendorStore.addVendor(mapped)
+          setVendorId(mapped.id)
+          setDescription(mapped.description)
+          setClosingTime(mapped.closingTime)
+          setLocation({ lat: mapped.lat, lng: mapped.lng })
+        }
+      } catch (cause) {
+        if (!cancelled) setToast(cause instanceof Error ? cause.message : "Unable to load your account.")
+      } finally {
+        if (!cancelled) setAccountLoading(false)
+      }
+    }
+    void loadAccount()
+    return () => { cancelled = true }
+  }, [accessToken])
 
   const myVendor = vendors.find((v) => v.id === vendorId)
-
+  const isPremium = Boolean(myVendor?.isPremium)
   const isLive = Boolean(myVendor?.isLive)
 
   const getLocation = useCallback((onLocated?: (position: { lat: number; lng: number }) => void) => {
     setIsLocating(true)
     setLocationError(null)
     if (!navigator.geolocation) {
-      setLocationError("Location is unavailable. Allow browser location access to start a preview.")
+      setLocationError("Location is unavailable. Allow browser location access to publish your listing live.")
       setIsLocating(false)
       return
     }
@@ -120,57 +146,66 @@ export function VendorDashboard({
     )
   }, [])
 
-  function publishVendor(position: { lat: number; lng: number }) {
-      if (myVendor) {
-        vendorStore.updateVendor(vendorId, {
-          name: businessName,
-          description: description || "Street vendor",
-          lat: position.lat,
-          lng: position.lng,
-          closingTime,
-          isLive: true,
-          isPremium,
-        })
-      } else {
-        const vendor: Vendor = {
-          id: vendorId,
-          name: businessName,
-          description: description || "Street vendor",
-          lat: position.lat,
-          lng: position.lng,
-          closingTime,
-          isLive: true,
-          isPremium,
-          createdAt: Date.now(),
-        }
-        vendorStore.addVendor(vendor)
+  async function publishVendor(position: { lat: number; lng: number }) {
+    setToast(null)
+    try {
+      const response = await fetch("/api/vendor/me", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({ name: businessName, description, category: "vendor", latitude: position.lat, longitude: position.lng, closingTime }),
+        cache: "no-store",
+      })
+      const result = await response.json().catch(() => null)
+      if (response.status === 402) {
+        setToast(result?.message || "An active monthly Premier subscription is required before your listing can go live.")
+        return
       }
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("streetspot_vendor_id", vendorId)
+      if (!response.ok || !result?.ok || !result?.vendor) {
+        setToast(result?.message || "StreetSpot could not publish this listing. Check your profile and try again.")
+        return
       }
-      setToast("Local preview is active in this browser only.")
+      const value = result.vendor
+      if (typeof value.lat !== "number" || typeof value.lng !== "number") {
+        setToast("Your account was saved, but the live location could not be confirmed. Refresh location and retry.")
+        return
+      }
+      const vendor: Vendor = { id: value.id, name: value.name, description: value.description ?? description, lat: value.lat, lng: value.lng, closingTime: value.closingTime, isLive: Boolean(value.isLive), isPremium: Boolean(value.isPremium), createdAt: Number.isFinite(value.createdAt) ? value.createdAt : Date.now() }
+      if (vendorStore.getSnapshot().some((item) => item.id === vendor.id)) vendorStore.updateVendor(vendor.id, vendor)
+      else vendorStore.addVendor(vendor)
+      setVendorId(vendor.id)
+      sessionStorage.setItem("streetspot_vendor_id", vendor.id)
+      setToast("Your listing is live on StreetSpot. Keep your location and hours current so customers can find you.")
+    } catch {
+      setToast("StreetSpot could not reach the server. Check your connection and try again.")
+    }
   }
 
-  function handleGoLive() {
+  async function handleGoLive() {
     if (isLive) {
+      const response = await fetch("/api/vendor/me", { method: "PATCH", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify({ isLive: false }), cache: "no-store" })
+      if (!response.ok) {
+        setToast("StreetSpot could not update your live status. Try again.")
+        return
+      }
       vendorStore.updateVendor(vendorId, { isLive: false })
+      setToast("Your listing is offline. You can bring it back live while your subscription is active.")
     } else if (location) {
-      publishVendor(location)
+      await publishVendor(location)
     } else {
-      getLocation(publishVendor)
+      getLocation((position) => { void publishVendor(position) })
     }
   }
 
   function handleUpdateLocation() {
     getLocation((position) => {
-      if (isLive) vendorStore.updateVendor(vendorId, position)
+      if (isLive) void publishVendor(position)
     })
   }
 
   async function handleShareLive() {
     const url = "https://streetspotapp.com"
     const text = isLive
-      ? `I'm testing StreetSpot's vendor preview for ${businessName}. The preview is only in my browser and is not publicly published yet. Explore StreetSpot: ${url}`
+      ? `${businessName} is live on StreetSpot. Find local businesses, food trucks, pop-ups, and events: ${url}`
       : `Check out StreetSpot to discover local vendors, businesses, and community spots: ${url}`
     try {
       if (navigator.share) {
@@ -210,12 +245,12 @@ export function VendorDashboard({
         />
         <div className="flex-1">
           <p className="text-sm font-medium text-foreground">
-            {isLive ? "Local preview is active in this browser" : "You are currently offline"}
+            {accountLoading ? "Loading your vendor account..." : isLive ? "Your business is live on StreetSpot" : "Your listing is offline"}
           </p>
           <p className="text-xs text-muted-foreground">
             {isLive
-              ? `Browser-only preview until ${closingTime}; not published to other users${isPremium ? " · Premier placement is not active in this preview" : ""}`
-              : "Start a browser-only preview. Public vendor publishing is not connected yet."}
+              ? `Customers can discover your listing until ${closingTime}${isPremium ? " · Paid Premier benefits verified" : ""}`
+              : "Choose a monthly Premier plan, add an accurate description, and confirm your location to go live."}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -231,9 +266,10 @@ export function VendorDashboard({
       <ClaimableVendorsList claimerName={businessName} />
 
       <div className="mb-6 rounded-xl border border-border bg-card p-5">
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+        <h3 className="mb-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Business Details
         </h3>
+        <p className="mb-4 text-xs text-muted-foreground">Signed in as {email}</p>
         <div className="flex flex-col gap-4">
           <div>
             <label className="mb-1.5 block text-sm font-medium text-foreground">
@@ -262,11 +298,12 @@ export function VendorDashboard({
                   })
               }}
               rows={2}
-              maxLength={120}
+              maxLength={2000}
+              onBlur={() => { if (isLive && location) void publishVendor(location) }}
               className="w-full resize-none rounded-lg border border-border bg-input px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
             <p className="mt-1 text-right text-xs text-muted-foreground">
-              {description.length}/120
+              {description.length}/2000 · At least 20 characters required to go live
             </p>
           </div>
           <div>
@@ -281,13 +318,8 @@ export function VendorDashboard({
               id="closing"
               type="time"
               value={closingTime}
-              onChange={(e) => {
-                setClosingTime(e.target.value)
-                if (isLive)
-                  vendorStore.updateVendor(vendorId, {
-                    closingTime: e.target.value,
-                  })
-              }}
+              onChange={(e) => setClosingTime(e.target.value)}
+              onBlur={() => { if (isLive && location) void publishVendor(location) }}
               className="h-10 w-full rounded-lg border border-border bg-input px-3.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary [color-scheme:dark]"
             />
           </div>
@@ -339,7 +371,7 @@ export function VendorDashboard({
 
       <button
         onClick={handleGoLive}
-        disabled={isLocating}
+        disabled={isLocating || accountLoading}
         className={`mb-6 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl text-sm font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-40 ${
           isLive
             ? "border border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/20"
@@ -349,20 +381,22 @@ export function VendorDashboard({
         {isLive ? (
           <>
             <PowerOff className="h-4 w-4" />
-            <span>End Preview</span>
+            <span>Go Offline</span>
           </>
         ) : (
           <>
             <Power className="h-4 w-4" />
-            <span>{isLocating ? "Getting location…" : "Start Preview"}</span>
+            <span>{isLocating ? "Getting location…" : "Go Live"}</span>
           </>
         )}
       </button>
 
-      <PremierPinPayment />
-      <VendorInbox vendorId={vendorId} vendorName={businessName} />
-      <VendorMenuEditor />
-      <VendorBookingsList />
+      <PremierPinPayment userId={userId} accessToken={accessToken} />
+      {vendorId ? <>
+        <VendorInbox vendorId={vendorId} vendorName={businessName} />
+        <VendorMenuEditor />
+        <VendorBookingsList />
+      </> : <p className="mb-6 rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">Your inbox, menu, and booking tools become available after your first listing is published.</p>}
       <SaveParking />
       <QuickTravelLog />
       <NetEarningsCard />
@@ -384,6 +418,7 @@ export function VendorDashboard({
           <p className="text-center text-[11px] text-muted-foreground">
             Opens a pre-filled email so we can assist you quickly.
           </p>
+          <button type="button" onClick={onSignOut} className="flex h-10 w-full items-center justify-center rounded-lg border border-border text-sm font-semibold text-muted-foreground hover:bg-muted">Sign out</button>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 import {
   Store, Search, ArrowRight, MapPin, Truck, CalendarDays, Gem,
-  MessageCircle, Star, Compass, Navigation, Sparkles, ShieldCheck,
+  MessageCircle, Star, Navigation, Sparkles, ShieldCheck,
 } from "lucide-react"
 
 interface RoleSelectorProps {
@@ -32,7 +32,7 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
               <span className="market-headline-accent block">favorite spot.</span>
             </h1>
             <p className="mt-6 max-w-xl text-pretty text-base leading-7 text-[#59645f] sm:text-lg sm:leading-8">
-              Food trucks, pop-up shops, neighborhood events, skate spots, and independent businesses. Discover what's out there, see what's live, and support the people making your town interesting.
+              Food trucks, pop-up shops, neighborhood events, skate spots, and independent businesses. Discover what&apos;s out there, see what&apos;s live, and support the people making your town interesting.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -138,7 +138,7 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
             ))}
           </div>
           <div className="mt-8 flex flex-col items-center justify-between gap-4 rounded-2xl bg-[#17231f] px-6 py-6 text-center sm:flex-row sm:text-left">
-            <div><p className="text-lg font-black text-white">Run a local business?</p><p className="mt-1 text-sm text-[#c7d2ca]">Help nearby customers find you when and where you're open.</p></div>
+            <div><p className="text-lg font-black text-white">Run a local business?</p><p className="mt-1 text-sm text-[#c7d2ca]">Help nearby customers find you when and where you&apos;re open.</p></div>
             <button onClick={() => onSelect("founder")} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#f06435] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#db4f24]"><Store className="h-4 w-4" /> Put my business on the map <ArrowRight className="h-4 w-4" /></button>
           </div>
         </div>

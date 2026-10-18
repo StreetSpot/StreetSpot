@@ -106,15 +106,18 @@ export const premierStore = {
   },
   setTier(tier: PremierTier) {
     ensureInit()
-    // Paid tiers must only be granted by a server-verified subscription.
-    // Until that integration exists, this client store can only deactivate.
     if (tier !== "none") return
     state = { tier: "none", activatedAt: null }
     if (typeof window !== "undefined") {
-      try {
-        localStorage.removeItem(STORAGE_KEY)
-      } catch {}
+      try { localStorage.removeItem(STORAGE_KEY) } catch {}
     }
+    emitChange()
+  },
+  setVerifiedTier(tier: PremierTier) {
+    ensureInit()
+    // This is only a display snapshot from the authenticated server endpoint.
+    // Server-side RPC checks remain the authority for publishing and paid features.
+    state = { tier, activatedAt: tier === "none" ? null : Date.now() }
     emitChange()
   },
   isAtLeast(tier: PremierTier) {

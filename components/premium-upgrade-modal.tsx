@@ -7,12 +7,14 @@ interface PremiumUpgradeModalProps {
   open: boolean
   onClose: () => void
   currentTier?: PremierTier
+  userId: string
 }
 
 export function PremiumUpgradeModal({
   open,
   onClose,
   currentTier = "none",
+  userId,
 }: PremiumUpgradeModalProps) {
   if (!open) return null
 
@@ -41,7 +43,7 @@ export function PremiumUpgradeModal({
 
         <div className="space-y-4 p-5">
           <p className="text-sm text-muted-foreground">
-            Review the price and renewal terms at Stripe checkout. StreetSpot cannot verify payment or activate paid benefits automatically yet. Keep your receipt and <a className="text-primary underline" href="mailto:support@streetspotapp.com?subject=StreetSpot%20payment%20receipt">contact support</a> after checkout.
+            Stripe checkout securely collects payment. StreetSpot activates paid benefits only after a verified Stripe webhook confirms your subscription. Return to your dashboard after checkout; activation may take a short moment.
           </p>
 
           {PREMIER_TIERS.map((tier) => {
@@ -96,7 +98,7 @@ export function PremiumUpgradeModal({
                   </div>
                 ) : (
                   <a
-                    href={tier.stripeUrl}
+                    href={`${tier.stripeUrl}${tier.stripeUrl.includes("?") ? "&" : "?"}client_reference_id=${encodeURIComponent(userId)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r ${tier.color} text-sm font-semibold text-white shadow transition hover:brightness-110`}

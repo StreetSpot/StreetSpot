@@ -6,7 +6,7 @@ import Link from "next/link"
 import { MapPin, Globe, Wrench } from "lucide-react"
 import { AppHeader } from "@/components/app-header"
 import { RoleSelector } from "@/components/role-selector"
-import { VendorLogin } from "@/components/vendor-login"
+import { VendorLogin, type StreetSpotAuthSession } from "@/components/vendor-login"
 import { VendorDashboard } from "@/components/vendor-dashboard"
 import { FinderTools } from "@/components/finder/finder-tools"
 
@@ -35,16 +35,32 @@ type FinderTab = "map" | "tools"
 function HomeContent() {
   const [view, setView] = useState<AppView>("landing")
   const [businessName, setBusinessName] = useState("")
+  const [authSession, setAuthSession] = useState<StreetSpotAuthSession | null>(null)
   const [finderTab, setFinderTab] = useState<FinderTab>("map")
 
   useEffect(() => {
     window.history.replaceState({ streetSpotView: "landing" }, "", window.location.href)
+    const restoreSession = () => {
+      try {
+        const saved = sessionStorage.getItem("streetspot_auth_session")
+        if (saved) {
+          const session = JSON.parse(saved) as StreetSpotAuthSession
+          if (session.access_token && session.refresh_token && session.user?.id) {
+            setAuthSession(session)
+            setBusinessName(session.user.user_metadata?.business_name || session.user.email?.split("@")[0] || "StreetSpot Vendor")
+            setView("founder-dashboard")
+            window.history.replaceState({ streetSpotView: "founder-dashboard" }, "", window.location.href)
+          } else sessionStorage.removeItem("streetspot_auth_session")
+        }
+      } catch { sessionStorage.removeItem("streetspot_auth_session") }
+    }
+    const restoreTimer = window.setTimeout(restoreSession, 0)
     const restoreView = (event: PopStateEvent) => {
       const next = event.state?.streetSpotView
       setView(next === "founder-login" || next === "founder-dashboard" || next === "finder" ? next : "landing")
     }
     window.addEventListener("popstate", restoreView)
-    return () => window.removeEventListener("popstate", restoreView)
+    return () => { window.clearTimeout(restoreTimer); window.removeEventListener("popstate", restoreView) }
   }, [])
 
   function navigateView(next: AppView) {
@@ -61,9 +77,19 @@ function HomeContent() {
     }
   }
 
-  function handleLogin(name: string) {
+  function handleLogin(name: string, session: StreetSpotAuthSession) {
     setBusinessName(name)
+    setAuthSession(session)
     navigateView("founder-dashboard")
+  }
+
+  function handleSignOut() {
+    sessionStorage.removeItem("streetspot_auth_session")
+    sessionStorage.removeItem("streetspot_vendor_id")
+    setAuthSession(null)
+    setBusinessName("")
+    setView("landing")
+    window.history.replaceState({ streetSpotView: "landing" }, "", window.location.href)
   }
 
   function handleBack() {
@@ -89,11 +115,13 @@ function HomeContent() {
       <main className="flex-1">
         {view === "landing" && <RoleSelector onSelect={handleRoleSelect} />}
         {view === "founder-login" && <VendorLogin onLogin={handleLogin} />}
-        {view === "founder-dashboard" && (
-          <VendorDashboard
-            businessName={businessName}
-          />
-        )}
+        {view === "founder-dashboard" && (authSession ? <VendorDashboard
+          businessName={businessName}
+          userId={authSession.user.id}
+          accessToken={authSession.access_token}
+          email={authSession.user.email ?? ""}
+          onSignOut={handleSignOut}
+        /> : <VendorLogin onLogin={handleLogin} />)}
         {view === "finder" && (
           <div className="flex flex-col">
             {/* Finder tabs: Map | Tools (gems, parking, travel) */}

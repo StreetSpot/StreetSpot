@@ -1,13 +1,27 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Crown, Check, Sparkles, TrendingUp, Shield } from "lucide-react"
 import { usePremier, premierStore, PREMIER_TIERS } from "@/lib/premier-store"
 import { PremiumUpgradeModal } from "./premium-upgrade-modal"
 
-export function PremierPinPayment() {
+export function PremierPinPayment({ userId, accessToken }: { userId: string; accessToken: string }) {
   const { tier } = usePremier()
   const [modalOpen, setModalOpen] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    fetch("/api/vendor/me", { headers: { Authorization: `Bearer ${accessToken}` }, cache: "no-store" })
+      .then(async (response) => {
+        const result = await response.json().catch(() => null)
+        if (!response.ok) throw new Error("Could not verify subscription status")
+        const value = result?.tier
+        const verifiedTier = value === "bronze" || value === "silver" || value === "gold" ? value : "none"
+        if (!cancelled) premierStore.setVerifiedTier(verifiedTier)
+      })
+      .catch(() => { if (!cancelled) premierStore.setVerifiedTier("none") })
+    return () => { cancelled = true }
+  }, [accessToken])
 
   const currentTierData = PREMIER_TIERS.find((t) => t.id === tier)
   const isActive = tier !== "none"
@@ -153,6 +167,7 @@ export function PremierPinPayment() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         currentTier={tier}
+        userId={userId}
       />
     </>
   )

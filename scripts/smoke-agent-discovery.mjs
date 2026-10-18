@@ -25,6 +25,11 @@ await check('/api/mcp', { method: 'POST', headers: { 'content-type': 'applicatio
 await check('/api/mcp', { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'tools/list' }) }, (res, body) => res.status === 200 && body?.result?.tools?.some((tool) => tool.name === 'streetspot_overview'))
 await check('/api/mcp', { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'streetspot_public_links', arguments: {} } }) }, (res, body) => res.status === 200 && body?.result?.content?.[0]?.text?.includes('streetspotapp.com/support'))
 await check('/api/agents/a2a', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 4, method: 'message/send', params: { message: { role: 'user', parts: [{ kind: 'text', text: 'Tell me about StreetSpot' }] } } }) }, (res, body) => res.status === 200 && body?.result?.status?.state === 'completed' && body?.result?.artifacts?.length > 0)
+await check('/host/invitations', {}, (res) => res.status === 200)
+await check('/api/vendor/me', {}, (res) => res.status === 401)
+await check('/api/host/purchases', {}, (res) => res.status === 401)
+await check('/api/host/invite/not-a-valid-token', {}, (res, body) => res.status === 404 && body?.ok === false && !body?.event)
+await check('/api/webhooks/stripe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' }, (res) => res.status === 503)
 if (failures.length) {
   console.error(`\n${failures.length} smoke test(s) failed:\n- ${failures.join('\n- ')}`)
   process.exitCode = 1
