@@ -1,62 +1,74 @@
 {
-  "specVersion": "1.0.0",
-  "name": "StreetSpot",
-  "description": "Local discovery for vendors, pop-ups, businesses, events, and community spots.",
-  "version": "1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "StreetSpot",
+    "identifier": "https://streetspotapp.com",
+    "documentationUrl": "https://streetspotapp.com/agent-docs.md"
+  },
   "entries": [
     {
-      "identifier": "streetspot-mcp",
-      "id": "streetspot-mcp",
+      "identifier": "urn:air:streetspotapp.com:agent:mcp",
       "displayName": "StreetSpot Public MCP Server",
-      "name": "StreetSpot Public MCP Server",
-      "type": "mcp",
+      "type": "application/mcp-server-card+json",
+      "url": "https://streetspotapp.com/.well-known/mcp/server-card.json",
       "description": "Read-only tools for public StreetSpot information, official links, and general support guidance.",
-      "url": "https://streetspotapp.com/api/mcp",
-      "protocol": "MCP"
+      "tags": [
+        "local-discovery",
+        "mcp",
+        "public-information"
+      ],
+      "capabilities": [
+        "streetspot-overview",
+        "public-links",
+        "support-guidance"
+      ],
+      "representativeQueries": [
+        "What is StreetSpot and what can people discover?",
+        "Where can I find StreetSpot support and privacy information?"
+      ],
+      "version": "1.0.0"
     },
     {
-      "identifier": "streetspot-a2a",
-      "id": "streetspot-a2a",
+      "identifier": "urn:air:streetspotapp.com:agent:a2a",
       "displayName": "StreetSpot Informational A2A Agent",
-      "name": "StreetSpot Informational A2A Agent",
-      "type": "a2a",
+      "type": "application/json",
+      "url": "https://streetspotapp.com/.well-known/agent-card.json",
       "description": "Informational agent responses about StreetSpot and public support links. No external actions or private data access.",
-      "url": "https://streetspotapp.com/api/agents/a2a",
-      "protocol": "A2A"
+      "tags": [
+        "local-discovery",
+        "a2a",
+        "public-information"
+      ],
+      "capabilities": [
+        "streetspot-overview",
+        "support-routing"
+      ],
+      "representativeQueries": [
+        "Tell me about StreetSpot's local discovery platform.",
+        "How do I contact StreetSpot support?"
+      ],
+      "version": "1.0.0"
     },
     {
-      "identifier": "streetspot-agent-docs",
-      "id": "streetspot-agent-docs",
-      "displayName": "StreetSpot Agent Documentation",
-      "name": "StreetSpot Agent Documentation",
-      "type": "documentation",
-      "description": "Integration documentation and security boundaries for compatible agents.",
-      "url": "https://streetspotapp.com/agent-docs.md",
-      "protocol": "HTTP"
-    }
-  ],
-  "catalogs": [
-    {
-      "name": "Public API catalog",
-      "url": "https://streetspotapp.com/.well-known/api-catalog"
-    },
-    {
-      "name": "OpenAPI",
-      "url": "https://streetspotapp.com/openapi.json"
-    },
-    {
-      "name": "Agent docs",
-      "url": "https://streetspotapp.com/agent-docs.md"
-    }
-  ],
-  "endpoints": [
-    {
-      "type": "mcp",
-      "url": "https://streetspotapp.com/api/mcp"
-    },
-    {
-      "type": "a2a",
-      "url": "https://streetspotapp.com/api/agents/a2a"
+      "identifier": "urn:air:streetspotapp.com:api:openapi",
+      "displayName": "StreetSpot Public Agent API",
+      "type": "application/vnd.oai.openapi+json;version=3.1.0",
+      "url": "https://streetspotapp.com/openapi.json",
+      "description": "OpenAPI description for public health, MCP, and informational A2A endpoints.",
+      "tags": [
+        "openapi",
+        "api-discovery"
+      ],
+      "capabilities": [
+        "service-health",
+        "agent-discovery"
+      ],
+      "representativeQueries": [
+        "What public agent API endpoints does StreetSpot publish?",
+        "How can I check StreetSpot agent service health?"
+      ],
+      "version": "1.0.0"
     }
   ]
 }
