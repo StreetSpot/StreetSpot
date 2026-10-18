@@ -5,7 +5,9 @@
   "version": "1.0.0",
   "entries": [
     {
+      "identifier": "streetspot-mcp",
       "id": "streetspot-mcp",
+      "displayName": "StreetSpot Public MCP Server",
       "name": "StreetSpot Public MCP Server",
       "type": "mcp",
       "description": "Read-only tools for public StreetSpot information, official links, and general support guidance.",
@@ -13,7 +15,9 @@
       "protocol": "MCP"
     },
     {
+      "identifier": "streetspot-a2a",
       "id": "streetspot-a2a",
+      "displayName": "StreetSpot Informational A2A Agent",
       "name": "StreetSpot Informational A2A Agent",
       "type": "a2a",
       "description": "Informational agent responses about StreetSpot and public support links. No external actions or private data access.",
@@ -21,7 +25,9 @@
       "protocol": "A2A"
     },
     {
+      "identifier": "streetspot-agent-docs",
       "id": "streetspot-agent-docs",
+      "displayName": "StreetSpot Agent Documentation",
       "name": "StreetSpot Agent Documentation",
       "type": "documentation",
       "description": "Integration documentation and security boundaries for compatible agents.",
