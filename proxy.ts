@@ -22,8 +22,6 @@ export function proxy(request: NextRequest) {
   const protectedPath =
     pathname === "/agents" ||
     pathname.startsWith("/agents/") && pathname !== "/agents/login" ||
-    pathname === "/host/invitations" ||
-    pathname.startsWith("/host/invitations/") ||
     pathname === "/vendor-studio" ||
     pathname.startsWith("/vendor-studio/") ||
     pathname === "/api/agents" ||
@@ -48,5 +46,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/agents/:path*", "/host/invitations/:path*", "/vendor-studio/:path*", "/api/agents/:path*"],
+  matcher: ["/", "/agents/:path*", "/vendor-studio/:path*", "/api/agents/:path*"],
 }
