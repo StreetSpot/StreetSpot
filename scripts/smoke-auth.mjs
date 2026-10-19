@@ -12,9 +12,13 @@ function check(name, condition) {
   results.push(name)
 }
 
-for (const path of ["/agents", "/agents/advertising-search-analyst", "/host/invitations", "/vendor-studio"]) {
+for (const path of ["/agents", "/agents/advertising-search-analyst"]) {
   const page = await fetch(`${base}${path}`, { redirect: "manual" })
-  check(`Unauthenticated ${path} redirects to sign-in`, page.status >= 300 && page.status < 400 && (page.headers.get("location") || "").includes("/agents/login"))
+  check(`Unauthenticated ${path} redirects to operator sign-in`, page.status >= 300 && page.status < 400 && (page.headers.get("location") || "").includes("/agents/login"))
+}
+for (const path of ["/host/invitations", "/vendor-studio"]) {
+  const page = await fetch(`${base}${path}`, { redirect: "manual" })
+  check(`Unauthenticated ${path} redirects to account sign-in`, page.status >= 300 && page.status < 400 && (page.headers.get("location") || "").includes("/account"))
 }
 
 const apiUnauth = await fetch(`${base}/api/agents/advertising-search-analyst`, {
@@ -76,12 +80,6 @@ assert.ok(cookie, "Expected an agent session cookie")
 
 const privatePage = await fetch(`${base}/agents`, { headers: { Cookie: cookie }, redirect: "manual" })
 check("Authenticated operator can open agent console", privatePage.status === 200)
-
-const studio = await fetch(`${base}/vendor-studio`, { headers: { Cookie: cookie }, redirect: "manual" })
-check("Authenticated operator can open vendor studio", studio.status === 200)
-
-const invitations = await fetch(`${base}/host/invitations`, { headers: { Cookie: cookie }, redirect: "manual" })
-check("Authenticated operator can open private invitation studio", invitations.status === 200)
 
 const analyst = await fetch(`${base}/api/agents/advertising-search-analyst`, {
   method: "POST",
