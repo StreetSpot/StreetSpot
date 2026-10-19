@@ -41,7 +41,7 @@ export function PremiumUpgradeModal({
 
         <div className="space-y-4 p-5">
           <p className="text-sm text-muted-foreground">
-            Review the price and renewal terms at Stripe checkout. StreetSpot cannot verify payment or activate paid benefits automatically yet. Keep your receipt and <a className="text-primary underline" href="mailto:support@streetspotapp.com?subject=StreetSpot%20payment%20receipt">contact support</a> after checkout.
+            Subscriptions activate only after StreetSpot verifies payment with Stripe. To avoid duplicate subscription charges, current subscribers must contact support to change or cancel a plan. Keep your receipt and <a className="text-primary underline" href="mailto:support@streetspotapp.com?subject=StreetSpot%20payment%20receipt">contact support</a> after checkout.
           </p>
 
           {PREMIER_TIERS.map((tier) => {
@@ -94,9 +94,13 @@ export function PremiumUpgradeModal({
                   <div className="flex h-10 items-center justify-center rounded-lg bg-primary/10 text-sm font-medium text-primary">
                     Current Plan
                   </div>
+                ) : currentTier !== "none" ? (
+                  <a href="mailto:support@streetspotapp.com?subject=StreetSpot%20subscription%20change" className="flex h-10 w-full items-center justify-center rounded-lg border border-border text-sm font-semibold text-foreground">
+                    Contact support to change plan
+                  </a>
                 ) : (
                   <a
-                    href={tier.stripeUrl}
+                    href={`/api/billing/checkout?plan=${tier.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r ${tier.color} text-sm font-semibold text-white shadow transition hover:brightness-110`}

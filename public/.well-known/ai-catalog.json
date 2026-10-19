@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "StreetSpot",
+    "identifier": "https://streetspotapp.com",
+    "documentationUrl": "https://streetspotapp.com/agent-docs.md"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:streetspotapp.com:agent:mcp",
+      "displayName": "StreetSpot Public MCP Server",
+      "type": "application/mcp-server-card+json",
+      "url": "https://streetspotapp.com/.well-known/mcp/server-card.json",
+      "description": "Read-only tools for public StreetSpot information, official links, and general support guidance.",
+      "tags": [
+        "local-discovery",
+        "mcp",
+        "public-information"
+      ],
+      "capabilities": [
+        "streetspot-overview",
+        "public-links",
+        "support-guidance"
+      ],
+      "representativeQueries": [
+        "What is StreetSpot and what can people discover?",
+        "Where can I find StreetSpot support and privacy information?"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "identifier": "urn:air:streetspotapp.com:agent:a2a",
+      "displayName": "StreetSpot Informational A2A Agent",
+      "type": "application/json",
+      "url": "https://streetspotapp.com/.well-known/agent-card.json",
+      "description": "Informational agent responses about StreetSpot and public support links. No external actions or private data access.",
+      "tags": [
+        "local-discovery",
+        "a2a",
+        "public-information"
+      ],
+      "capabilities": [
+        "streetspot-overview",
+        "support-routing"
+      ],
+      "representativeQueries": [
+        "Tell me about StreetSpot's local discovery platform.",
+        "How do I contact StreetSpot support?"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "identifier": "urn:air:streetspotapp.com:api:openapi",
+      "displayName": "StreetSpot Public Agent API",
+      "type": "application/vnd.oai.openapi+json;version=3.1.0",
+      "url": "https://streetspotapp.com/openapi.json",
+      "description": "OpenAPI description for public health, MCP, and informational A2A endpoints.",
+      "tags": [
+        "openapi",
+        "api-discovery"
+      ],
+      "capabilities": [
+        "service-health",
+        "agent-discovery"
+      ],
+      "representativeQueries": [
+        "What public agent API endpoints does StreetSpot publish?",
+        "How can I check StreetSpot agent service health?"
+      ],
+      "version": "1.0.0"
+    }
+  ]
+}

@@ -17,12 +17,12 @@ import {
 export const metadata: Metadata = {
   title: "Privacy Policy - $treet$pot",
   description:
-    "How $treet$pot handles browser location, local feature data, vendor listings, and support requests.",
+    "How StreetSpot handles account data, location permissions, public listings, private events, payments, and analytics.",
   alternates: { canonical: "https://streetspotapp.com/privacy" },
   openGraph: { url: "https://streetspotapp.com/privacy" },
 }
 
-const EFFECTIVE_DATE = "March 4, 2026"
+const EFFECTIVE_DATE = "October 17, 2026"
 const SUPPORT_EMAIL = "support@streetspotapp.com"
 
 interface SectionProps {
@@ -136,9 +136,7 @@ export default function PrivacyPolicyPage() {
               title="Location Data Collection (GPS)"
             >
               <p>
-                $treet$pot relies on GPS-based location data to provide its
-                core functionality. We collect location information differently
-                depending on your role:
+                StreetSpot requests location only when you choose a location-based action. We use the information differently for vendors and customers:
               </p>
               <div className="rounded-lg border border-border bg-secondary/50 p-4">
                 <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-primary">
@@ -147,7 +145,7 @@ export default function PrivacyPolicyPage() {
                 <div className="space-y-1.5">
                   <DataRow
                     label="GPS coordinates"
-                    value="Collected only after you choose to start a browser-only vendor preview; this dashboard does not publish those coordinates to other users."
+                    value="Collected only after you choose Go Live or update your location. The coordinates are sent to StreetSpot and appear on the public map while your listing is live."
                   />
                   <DataRow
                     label="Precision"
@@ -155,7 +153,7 @@ export default function PrivacyPolicyPage() {
                   />
                   <DataRow
                     label="Duration"
-                    value="The current dashboard preview exists in browser memory and ends when the page is reloaded or the preview is stopped. It is not a server-published vendor listing."
+                    value="The live vendor location is stored with your server-side vendor listing until you update it, take the listing offline, or request deletion."
                   />
                   <DataRow
                     label="Background tracking"
@@ -187,7 +185,7 @@ export default function PrivacyPolicyPage() {
               title="Vendor Mapping & Public Profiles"
             >
               <p>
-                The current dashboard&apos;s Start Preview action does not publish a listing to other users. The public map displays vendor records returned by the configured backend. For those records, the following information may be public:
+                The public map displays server-backed vendor records only when the vendor has published a valid location and is live. Unclaimed candidate listings and private events are not shown as public vendor pins. Public listing details may include:
               </p>
               <div className="space-y-1.5">
                 <DataRow
@@ -208,11 +206,11 @@ export default function PrivacyPolicyPage() {
                 />
                 <DataRow
                   label="Gold status"
-                  value="Gold placement is not activated by this website's checkout flow. The public map shows Gold status only when it is present on a backend vendor record."
+                  value="Premium placement is shown only when StreetSpot confirms an active paid vendor subscription in the backend."
                 />
               </div>
               <p>
-                Browser-only preview data is held in memory and is cleared when the page is reloaded or the preview is stopped. Public vendor records returned by the backend are separate and may persist according to backend configuration; the browser-only closing timer does not delete those server records.
+                Public vendor records are stored in StreetSpot’s backend and remain until the owner takes them offline or requests deletion. Some finder tools still use browser storage and may not sync across devices.
               </p>
             </PolicySection>
 
@@ -240,41 +238,40 @@ export default function PrivacyPolicyPage() {
                   </thead>
                   <tbody className="divide-y divide-border">
                     <tr>
-                      <td className="px-4 py-2.5">Business name</td>
-                      <td className="px-4 py-2.5">Map display</td>
-                      <td className="px-4 py-2.5 font-mono text-xs">
-                        Browser preview only
-                      </td>
+                      <td className="px-4 py-2.5">Account and email</td>
+                      <td className="px-4 py-2.5">Sign-in, ownership, support</td>
+                      <td className="px-4 py-2.5 font-mono text-xs">Account lifetime</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2.5">GPS coordinates</td>
-                      <td className="px-4 py-2.5">Pin placement</td>
-                      <td className="px-4 py-2.5 font-mono text-xs">
-                        Browser preview only
-                      </td>
+                      <td className="px-4 py-2.5">Vendor listing and GPS</td>
+                      <td className="px-4 py-2.5">Public map while live</td>
+                      <td className="px-4 py-2.5 font-mono text-xs">Until offline or deleted</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2.5">Closing time</td>
-                      <td className="px-4 py-2.5">Auto-removal</td>
-                      <td className="px-4 py-2.5 font-mono text-xs">
-                        Browser preview only
-                      </td>
+                      <td className="px-4 py-2.5">Claim requests</td>
+                      <td className="px-4 py-2.5">Ownership verification</td>
+                      <td className="px-4 py-2.5 font-mono text-xs">Until resolved or deleted</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2.5">Payment info</td>
-                      <td className="px-4 py-2.5">Gold subscription</td>
-                      <td className="px-4 py-2.5 font-mono text-xs">
-                        Handled by Stripe
-                      </td>
+                      <td className="px-4 py-2.5">Private events and invites</td>
+                      <td className="px-4 py-2.5">Guest access and hosting</td>
+                      <td className="px-4 py-2.5 font-mono text-xs">Until deleted or retained for legal needs</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2.5">Payment status</td>
+                      <td className="px-4 py-2.5">Subscriptions and event packages</td>
+                      <td className="px-4 py-2.5 font-mono text-xs">Handled by Stripe; status stored by StreetSpot</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2.5">Website analytics</td>
+                      <td className="px-4 py-2.5">Page views and performance</td>
+                      <td className="px-4 py-2.5 font-mono text-xs">Aggregate provider metrics</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <p>
-                This website&apos;s vendor dashboard does not provide a verified
-                account sign-in. Do not treat a name entered in the dashboard
-                as a verified identity. The support email is used only when you
-                choose to contact $treet$pot.
+                StreetSpot uses account authentication for vendor claims, vendor publishing, and private event hosting. We may process your account identifier and email address to secure those features and respond to support requests.
               </p>
             </PolicySection>
 
@@ -292,15 +289,15 @@ export default function PrivacyPolicyPage() {
                 />
                 <DataRow
                   label="Browser storage"
-                  value="Some tools save favorites, parking, spots, reviews, messages, travel records, and claim requests in this browser's local storage. These records are not synced to a $treet$pot account or shared across devices."
+                  value="Some finder tools save favorites, parking, and travel records in browser storage. Vendor claims, server-published listings, private event drafts, invitations, and billing status are stored in StreetSpot's backend and are subject to account access controls."
                 />
                 <DataRow
                   label="Payment security"
-                  value="The plan links open Stripe-hosted checkout. This website does not collect card details or verify or record a completed payment in a $treet$pot account."
+                  value="Stripe-hosted checkout collects payment details. StreetSpot stores the payment status, plan, billing period, and Stripe reference identifiers needed to activate or revoke paid features; StreetSpot does not store full card numbers."
                 />
                 <DataRow
                   label="Third-party access"
-                  value="We do not sell, share, or provide your data to any third party for marketing or advertising purposes."
+                  value="StreetSpot does not sell personal information. Providers such as Supabase, Stripe, Vercel, and OpenStreetMap may process the data needed to provide authentication, hosting, payments, analytics, and map tiles under their own policies."
                 />
                 <DataRow
                   label="Map tile provider"
@@ -316,7 +313,7 @@ export default function PrivacyPolicyPage() {
               title="Payments & Subscriptions"
             >
               <p>
-                The vendor dashboard contains links to Stripe-hosted plan checkout. Those links leave $treet$pot and are governed by the checkout provider&apos;s terms:
+                Vendor subscriptions and paid event-hosting packages use Stripe-hosted checkout. Stripe processes payment details under its own terms:
               </p>
               <div className="space-y-1.5">
                 <DataRow
@@ -325,7 +322,7 @@ export default function PrivacyPolicyPage() {
                 />
                 <DataRow
                   label="Status"
-                  value="This website has no payment webhook or authenticated subscription state, so a return to the site does not verify payment or activate a plan."
+                  value="StreetSpot receives server-side payment and subscription events from Stripe. A successful return URL alone does not activate a plan; Stripe confirmation is required."
                 />
               </div>
               <p>
@@ -356,15 +353,15 @@ export default function PrivacyPolicyPage() {
                 />
                 <DataRow
                   label="Go offline"
-                  value="Toggle your live status off at any time. Your browser-only preview pin is removed from this browser's map state. This does not delete any separate server-side vendor record."
+                  value="Toggle your live status off at any time. This removes the listing from the public live map but does not delete the vendor record or past billing records."
                 />
                 <DataRow
                   label="Data deletion"
-                  value="Use the Delete Account page to clear StreetSpot-prefixed local/session data in this browser. This does not delete server-side data; account deletion requests can be sent to support because no account backend is configured."
+                  value="Use the Delete Account page for the available account-deletion flow or contact support@streetspotapp.com. Requests may require verification; some payment, fraud-prevention, and legal records may need to be retained where required by law."
                 />
                 <DataRow
                   label="Cookie usage"
-                  value="$treet$pot uses sessionStorage for a temporary vendor ID. The business name is held in in-memory interface state rather than saved to sessionStorage. No tracking cookies are used."
+                  value="StreetSpot uses secure session cookies for account authentication and browser storage for selected local features. Vercel Web Analytics and Speed Insights collect aggregate page-view and performance metrics. Stripe may use its own technologies on checkout pages."
                 />
               </div>
             </PolicySection>

@@ -1,0 +1,74 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "StreetSpot Public Agent API",
+    "version": "1.0.0",
+    "description": "Small public read-only API for agent discovery and health. It does not expose private account data or sensitive operations."
+  },
+  "servers": [
+    {
+      "url": "https://streetspotapp.com"
+    }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Service health",
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "Application health status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    },
+                    "service": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mcp": {
+      "post": {
+        "summary": "MCP JSON-RPC endpoint",
+        "operationId": "mcpJsonRpc",
+        "description": "Read-only tools for public platform overview, discovery links, and support guidance.",
+        "responses": {
+          "200": {
+            "description": "JSON-RPC response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "405": {
+            "description": "Unsupported method"
+          }
+        }
+      }
+    },
+    "/api/agents/a2a": {
+      "post": {
+        "summary": "A2A informational endpoint",
+        "operationId": "a2aMessageSend",
+        "description": "Returns informational responses only; does not execute actions or access external accounts.",
+        "responses": {
+          "200": {
+            "description": "JSON-RPC response"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    }
+  }
+}

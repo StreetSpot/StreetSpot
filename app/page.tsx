@@ -38,6 +38,14 @@ function HomeContent() {
   const [finderTab, setFinderTab] = useState<FinderTab>("map")
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const requestedName = params.get("businessName")
+    if (params.get("view") === "founder-login") {
+      window.setTimeout(() => {
+        setView("founder-login")
+        if (requestedName) setBusinessName(requestedName)
+      }, 0)
+    }
     window.history.replaceState({ streetSpotView: "landing" }, "", window.location.href)
     const restoreView = (event: PopStateEvent) => {
       const next = event.state?.streetSpotView
@@ -145,9 +153,10 @@ function HomeContent() {
           Choose a location to discover nearby spots
         </span>
               <a href="/themes" className="transition-colors hover:text-foreground">Theme Studio</a>
-              <a href="/host/invitations" className="transition-colors hover:text-foreground">Private Invitations</a>
-              <a href="/vendor-studio" className="transition-colors hover:text-foreground">Vendor Studio</a>
-              <a href="/agents" className="transition-colors hover:text-foreground">Agent Control</a>
+              <a href="/account" className="transition-colors hover:text-foreground">Sign in / Create account</a>
+
+
+
               <a
                 href="/support"
                 className="flex items-center gap-1.5 transition-colors hover:text-foreground"

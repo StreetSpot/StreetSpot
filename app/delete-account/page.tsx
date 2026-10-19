@@ -28,10 +28,12 @@ export default function DeleteAccountPage() {
         relevant data, and do not include passwords or payment details.
       </p>
       <p className="mt-4 leading-7 text-muted-foreground">
-        $treet$pot does not currently provide account sign-in or a connected
-        account database in this website. Some feature data exists only in this
-        browser. Contact support for help with data that cannot be removed here.
-        This page does not claim that server-side account deletion has occurred.
+        StreetSpot account sign-in and server-side features are enabled. The
+        button on this page clears only local browser data. Server-side account
+        deletion is handled through support while the automated deletion workflow
+        is being completed. We will verify the request and explain any payment,
+        fraud-prevention, or legal records that must be retained. This page does
+        not claim that server-side deletion has already occurred.
       </p>
       <DeleteLocalDataButton />
     </main>

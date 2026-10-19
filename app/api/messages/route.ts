@@ -12,9 +12,9 @@ export async function GET(request: NextRequest) {
     const query = conversationId
       ? `messages?conversation_id=eq.${id(conversationId)}&or=(sender_id.eq.${id(user.id)},recipient_id.eq.${id(user.id)})&select=*&order=created_at.asc`
       : `messages?or=(sender_id.eq.${id(user.id)},recipient_id.eq.${id(user.id)})&select=*&order=created_at.desc&limit=100`
-    const messages = await supabaseFetch<unknown[]>(query)
+    const messages = await supabaseFetch<unknown[]>(query, {}, user.accessToken)
     if (conversationId) {
-      await supabaseFetch(`messages?conversation_id=eq.${id(conversationId)}&recipient_id=eq.${id(user.id)}&read_at=is.null`, { method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ read_at: new Date().toISOString() }) })
+      await supabaseFetch(`messages?conversation_id=eq.${id(conversationId)}&recipient_id=eq.${id(user.id)}&read_at=is.null`, { method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ read_at: new Date().toISOString() }) }, user.accessToken)
     }
     return Response.json({ ok: true, messages })
   } catch (error) {
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const recipientId = typeof body.recipientId === "string" ? body.recipientId : ""
     const content = typeof body.content === "string" ? body.content.trim() : ""
     if (!safeId(conversationId) || !safeId(recipientId) || !content || content.length > 5000 || recipientId === user.id) return Response.json({ ok: false, code: "INVALID_MESSAGE" }, { status: 400 })
-    const conversation = await supabaseFetch<Record<string, unknown>[]>(`conversations?id=eq.${id(conversationId)}&select=*&limit=1`)
+    const conversation = await supabaseFetch<Record<string, unknown>[]>(`conversations?id=eq.${id(conversationId)}&select=*&limit=1`, {}, user.accessToken)
     if (!conversation.length) return Response.json({ ok: false, code: "CONVERSATION_NOT_FOUND" }, { status: 404 })
     const participantFields = Object.entries(conversation[0])
       .filter(([key]) => /(?:participant|member|sender|recipient|customer|owner|user).*?(?:id|ids)$/i.test(key))
@@ -45,8 +45,8 @@ export async function POST(request: NextRequest) {
     if (!participantFields.includes(user.id) || !participantFields.includes(recipientId)) {
       return Response.json({ ok: false, code: "CONVERSATION_ACCESS_DENIED" }, { status: 403 })
     }
-    const rows = await supabaseFetch<unknown[]>("messages", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify({ conversation_id: conversationId, sender_id: user.id, recipient_id: recipientId, content }) })
-    await supabaseFetch(`conversations?id=eq.${id(conversationId)}`, { method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ updated_at: new Date().toISOString(), last_message_at: new Date().toISOString() }) })
+    const rows = await supabaseFetch<unknown[]>("messages", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify({ conversation_id: conversationId, sender_id: user.id, recipient_id: recipientId, content }) }, user.accessToken)
+    await supabaseFetch(`conversations?id=eq.${id(conversationId)}`, { method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ updated_at: new Date().toISOString(), last_message_at: new Date().toISOString() }) }, user.accessToken)
     return Response.json({ ok: true, message: rows?.[0] ?? null }, { status: 201 })
   } catch (error) {
     return errorResponse(error)

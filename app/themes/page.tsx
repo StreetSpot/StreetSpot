@@ -11,7 +11,7 @@ const offers = [
     features: ["1 theme pack", "Matching app/profile icon treatment", "Theme stays yours after purchase"],
     icon: ShoppingBag,
     style: "from-orange-500 to-rose-500",
-    checkout: process.env.NEXT_PUBLIC_STRIPE_THEME_STREET_STYLE_URL,
+    checkout: process.env.NEXT_PUBLIC_STRIPE_THEME_STREET_STYLE_URL ? "/api/billing/checkout?plan=street_style" : undefined,
     badge: "One-time purchase",
   },
   {
@@ -23,7 +23,7 @@ const offers = [
     features: ["All standard theme packs", "Seasonal theme drops", "Profile and listing styling"],
     icon: Palette,
     style: "from-emerald-600 to-teal-500",
-    checkout: process.env.NEXT_PUBLIC_STRIPE_THEME_CREATOR_URL,
+    checkout: process.env.NEXT_PUBLIC_STRIPE_THEME_CREATOR_URL ? "/api/billing/checkout?plan=creator" : undefined,
     badge: "Monthly subscription",
   },
   {
@@ -35,7 +35,7 @@ const offers = [
     features: ["All Creator Themes benefits", "Premium logo and cover treatments", "Expanded branded profile options", "New premium designs as released"],
     icon: Crown,
     style: "from-slate-700 to-slate-500",
-    checkout: process.env.NEXT_PUBLIC_STRIPE_THEME_BRAND_STUDIO_URL,
+    checkout: process.env.NEXT_PUBLIC_STRIPE_THEME_BRAND_STUDIO_URL ? "/api/billing/checkout?plan=brand_studio" : undefined,
     badge: "Premium subscription",
   },
 ]

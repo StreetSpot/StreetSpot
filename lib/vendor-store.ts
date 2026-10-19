@@ -9,6 +9,7 @@ export interface Vendor {
   closingTime: string // HH:mm format
   isLive: boolean
   isPremium: boolean
+  isClaimedCandidate?: boolean
   createdAt: number
 }
 
@@ -20,10 +21,10 @@ export function getMinutesRemaining(closingTime: string): number {
   return Math.max(0, Math.floor((closing.getTime() - now.getTime()) / 60000))
 }
 
-// The map reads durable vendor records from the production API. Local writes are
-// still supported for the current dashboard UI until authenticated publishing is wired.
+// The map reads durable vendor records from the production API. Local writes mirror successful authenticated publishing actions.
 let vendors: Vendor[] = []
 let listeners: Array<() => void> = []
+let ownedVendorIds = new Set<string>()
 let loadStarted = false
 let vendorLoadStatus: "loading" | "ready" | "unavailable" = "loading"
 
@@ -45,7 +46,9 @@ async function loadVendors() {
       emitChange()
       return
     }
-    vendors = payload.vendors
+    const publicVendors = payload.vendors
+    const retainedOwned = vendors.filter((vendor) => ownedVendorIds.has(vendor.id) && !publicVendors.some((item) => item.id === vendor.id))
+    vendors = [...publicVendors, ...retainedOwned]
     vendorLoadStatus = "ready"
     emitChange()
   } catch {
@@ -75,7 +78,15 @@ export const vendorStore = {
     return vendorLoadStatus
   },
   addVendor(vendor: Vendor) {
-    vendors = [...vendors, vendor]
+    vendors = [...vendors.filter((current) => current.id !== vendor.id), vendor]
+    emitChange()
+  },
+  upsertVendor(vendor: Vendor) {
+    ownedVendorIds = new Set([...ownedVendorIds, vendor.id])
+    const exists = vendors.some((current) => current.id === vendor.id)
+    vendors = exists
+      ? vendors.map((current) => current.id === vendor.id ? { ...current, ...vendor } : current)
+      : [...vendors, vendor]
     emitChange()
   },
   updateVendor(id: string, updates: Partial<Vendor>) {

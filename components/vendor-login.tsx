@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { LogIn, Store } from "lucide-react"
 
 interface VendorLoginProps {
@@ -8,13 +9,24 @@ interface VendorLoginProps {
 }
 
 export function VendorLogin({ onLogin }: VendorLoginProps) {
+  const router = useRouter()
   const [name, setName] = useState("")
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (name.trim()) {
-      onLogin(name.trim())
+    const businessName = name.trim()
+    if (!businessName) return
+    try {
+      const response = await fetch("/api/auth/me", { cache: "no-store" })
+      if (response.ok) {
+        onLogin(businessName)
+        return
+      }
+    } catch {
+      // Send the user through the account screen if session status cannot be checked.
     }
+    const next = `/?view=founder-login&businessName=${encodeURIComponent(businessName)}`
+    router.push(`/account?next=${encodeURIComponent(next)}`)
   }
 
   return (
@@ -30,7 +42,7 @@ export function VendorLogin({ onLogin }: VendorLoginProps) {
             Vendor Dashboard
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Enter a business name to open this browser&apos;s vendor session. This does not verify ownership or create an account.
+            Sign in or create a StreetSpot account to publish your business on the live map. Only list a business you are authorized to represent.
           </p>
         </div>
 

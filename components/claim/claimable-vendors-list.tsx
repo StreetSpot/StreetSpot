@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Search, Check, MapPin } from "lucide-react"
 import { useClaimableVendors, claimStore } from "@/lib/claim-store"
 
@@ -10,22 +11,56 @@ interface ClaimableVendorsListProps {
 }
 
 export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps) {
+  const router = useRouter()
   const vendors = useClaimableVendors()
   const [query, setQuery] = useState("")
   const [justClaimed, setJustClaimed] = useState<string | null>(null)
+  const [busyId, setBusyId] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const filtered = query.trim()
     ? claimStore.search(query)
     : vendors
 
   const unclaimed = filtered.filter((v) => !v.claimed && v.claimStatus !== "PENDING_VERIFICATION")
-  const claimed = filtered.filter((v) => v.claimed)
+  const claimed = filtered.filter((v) => v.claimStatus === "CLAIMED")
 
-  function handleClaim(id: string) {
+  async function handleClaim(id: string) {
+    if (busyId) return
     const who = claimerName?.trim() || "Vendor"
-    claimStore.claim(id, who)
-    setJustClaimed(id)
-    setTimeout(() => setJustClaimed(null), 2500)
+    setBusyId(id)
+    setErrorMessage(null)
+    try {
+      const response = await fetch("/api/vendor/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vendorId: id, note: "Claim request submitted by " + who }),
+      })
+      const result = await response.json().catch(() => ({})) as { ok?: boolean; code?: string }
+      if (response.status === 401) {
+        router.push("/account?next=" + encodeURIComponent("/vendor-studio"))
+        return
+      }
+      if (!response.ok) {
+        const messages: Record<string, string> = {
+          VENDOR_ALREADY_CLAIMED: "This listing already has an owner.",
+          CLAIM_PENDING_REVIEW: "A claim for this listing is already under review.",
+          CLAIM_ALREADY_EXISTS: "Your claim is already on file.",
+          VENDOR_NOT_FOUND: "This candidate is no longer available. Refresh the list.",
+        }
+        setErrorMessage(messages[result.code ?? ""] ?? "StreetSpot could not submit this claim. Try again.")
+        await claimStore.refreshFromServer()
+        return
+      }
+      claimStore.claim(id, who)
+      await claimStore.refreshFromServer()
+      setJustClaimed(id)
+      setTimeout(() => setJustClaimed(null), 2500)
+    } catch {
+      setErrorMessage("StreetSpot could not reach the claim service. No ownership was changed.")
+    } finally {
+      setBusyId(null)
+    }
   }
 
   return (
@@ -34,8 +69,10 @@ export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps)
         Claim Your Spot
       </h3>
       <p className="mb-4 text-xs text-muted-foreground">
-        Request a review for an existing listing. Requests are saved in this browser only; ownership is not verified or transferred here.
+        Request a review for an existing listing. Claims are sent to StreetSpot for verification; ownership is not transferred until staff approves the request.
       </p>
+
+      {errorMessage && <p role="alert" className="mb-3 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">{errorMessage}</p>}
 
       {/* Search */}
       <div className="relative mb-4">
@@ -76,14 +113,17 @@ export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps)
                   </p>
                 </div>
                 <button
-                  onClick={() => handleClaim(v.id)}
-                  className="shrink-0 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground transition hover:opacity-90"
+                  onClick={() => void handleClaim(v.id)}
+                  disabled={busyId !== null}
+                  className="shrink-0 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground transition hover:opacity-90 disabled:cursor-wait disabled:opacity-60"
                 >
                   {justClaimed === v.id ? (
                     <span className="flex items-center gap-1">
                       <Check className="h-3.5 w-3.5" />
                       Request recorded
                     </span>
+                  ) : busyId === v.id ? (
+                    "Submitting…"
                   ) : (
                     "Request review"
                   )}
@@ -98,7 +138,7 @@ export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps)
         <div className="mb-4">
           <p className="mb-2 text-xs font-medium text-amber-400">Pending verification</p>
           {filtered.filter((v) => v.claimStatus === "PENDING_VERIFICATION").map((vendor) => (
-            <p key={vendor.id} className="text-sm text-muted-foreground">{vendor.name} · Request saved on this device</p>
+            <p key={vendor.id} className="text-sm text-muted-foreground">{vendor.name} · Awaiting StreetSpot verification</p>
           ))}
         </div>
       )}
@@ -119,7 +159,7 @@ export function ClaimableVendorsList({ claimerName }: ClaimableVendorsListProps)
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm text-foreground">{v.name}</p>
                   <p className="truncate text-[11px] text-muted-foreground">
-                    Claimed by {v.claimedBy || "Vendor"}
+                    Verified owner
                   </p>
                 </div>
               </div>

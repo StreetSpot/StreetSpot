@@ -1,0 +1,32 @@
+{
+  "name": "StreetSpot Agent",
+  "description": "Provides public information about StreetSpot, a local discovery platform for vendors, pop-up shops, businesses, events, and community spots. This informational agent does not perform external account actions.",
+  "version": "1.0.0",
+  "supportedInterfaces": [
+    {
+      "url": "https://streetspotapp.com/api/agents/a2a",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "skills": [
+    {
+      "id": "streetspot-overview",
+      "name": "StreetSpot overview",
+      "description": "Explain StreetSpot's public platform features and direct users to official resources."
+    },
+    {
+      "id": "streetspot-support-routing",
+      "name": "Support routing",
+      "description": "Direct account-specific or unresolved support questions to official StreetSpot support."
+    }
+  ],
+  "securitySchemes": {},
+  "security": [],
+  "documentationUrl": "https://streetspotapp.com/agent-docs.md"
+}

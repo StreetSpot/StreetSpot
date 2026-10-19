@@ -22,6 +22,8 @@ jobs:
     name: Typecheck and production build
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      STREETSPOT_AGENT_ACCESS_PASSWORD: ci-only-password-not-for-production-12345
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -37,7 +39,26 @@ jobs:
           cache: pnpm
       - name: Install locked dependencies
         run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm run lint
       - name: Typecheck
         run: pnpm run typecheck
       - name: Build production app
         run: pnpm run build
+      - name: Smoke-test protected agent routes
+        shell: bash
+        env:
+          STREETSPOT_AGENT_ACCESS_PASSWORD: ci-only-password-not-for-production-12345
+          STREETSPOT_SMOKE_BASE_URL: http://127.0.0.1:3100
+        run: |
+          pnpm start -- --hostname 127.0.0.1 --port 3100 > /tmp/streetspot-next.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:3100/agents/login > /dev/null; then
+              break
+            fi
+            sleep 2
+          done
+          curl --silent --fail http://127.0.0.1:3100/agents/login > /dev/null
+          pnpm run smoke:auth

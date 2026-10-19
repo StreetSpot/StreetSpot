@@ -1,14 +1,11 @@
 "use client"
 
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useState } from "react"
+import { useRouter } from "next/navigation"
 import { LockKeyhole, ShieldCheck } from "lucide-react"
 
 export default function AgentLoginPage() {
-  const [nextPath, setNextPath] = useState("/agents")
-  useEffect(() => {
-    const requestedNext = new URLSearchParams(window.location.search).get("next") || "/agents"
-    setNextPath(requestedNext.startsWith("/") && !requestedNext.startsWith("//") && !requestedNext.startsWith("/\\") ? requestedNext : "/agents")
-  }, [])
+  const router = useRouter()
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [busy, setBusy] = useState(false)
@@ -26,7 +23,7 @@ export default function AgentLoginPage() {
       })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || "Sign-in failed.")
-      window.location.assign(nextPath)
+      router.replace("/agents")
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Sign-in failed.")
     } finally {

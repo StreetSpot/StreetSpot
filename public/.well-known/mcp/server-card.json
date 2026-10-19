@@ -1,0 +1,26 @@
+{
+  "serverInfo": {
+    "name": "StreetSpot Public MCP Server",
+    "version": "1.0.0",
+    "description": "Read-only public information and support routing for StreetSpot."
+  },
+  "endpoint": "https://streetspotapp.com/api/mcp",
+  "transport": "streamable-http",
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    },
+    "resources": {
+      "subscribe": false,
+      "listChanged": false
+    },
+    "prompts": {
+      "listChanged": false
+    }
+  },
+  "authentication": {
+    "required": false,
+    "notes": "Only public, read-only tools are exposed. This server does not provide access to private user data, payments, vendor claims, publishing, or operator workflows."
+  },
+  "documentationUrl": "https://streetspotapp.com/agent-docs.md"
+}

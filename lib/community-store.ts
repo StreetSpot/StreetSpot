@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from "react"
+import { useEffect, useSyncExternalStore } from "react"
 
 /**
  * Gem / spot types.
@@ -92,11 +92,69 @@ function saveSpots(spots: CommunitySpot[]) {
 let spots: CommunitySpot[] = []
 let listeners: Array<() => void> = []
 let initialized = false
+let remoteLoadInFlight = false
+
+async function loadRemoteSpots() {
+  if (typeof window === "undefined" || remoteLoadInFlight) return
+  remoteLoadInFlight = true
+  try {
+    const response = await fetch("/api/spots", { cache: "no-store" })
+    if (!response.ok) return
+    const payload = await response.json() as { spots?: Array<Record<string, unknown>> }
+    if (!Array.isArray(payload.spots)) return
+    const remoteSpots: CommunitySpot[] = payload.spots.flatMap((value) => {
+      if (!value || typeof value.id !== "string" || typeof value.name !== "string" || typeof value.type !== "string") return []
+      if (!(value.type in SPOT_TYPE_LABELS)) return []
+      return [{
+        id: value.id,
+        name: value.name,
+        type: value.type as SpotType,
+        description: typeof value.description === "string" ? value.description : "",
+        lat: typeof value.lat === "number" ? value.lat : Number.NaN,
+        lng: typeof value.lng === "number" ? value.lng : Number.NaN,
+        createdBy: "community",
+        ...(typeof value.eventDate === "string" ? { eventDate: value.eventDate } : {}),
+        isActive: value.isActive === true,
+        claimed: value.claimed === true || isSkateType(value.type as SpotType),
+        claimStatus: value.claimed === true || isSkateType(value.type as SpotType) ? "CLAIMED" : "UNCLAIMED",
+        createdAt: typeof value.createdAt === "number" ? value.createdAt : Date.now(),
+      }]
+    })
+    const localOnly = spots.filter((spot) => spot.id.startsWith("spot-"))
+    spots = [...remoteSpots, ...localOnly]
+    saveSpots(spots)
+    emitChange()
+  } catch {
+    // Local spots remain available if the shared discovery backend is temporarily offline.
+  } finally {
+    remoteLoadInFlight = false
+  }
+}
+
+async function persistSpot(spot: CommunitySpot) {
+  try {
+    const response = await fetch("/api/spots", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: spot.name, type: spot.type, description: spot.description, lat: spot.lat, lng: spot.lng, eventDate: spot.eventDate }),
+      cache: "no-store",
+    })
+    if (!response.ok) return
+    const payload = await response.json() as { spot?: CommunitySpot }
+    if (!payload.spot || typeof payload.spot.id !== "string") return
+    spots = spots.map((current) => current.id === spot.id ? payload.spot as CommunitySpot : current)
+    saveSpots(spots)
+    emitChange()
+  } catch {
+    // A spot remains locally saved if account publishing is unavailable.
+  }
+}
 
 function ensureInit() {
   if (!initialized && typeof window !== "undefined") {
     spots = loadSpots()
     initialized = true
+    void loadRemoteSpots()
   }
 }
 
@@ -135,6 +193,7 @@ export const communityStore = {
     spots = [newSpot, ...spots]
     saveSpots(spots)
     emitChange()
+    void persistSpot(newSpot)
     return newSpot
   },
   /** Only the actual owner of a non-skate gem should claim it */
@@ -186,11 +245,18 @@ export const communityStore = {
 }
 
 export function useCommunitySpots() {
-  return useSyncExternalStore(
+  const snapshot = useSyncExternalStore(
     communityStore.subscribe,
     communityStore.getSnapshot,
     () => []
   )
+  useEffect(() => {
+    ensureInit()
+    void loadRemoteSpots()
+    const interval = window.setInterval(() => void loadRemoteSpots(), 60000)
+    return () => window.clearInterval(interval)
+  }, [])
+  return snapshot
 }
 
 export const SPOT_TYPE_LABELS: Record<SpotType, string> = {
