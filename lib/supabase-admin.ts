@@ -79,7 +79,7 @@ export async function supabaseFetch<T>(path: string, init: RequestInit = {}, acc
 
 export async function supabaseServiceFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const { url } = getSupabaseConfig()
-  const serviceKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY
   if (!serviceKey) throw new Error("Supabase server configuration is missing")
 
   const response = await fetch(`${url}/rest/v1/${path}`, {
