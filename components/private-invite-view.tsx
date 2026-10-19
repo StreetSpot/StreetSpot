@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { trackConversion } from "@/lib/analytics-events"
 import { CalendarDays, LockKeyhole, MapPin, Navigation, ShieldCheck } from "lucide-react"
 
 type PrivateEvent = {
@@ -50,7 +51,11 @@ export function PrivateInviteView({ token }: { token: string }) {
       .then(async (response) => {
         const result = await response.json().catch(() => null)
         if (!response.ok || !result?.ok || !result?.event) throw new Error(result?.message || "This invitation link is invalid or has expired.")
-        if (!cancelled) setEvent(result.event as PrivateEvent)
+        if (!cancelled) {
+          const loadedEvent = result.event as PrivateEvent
+          setEvent(loadedEvent)
+          trackConversion("private_invitation_opened", { style: loadedEvent.invitationStyle })
+        }
       })
       .catch((cause) => { if (!cancelled) setError(cause instanceof Error ? cause.message : "This invitation could not be loaded.") })
       .finally(() => { if (!cancelled) setLoading(false) })

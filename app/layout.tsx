@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { GoogleAnalytics } from "@/components/google-analytics"
 import "./globals.css"
 import { SupportChatWidget } from "@/components/support-chat-widget"
 import { WebMCPRegistration } from "@/components/webmcp-registration"
@@ -13,6 +14,7 @@ const brandName = "StreetSpot | Discover What's Happening Nearby"
 const brandDescription =
   "Discover food trucks, pop-up shops, local businesses, neighborhood events, skate spots, and hidden gems near you. Explore the live map and connect with local businesses."
 const siteUrl = "https://streetspotapp.com"
+const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim()
 
 export const metadata: Metadata = {
   title: { default: brandName, template: "%s | StreetSpot" },
@@ -51,6 +53,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   icons: {
     icon: [
+      { url: "/icon.svg", type: "image/svg+xml", sizes: "any" },
       { url: "/brand-icon-192.png", type: "image/png", sizes: "192x192" },
       { url: "/brand-icon-512.png", type: "image/png", sizes: "512x512" },
     ],
@@ -114,6 +117,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className={`${_inter.variable} ${_jetbrainsMono.variable} font-sans antialiased`}>
         {children}
+        <GoogleAnalytics measurementId={gaMeasurementId} />
         <WebMCPRegistration />
         <SupportChatWidget />
         <Analytics />

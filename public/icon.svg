@@ -1,26 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">$treet$pot map-pin logo</title>
-  <desc id="desc">Neon lime map pin with a dark dollar sign and street-purple graffiti accent on an asphalt background.</desc>
-  <defs>
-    <linearGradient id="asphalt" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1b1a22"/>
-      <stop offset="1" stop-color="#111116"/>
-    </linearGradient>
-    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="8" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>
-  <rect width="512" height="512" fill="url(#asphalt)"/>
-  <path d="M56 145 L104 126 L86 164 L132 150 L109 188" fill="none" stroke="#D8A5FF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
-  <path d="M389 331 L429 314 L411 351 L450 339" fill="none" stroke="#D8A5FF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
-  <path d="M256 432 C217 376 135 292 135 205 C135 137 189 83 256 83 C323 83 377 137 377 205 C377 292 295 376 256 432 Z" fill="#B6FF38" filter="url(#glow)"/>
-  <path d="M256 432 C217 376 135 292 135 205 C135 137 189 83 256 83 C323 83 377 137 377 205 C377 292 295 376 256 432 Z" fill="#B6FF38" stroke="#e0ffad" stroke-width="5" stroke-linejoin="round"/>
-  <circle cx="256" cy="205" r="91" fill="#111116"/>
-  <path d="M302 165 C288 150 270 144 249 146 C222 148 205 164 205 185 C205 208 222 218 252 225 C282 232 298 241 297 261 C296 282 276 296 249 295 C228 294 211 286 197 271" fill="none" stroke="#B6FF38" stroke-width="19" stroke-linecap="round"/>
-  <path d="M257 123 L257 311" stroke="#B6FF38" stroke-width="13" stroke-linecap="round"/>
-  <path d="M169 335 L196 352 L182 375" fill="none" stroke="#D8A5FF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="370" cy="119" r="7" fill="#D6A34D"/>
-  <circle cx="391" cy="143" r="4" fill="#D8A5FF"/>
-  <circle cx="122" cy="320" r="6" fill="#D6A34D"/>
+<title id="title">StreetSpot neon city map-pin icon</title><desc id="desc">A dollar-sign map pin over a night city skyline in neon lime, street purple, and money gold on asphalt black.</desc>
+<defs><linearGradient id="bg" x2="0.9" y2="1"><stop stop-color="#211c2b"/><stop offset="1" stop-color="#08090d"/></linearGradient><linearGradient id="pin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d8a5ff"/><stop offset=".46" stop-color="#b6ff38"/><stop offset="1" stop-color="#d6a34d"/></linearGradient><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect width="512" height="512" rx="104" fill="url(#bg)"/>
+<g fill="#292437" stroke="#d8a5ff" stroke-opacity=".4" stroke-width="3"><path d="M20 350V236h42v114z"/><path d="M68 350V172h52v178z"/><path d="M128 350V213h34v137z"/><path d="M350 350V202h40v148z"/><path d="M396 350V145h48v205z"/><path d="M450 350V240h42v110z"/></g>
+<g fill="#d6a34d" opacity=".9"><path d="M82 196h8v10h-8zM101 196h8v10h-8zM82 222h8v10h-8zM101 222h8v10h-8zM407 169h8v10h-8zM426 169h8v10h-8zM407 195h8v10h-8zM426 195h8v10h-8zM32 258h7v8h-7zM48 258h7v8h-7zM462 260h7v8h-7z"/></g>
+<path d="M18 355L125 328L203 348L284 322L372 347L494 315" fill="none" stroke="#b6ff38" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+<ellipse cx="256" cy="399" rx="137" ry="30" fill="#b6ff38" opacity=".13"/>
+<path d="M256 431C208 367 139 291 139 211a117 117 0 1 1 234 0c0 80-69 156-117 220z" fill="url(#pin)" stroke="#f1ffd3" stroke-width="5" filter="url(#glow)"/>
+<circle cx="256" cy="211" r="79" fill="#111116" stroke="#d8a5ff" stroke-width="5"/>
+<path d="M294 171c-11-12-26-18-44-17-23 1-39 15-39 34 0 19 15 28 42 34 27 6 41 14 40 31-1 18-18 31-42 31-18 0-34-7-46-20M256 132v164" fill="none" stroke="#b6ff38" stroke-width="15" stroke-linecap="round"/>
+<path d="M40 113l31-17-15 29 29-11M407 390l31-17-15 29 29-11" fill="none" stroke="#d8a5ff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="385" cy="90" r="7" fill="#d6a34d"/><circle cx="403" cy="109" r="4" fill="#b6ff38"/><circle cx="109" cy="391" r="5" fill="#d6a34d"/>
 </svg>

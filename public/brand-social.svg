@@ -1,35 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">$treet$pot: Bu!lt 4 Da Hu$tle</title>
-  <desc id="desc">Streetwise local discovery for vendors, events, skate spots, and hidden gems.</desc>
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#111116"/><stop offset=".55" stop-color="#1b1922"/><stop offset="1" stop-color="#111116"/></linearGradient>
-    <radialGradient id="limeGlow"><stop stop-color="#B6FF38" stop-opacity=".2"/><stop offset="1" stop-color="#B6FF38" stop-opacity="0"/></radialGradient>
-    <radialGradient id="purpleGlow"><stop stop-color="#D8A5FF" stop-opacity=".18"/><stop offset="1" stop-color="#D8A5FF" stop-opacity="0"/></radialGradient>
-    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter>
-  </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <ellipse cx="1020" cy="110" rx="350" ry="280" fill="url(#limeGlow)"/>
-  <ellipse cx="130" cy="540" rx="390" ry="270" fill="url(#purpleGlow)"/>
-  <g opacity=".14" stroke="#D8A5FF" stroke-width="1">
-    <path d="M0 70H1200 M0 140H1200 M0 210H1200 M0 280H1200 M0 350H1200 M0 420H1200 M0 490H1200 M0 560H1200"/>
-    <path d="M70 0V630 M140 0V630 M210 0V630 M280 0V630 M350 0V630 M420 0V630 M490 0V630 M560 0V630 M630 0V630 M700 0V630 M770 0V630 M840 0V630 M910 0V630 M980 0V630 M1050 0V630 M1120 0V630"/>
-  </g>
-  <g transform="translate(805 88)">
-    <path d="M156 380 C105 305 30 225 30 143 C30 65 86 10 156 10 C226 10 282 65 282 143 C282 225 207 305 156 380Z" fill="#B6FF38" opacity=".2" filter="url(#shadow)"/>
-    <path d="M156 380 C105 305 30 225 30 143 C30 65 86 10 156 10 C226 10 282 65 282 143 C282 225 207 305 156 380Z" fill="#B6FF38" stroke="#e0ffad" stroke-width="5"/>
-    <circle cx="156" cy="143" r="88" fill="#111116"/>
-    <path d="M201 104 C188 90 170 84 150 86 C123 88 106 104 106 125 C106 147 124 158 153 165 C181 172 198 181 197 201 C196 222 176 235 149 234 C128 233 111 225 97 210" fill="none" stroke="#B6FF38" stroke-width="18" stroke-linecap="round"/>
-    <path d="M157 63V251" stroke="#B6FF38" stroke-width="12" stroke-linecap="round"/>
-  </g>
-  <g transform="translate(72 98)">
-    <path d="M0 15L38 0L25 29L67 15L47 49" fill="none" stroke="#D8A5FF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-    <text x="0" y="110" fill="#D8A5FF" font-family="Arial, sans-serif" font-size="22" font-weight="800" letter-spacing="5">REAL-TIME LOCAL DISCOVERY</text>
-    <text x="-4" y="202" font-family="Arial Black, Arial, sans-serif" font-size="78" font-weight="900" letter-spacing="-4"><tspan fill="#B6FF38">$</tspan><tspan fill="#f4f3f7">treet</tspan><tspan fill="#B6FF38">$</tspan><tspan fill="#f4f3f7">pot</tspan></text>
-    <text x="0" y="270" fill="#B6FF38" font-family="Arial Black, Arial, sans-serif" font-size="42" font-weight="900" letter-spacing="1">BU!LT 4 DA HU$TLE.</text>
-    <text x="0" y="322" fill="#D8A5FF" font-family="Arial Black, Arial, sans-serif" font-size="34" font-weight="900" letter-spacing="1">BU!LT 4 DA $TREET$.</text>
-    <rect x="0" y="367" width="495" height="2" fill="#B6FF38" opacity=".8"/>
-    <text x="0" y="413" fill="#d2cfda" font-family="Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="3">REAL SPOTS. REAL PEOPLE. REAL HUSTLE.</text>
-  </g>
-  <g fill="#D6A34D"><circle cx="748" cy="90" r="5"/><circle cx="773" cy="120" r="3"/><circle cx="1100" cy="525" r="5"/><circle cx="1124" cy="493" r="3"/></g>
-  <path d="M1110 90L1145 74L1128 108L1162 97" fill="none" stroke="#D8A5FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+<title id="title">$treet$pot: Bu!lt 4 Da Hu$tle</title><desc id="desc">Discover food trucks, pop-up shops, local events, vendors, hidden gems, and private events on StreetSpot.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#090a10"/><stop offset=".5" stop-color="#21172c"/><stop offset="1" stop-color="#090a10"/></linearGradient><radialGradient id="glow"><stop stop-color="#b6ff38" stop-opacity=".22"/><stop offset="1" stop-color="#b6ff38" stop-opacity="0"/></radialGradient><linearGradient id="line"><stop stop-color="#d8a5ff"/><stop offset=".5" stop-color="#b6ff38"/><stop offset="1" stop-color="#d6a34d"/></linearGradient></defs>
+<rect width="1200" height="630" fill="url(#bg)"/><ellipse cx="1030" cy="130" rx="400" ry="350" fill="url(#glow)"/>
+<g fill="#1c1a27" stroke="#d8a5ff" stroke-opacity=".32" stroke-width="2"><path d="M0 430V290h60v140zM66 430V210h72v220zM145 430V270h48v160zM200 430V160h86v270zM294 430V235h55v195zM365 430V300h48v130zM790 430V270h65v160zM860 430V205h78v225zM945 430V250h54v180zM1005 430V155h80v275zM1090 430V240h70v190zM1165 430V300h35v130z"/></g>
+<g fill="#d6a34d" opacity=".7"><path d="M83 235h9v13h-9zM108 235h9v13h-9zM83 266h9v13h-9zM108 266h9v13h-9zM224 191h10v13h-10zM249 191h10v13h-10zM224 222h10v13h-10zM249 222h10v13h-10zM1025 184h9v12h-9zM1052 184h9v12h-9zM1025 214h9v12h-9zM1052 214h9v12h-9z"/></g>
+<path d="M0 438L170 413L280 432L410 406L555 435L710 410L860 435L1035 405L1200 430" fill="none" stroke="url(#line)" stroke-width="5" opacity=".85"/>
+<g transform="translate(68 65)"><rect width="138" height="138" rx="32" fill="#111116" stroke="#d8a5ff" stroke-width="3"/><path d="M69 112C47 82 26 62 26 42a43 43 0 1 1 86 0c0 20-21 40-43 70z" fill="#b6ff38"/><circle cx="69" cy="42" r="28" fill="#111116"/><path d="M82 31c-4-5-10-7-16-7-9 1-14 6-14 13s5 10 15 12 15 5 15 11-7 11-16 11c-7 0-12-3-17-7M69 17v64" fill="none" stroke="#b6ff38" stroke-width="5" stroke-linecap="round"/></g>
+<text x="238" y="135" fill="#f4f3f7" font-family="Arial,sans-serif" font-size="60" font-weight="900"><tspan fill="#b6ff38">$</tspan>treet<tspan fill="#b6ff38">$</tspan>pot</text>
+<text x="72" y="275" fill="#b6ff38" font-family="Arial,sans-serif" font-size="47" font-weight="900">BU!LT 4 DA HU$TLE.</text><text x="72" y="326" fill="#d8a5ff" font-family="Arial,sans-serif" font-size="35" font-weight="900">BU!LT 4 DA $TREET$.</text>
+<text x="72" y="382" fill="#f4f3f7" font-family="Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="2">REAL SPOTS. REAL PEOPLE. REAL HUSTLE.</text>
+<g transform="translate(70 490)"><g font-family="Arial,sans-serif" font-size="21" font-weight="800" fill="#f4f3f7"><text x="0" y="0">FOOD TRUCKS</text><text x="220" y="0">POP-UPS</text><text x="390" y="0">LOCAL EVENTS</text><text x="595" y="0">VENDORS</text><text x="760" y="0">HIDDEN GEMS</text><text x="970" y="0">PRIVATE EVENTS</text></g><path d="M0 22H1055" stroke="url(#line)" stroke-width="3"/></g>
+<text x="72" y="585" fill="#c9c5d2" font-family="Arial,sans-serif" font-size="21">Discover local. Support local. Find your next spot.</text>
 </svg>

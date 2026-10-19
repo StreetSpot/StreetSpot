@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { trackConversion } from "@/lib/analytics-events"
 import { ArrowLeft, CalendarDays, Check, Copy, LockKeyhole, Mail, MapPin, Navigation, PartyPopper, ShieldCheck, Sparkles, Users } from "lucide-react"
 import { VendorLogin, type StreetSpotAuthSession } from "@/components/vendor-login"
 
@@ -54,6 +55,7 @@ export default function PrivateInvitationsPage() {
   const [privateLocation, setPrivateLocation] = useState<PrivateLocation | null>(null)
   const [capturingLocation, setCapturingLocation] = useState(false)
   const [publishing, setPublishing] = useState(false)
+  const trackedPurchaseIds = useRef(new Set<string>())
 
   const guestEmails = useMemo(() => {
     const emails = guestsText.split(/\r?\n/).map((line) => {
@@ -93,7 +95,16 @@ export default function PrivateInvitationsPage() {
       .then(async (response) => {
         const result = await response.json().catch(() => null)
         if (!response.ok || !result?.ok) throw new Error(result?.message || "Could not verify event purchases.")
-        if (!cancelled) setPurchases(Array.isArray(result.purchases) ? result.purchases : [])
+        if (!cancelled) {
+          const availablePurchases = Array.isArray(result.purchases) ? result.purchases as Purchase[] : []
+          setPurchases(availablePurchases)
+          for (const purchase of availablePurchases) {
+            if (!trackedPurchaseIds.current.has(purchase.id)) {
+              trackedPurchaseIds.current.add(purchase.id)
+              trackConversion("event_package_available", { tier: purchase.tier })
+            }
+          }
+        }
       })
       .catch((cause) => { if (!cancelled) setNotice(cause instanceof Error ? cause.message : "Could not load paid event packages.") })
     return () => { cancelled = true }
@@ -139,6 +150,7 @@ export default function PrivateInvitationsPage() {
       return
     }
     setSelectedPlan(plan)
+    trackConversion("event_checkout_started", { tier: plan })
     const url = new URL(paymentLinks[plan])
     url.searchParams.set("client_reference_id", userId)
     window.location.assign(url.toString())
@@ -188,6 +200,7 @@ export default function PrivateInvitationsPage() {
       const result = await response.json().catch(() => null)
       if (!response.ok || !result?.ok) throw new Error(result?.message || "The private event could not be published.")
       setInviteLinks(Array.isArray(result.inviteLinks) ? result.inviteLinks : [])
+      trackConversion("private_event_created", { tier: purchase.tier, guest_count: guestEmails.length, invitation_style: style })
       setPurchases((current) => current.filter((item) => item.id !== purchase.id))
       setNotice(result.message || "Private event published. Copy each guest's invitation link below.")
     } catch (cause) {
@@ -214,7 +227,7 @@ export default function PrivateInvitationsPage() {
         <div className="flex items-center gap-2"><PartyPopper className="h-5 w-5 text-fuchsia-700"/><h2 className="text-lg font-extrabold">Invitation creator</h2></div>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="text-sm font-semibold">Occasion<select value={eventType} onChange={e=>setEventType(e.target.value)} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3">{["Wedding","Graduation","Birthday","Baby Shower","Anniversary","Family Gathering","Private Party","Other"].map(v=><option key={v}>{v}</option>)}</select></label>
-          <div className="sm:col-span-2"><p className="mb-2 text-sm font-semibold">Choose your invitation style</p><div className="grid gap-3 sm:grid-cols-3">{Object.entries(styles).map(([key, theme])=><button key={key} type="button" aria-pressed={style===key} onClick={()=>setStyle(key as Style)} className={`rounded-2xl border p-2 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 ${style===key ? "border-slate-900 ring-2 ring-slate-900" : "border-slate-200 hover:border-slate-400"}`}><span className={`flex min-h-24 flex-col justify-between rounded-xl bg-gradient-to-br ${theme.shell} p-3 text-white`}><span className={`text-[10px] font-black uppercase tracking-[.15em] ${theme.accent}`}>You’re invited</span><span className="text-sm font-black">{theme.tagline}</span><span className="text-[10px] text-white/70">{theme.name} design</span></span><span className="mt-2 flex items-center gap-2 px-1 text-sm font-bold text-slate-900"><span className={`flex h-4 w-4 items-center justify-center rounded-full border ${style===key ? "border-slate-900" : "border-slate-300"}`}>{style===key && <span className="h-2 w-2 rounded-full bg-slate-900"/>}</span>{theme.name}</span></button>)}</div><p className="mt-2 text-xs leading-5 text-slate-500">Your selected look appears in the live preview and on the guest’s private invitation page.</p></div>
+          <div className="sm:col-span-2"><p className="mb-2 text-sm font-semibold">Choose your invitation style</p><div className="grid gap-3 sm:grid-cols-3">{Object.entries(styles).map(([key, theme])=><button key={key} type="button" aria-pressed={style===key} onClick={()=>{ setStyle(key as Style); trackConversion("invitation_style_selected", { style: key }) }} className={`rounded-2xl border p-2 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 ${style===key ? "border-slate-900 ring-2 ring-slate-900" : "border-slate-200 hover:border-slate-400"}`}><span className={`flex min-h-24 flex-col justify-between rounded-xl bg-gradient-to-br ${theme.shell} p-3 text-white`}><span className={`text-[10px] font-black uppercase tracking-[.15em] ${theme.accent}`}>You’re invited</span><span className="text-sm font-black">{theme.tagline}</span><span className="text-[10px] text-white/70">{theme.name} design</span></span><span className="mt-2 flex items-center gap-2 px-1 text-sm font-bold text-slate-900"><span className={`flex h-4 w-4 items-center justify-center rounded-full border ${style===key ? "border-slate-900" : "border-slate-300"}`}>{style===key && <span className="h-2 w-2 rounded-full bg-slate-900"/>}</span>{theme.name}</span></button>)}</div><p className="mt-2 text-xs leading-5 text-slate-500">Your selected look appears in the live preview and on the guest’s private invitation page.</p></div>
           <label className="text-sm font-semibold sm:col-span-2">Event title<input value={eventName} onChange={e=>setEventName(e.target.value)} placeholder="e.g. Callie & Jordan’s Wedding" maxLength={120} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3"/></label>
           <label className="text-sm font-semibold">Host / celebrant name<input value={hostName} onChange={e=>setHostName(e.target.value)} placeholder="Name to print on invitation" maxLength={100} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3"/></label>
           <label className="text-sm font-semibold">Date<input type="date" min={new Date().toISOString().slice(0,10)} value={date} onChange={e=>setDate(e.target.value)} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3"/></label>
@@ -247,7 +260,7 @@ export default function PrivateInvitationsPage() {
             <h3 className="text-lg font-extrabold">{plan.name}</h3><p className="mt-2 min-h-12 text-sm leading-5 text-slate-600">{plan.description}</p>
             <div className="mt-4"><span className="text-3xl font-black">{plan.price}</span><p className="mt-1 text-xs font-semibold text-slate-500">{plan.billing}</p></div>
             <ul className="my-5 flex-1 space-y-2 text-sm text-slate-700">{plan.features.map((feature) => <li key={feature} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700"/>{feature}</li>)}</ul>
-            <button type="button" disabled={accountLoading || publishing} onClick={() => { setSelectedPlan(plan.id); if (!userId) setNotice("Sign in or create an account above to continue to secure checkout."); else if (purchase) void publishEvent(purchase, plan.id); else startCheckout(plan.id) }} className={`min-h-11 rounded-xl px-4 py-3 text-sm font-bold disabled:opacity-50 ${isSelected ? "bg-slate-900 text-white" : "border border-slate-300 text-slate-900 hover:bg-slate-50"}`}>
+            <button type="button" disabled={accountLoading || publishing} onClick={() => { setSelectedPlan(plan.id); trackConversion("event_package_selected", { tier: plan.id }); if (!userId) setNotice("Sign in or create an account above to continue to secure checkout."); else if (purchase) void publishEvent(purchase, plan.id); else startCheckout(plan.id) }} className={`min-h-11 rounded-xl px-4 py-3 text-sm font-bold disabled:opacity-50 ${isSelected ? "bg-slate-900 text-white" : "border border-slate-300 text-slate-900 hover:bg-slate-50"}`}>
               {accountLoading ? "Loading account…" : !userId ? "Sign in to continue" : purchase ? (publishing ? "Publishing private event…" : "Publish private event") : "Pay securely with Stripe"}
             </button>
             {purchase && <p className="mt-2 text-center text-xs font-semibold text-emerald-800">Paid package verified · up to {purchase.guest_limit} guest(s)</p>}
