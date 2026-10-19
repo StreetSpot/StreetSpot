@@ -65,7 +65,8 @@ export async function supabaseFetch<T>(path: string, init: RequestInit = {}): Pr
     cache: "no-store",
   })
   if (!response.ok) {
-    throw new Error(`Supabase request failed (${response.status})`)
+    const details = (await response.text()).slice(0, 240)
+    throw new Error(`Supabase request failed (${response.status}): ${details}`)
   }
   if (response.status === 204) return undefined as T
   return (await response.json()) as T

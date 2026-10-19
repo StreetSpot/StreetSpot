@@ -120,7 +120,8 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({ event_name: body.eventName, properties, source_path: safeSourcePath(request) }),
     })
     return new Response(null, { status: 204, headers: { "Cache-Control": "no-store" } })
-  } catch {
+  } catch (error) {
+    console.error("[analytics-events] Conversion event insert failed", error instanceof Error ? error.message : "Unknown error")
     return NextResponse.json({ ok: false, code: "TRACKING_UNAVAILABLE" }, { status: 503, headers: { "Cache-Control": "no-store" } })
   }
 }
