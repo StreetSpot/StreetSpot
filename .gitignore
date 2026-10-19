@@ -18,3 +18,5 @@ node_modules/
 /StreetSpot 2.0 (1)/
 *.jks
 *.keystore
+
+supabase/.temp/
