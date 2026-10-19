@@ -97,12 +97,16 @@ export async function POST(request: NextRequest) {
   const subscriptionId = stringId(object.subscription)
 
   try {
-    if (event.type === "checkout.session.completed" && object.mode === "payment") {
+    if ((event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") && object.mode === "payment") {
       const paymentLink = typeof object.payment_link === "string" ? object.payment_link : ""
       const tier = PAYMENT_LINK_EVENT_TIERS[paymentLink]
       const userId = typeof object.client_reference_id === "string" ? object.client_reference_id : ""
       const sessionId = typeof object.id === "string" ? object.id : ""
       const paymentIntentId = stringId(object.payment_intent)
+      if (object.payment_status !== "paid") {
+        await syncEntitlement({ p_event_id: event.id, p_action: "ignore" })
+        return NextResponse.json({ ok: true, ignored: true, reason: "payment_not_complete" })
+      }
       const validUserId = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(userId)
       if (tier && validUserId && sessionId) {
         const sharedSecret = process.env.STREETSPOT_STRIPE_SYNC_SECRET
@@ -110,6 +114,11 @@ export async function POST(request: NextRequest) {
         await supabaseFetch<boolean>("rpc/record_stripe_event_purchase", {
           method: "POST",
           body: JSON.stringify({ p_shared_secret: sharedSecret, p_event_id: event.id, p_user_id: userId, p_tier: tier, p_checkout_session_id: sessionId, p_payment_intent_id: paymentIntentId }),
+        })
+        await supabaseFetch("conversion_events?on_conflict=event_key", {
+          method: "POST",
+          headers: { Prefer: "resolution=ignore-duplicates,return=minimal" },
+          body: JSON.stringify({ event_name: "event_purchase_confirmed", event_key: event.id, properties: { tier }, source_path: "/host/invitations" }),
         })
         return NextResponse.json({ ok: true })
       }

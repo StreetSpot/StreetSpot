@@ -6,12 +6,13 @@ Scope: private-event packages and analytics; no live payment was initiated.
 ## Events instrumented
 - `event_package_selected`: package card clicked; property `tier` only.
 - `event_checkout_started`: signed-in host proceeds to Stripe; property `tier` only.
+- `event_purchase_confirmed`: recorded server-side only after a valid Stripe webhook confirms the mapped one-time payment and the purchase entitlement RPC succeeds; unique Stripe event ID prevents duplicate conversion rows.
 - `event_package_available`: a package returned by the authenticated purchases endpoint after webhook-backed recording; property `tier` only.
 - `invitation_style_selected`: style choice clicked; property `style` only.
 - `private_event_created`: private event API returns success; properties `tier`, `guest_count`, and `invitation_style` only.
 - `private_invitation_opened`: guest invitation token successfully resolves to an event; property `style` only.
 
-Vercel Analytics is wired to receive the events. GA4 will receive the same events only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is configured to a real GA4 measurement ID. No measurement ID was found in the current Vercel project variables, so GA4 collection is not yet active.
+The events are written to the first-party `public.conversion_events` table through a server-side allowlisted endpoint; the table has RLS enabled and no anon/authenticated table access. The endpoint stores only the event name, a small allowlist of tier/style/guest-count properties, a sanitized route, and timestamp. It does not store account IDs, emails, invitation tokens, payment details, or raw IP addresses. Vercel Analytics is also called, but this team’s current Vercel plan blocks custom-event reporting. GA4 will receive the same events only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is configured to a real GA4 measurement ID. No measurement ID was found in the current Vercel project variables, so GA4 collection is not yet active.
 
 ## Safe checks
 - Public host-studio route should return HTTP 200 without redirecting to the operations-agent login.
