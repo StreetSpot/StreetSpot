@@ -44,7 +44,7 @@ export function SeoLandingPage({
             {note && <p className="mt-5 border-t border-white/10 pt-4 text-xs leading-5 text-white/45">{note}</p>}
           </div>
         </section>
-        <footer className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between"><span>BU!LT 4 DA HU$TLE. BU!LT 4 DA $TREET$.</span><div className="flex gap-4"><Link href="/support" className="hover:text-white">Support</Link><Link href="/privacy" className="hover:text-white">Privacy</Link><Link href="/terms" className="hover:text-white">Terms</Link></div></footer>
+        <footer className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/45"><span>BU!LT 4 DA HU$TLE. BU!LT 4 DA $TREET$.</span><nav aria-label="Explore StreetSpot" className="flex flex-wrap gap-x-4 gap-y-2"><Link href="/vendors" className="hover:text-white">For vendors</Link><Link href="/food-trucks" className="hover:text-white">Food trucks</Link><Link href="/pop-up-shops" className="hover:text-white">Pop-up shops</Link><Link href="/private-events" className="hover:text-white">Event hosting</Link><Link href="/local-events" className="hover:text-white">Local events</Link><Link href="/discover-local-spots" className="hover:text-white">Hidden gems</Link><Link href="/support" className="hover:text-white">Support</Link><Link href="/privacy" className="hover:text-white">Privacy</Link><Link href="/terms" className="hover:text-white">Terms</Link></nav></footer>
       </div>
     </main>
   )
