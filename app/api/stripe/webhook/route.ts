@@ -143,12 +143,12 @@ export async function POST(request: NextRequest) {
 
   const object = event.data.object
   try {
-    if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
+    if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded" || event.type === "checkout.session.async_payment_failed") {
       const reference = parseClientReference(object.client_reference_id)
       const feature = featureFromSession(object)
       const mode = object.mode === "subscription" ? "subscription" : "payment"
       const paid = object.payment_status === "paid" || object.payment_status === "no_payment_required"
-      if (!feature || !reference || (mode === "payment" && !paid)) {
+      if (!feature || !reference || !paid || event.type === "checkout.session.async_payment_failed") {
         await sync({ eventId: event.id, action: "ignore" })
       } else if (feature.startsWith("event_hosting_")) {
         if (mode !== "payment" || !paid || !reference.eventId) {
