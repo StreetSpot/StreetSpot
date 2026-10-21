@@ -334,3 +334,53 @@ body::before { content: none !important; display: none !important; background-im
 .leaflet-control-attribution { background: rgba(255,255,255,.88) !important; color: #647168 !important; }
 .leaflet-control-attribution a { color: #285ee8 !important; }
 .hustle-landing, .hustle-card { background: #f6f7f2; }
+
+/* Canonical clean StreetSpot theme: white, green, and orange only. */
+:root {
+  --background:#f6f7f2; --foreground:#17231f; --card:#ffffff; --card-foreground:#17231f;
+  --popover:#ffffff; --popover-foreground:#17231f; --primary:#f06435; --primary-foreground:#ffffff;
+  --secondary:#e9ede5; --secondary-foreground:#17231f; --muted:#e9ede5; --muted-foreground:#647168;
+  --accent:#258052; --accent-foreground:#ffffff; --border:#dce1d8; --input:#ffffff; --ring:#258052;
+  --sidebar:#ffffff; --sidebar-foreground:#17231f; --sidebar-primary:#f06435; --sidebar-primary-foreground:#ffffff;
+  --sidebar-accent:#e9ede5; --sidebar-accent-foreground:#17231f; --sidebar-border:#dce1d8; --sidebar-ring:#258052;
+  --chart-1:#f06435; --chart-2:#258052; --chart-3:#e4a629; --chart-4:#647168; --chart-5:#b94d29;
+}
+.dark { --background:#f6f7f2; --foreground:#17231f; --card:#ffffff; --card-foreground:#17231f; --popover:#ffffff; --popover-foreground:#17231f; --primary:#f06435; --primary-foreground:#ffffff; --secondary:#e9ede5; --secondary-foreground:#17231f; --muted:#e9ede5; --muted-foreground:#647168; --accent:#258052; --accent-foreground:#ffffff; --border:#dce1d8; --input:#ffffff; --ring:#258052; }
+html, body { color-scheme:light !important; color:#17231f; background:#f6f7f2 !important; background-image:none !important; }
+body { background:#f6f7f2 !important; }
+::selection { color:#fff; background:#f06435; }
+:focus-visible { outline-color:#258052; }
+.brand-header { background:rgba(255,255,255,.96); border-color:#dce1d8; box-shadow:0 2px 12px rgba(23,35,31,.04); }
+.brand-mark { background:#f06435; color:#fff; box-shadow:none; }
+.brand-wordmark .brand-dollar { color:#f06435; }
+.brand-kicker { color:#258052; }
+.market-landing,.hustle-landing,.streetspot-app-shell { color:#17231f; background:#f6f7f2 !important; background-image:none !important; }
+.hustle-landing::before,.hustle-landing::after { display:none !important; content:none !important; }
+.hustle-card,.market-map-card,.market-feature-card { color:#17231f; background:#fff !important; border-color:#dce1d8; box-shadow:0 5px 18px rgba(23,35,31,.04); }
+.hustle-title,.hustle-card h1,.hustle-card h2,.hustle-card h3 { color:#17231f; }
+.hustle-graffiti,.hustle-neon-rainbow,.hustle-outline { color:#258052; background:none; -webkit-text-stroke:0; text-shadow:none; filter:none; }
+.hustle-stamp { color:#258052; background:#eaf5ed; border-color:#b9d8c2; }
+.hustle-primary,.market-button-primary { color:#fff; background:#f06435; box-shadow:none; }
+.hustle-primary:hover,.market-button-primary:hover { background:#db4f24; box-shadow:none; }
+.hustle-secondary { color:#258052; background:#fff; border-color:#b9d8c2; }
+.hustle-feature-icon,.market-feature-icon { color:#258052; background:#eaf5ed; border-color:#c8e3cf; }
+.hustle-gold { color:#b97916; }
+.hustle-divider { background:#dce1d8; }
+.leaflet-container { background:#edf1e8; color:#17231f; }
+.leaflet-tile-pane { filter:none !important; }
+.leaflet-popup-content-wrapper,.leaflet-popup-tip { background:#fff; color:#17231f; border-color:#dce1d8; }
+.leaflet-control-zoom a { background:#fff !important; color:#258052 !important; border-color:#dce1d8 !important; }
+.leaflet-control-attribution { background:rgba(255,255,255,.9) !important; color:#647168 !important; }
+.leaflet-control-attribution a { color:#258052 !important; }
+/* Keep legacy dark utility classes legible on the single approved clean theme. */
+main:has(a[href*="/api/billing/checkout"]) { color:#17231f !important; background:#f6f7f2 !important; }
+main:has(a[href*="/api/billing/checkout"]) section { border-color:#dce1d8 !important; }
+main:has(a[href*="/api/billing/checkout"]) h1, main:has(a[href*="/api/billing/checkout"]) h2, main:has(a[href*="/api/billing/checkout"]) h3 { color:#17231f !important; }
+main:has(a[href*="/api/billing/checkout"]) p { color:#647168 !important; }
+main:has(a[href*="/api/billing/checkout"]) .text-white\/65, main:has(a[href*="/api/billing/checkout"]) .text-white\/70, main:has(a[href*="/api/billing/checkout"]) .text-white\/75, main:has(a[href*="/api/billing/checkout"]) .text-white\/80, main:has(a[href*="/api/billing/checkout"]) .text-white\/60, main:has(a[href*="/api/billing/checkout"]) .text-white\/50, main:has(a[href*="/api/billing/checkout"]) .text-white\/45 { color:#647168 !important; }
+main:has(a[href*="/api/billing/checkout"]) .bg-black\/30, main:has(a[href*="/api/billing/checkout"]) .bg-black\/20, main:has(a[href*="/api/billing/checkout"]) .bg-white\/\[\.03\] { background:#fff !important; }
+main:has(a[href*="/api/billing/checkout"]) .border-white\/10, main:has(a[href*="/api/billing/checkout"]) .border-white\/15, main:has(a[href*="/api/billing/checkout"]) .border-white\/20 { border-color:#dce1d8 !important; }
+main:has(a[href*="/api/billing/checkout"]) .text-\[\#B6FF38\], main:has(a[href*="/api/billing/checkout"]) .text-\[\#D8A5FF\] { color:#258052 !important; }
+main:has(a[href*="/api/billing/checkout"]) .bg-\[\#B6FF38\] { background:#f06435 !important; color:#fff !important; }
+main:has(a[href*="/api/billing/checkout"]) .border-\[\#B6FF38\] { border-color:#f06435 !important; }
+main:has(a[href*="/api/billing/checkout"]) .text-\[\#111116\] { color:#fff !important; }
