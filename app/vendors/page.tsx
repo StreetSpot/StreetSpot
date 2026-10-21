@@ -32,7 +32,7 @@ export default function VendorsPage() {
             <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">Get your local business <span className="text-[#B6FF38]">seen.</span></h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/75 sm:text-lg">Put your food truck, cart, pop-up shop, or local business on the map. Create an account, choose a monthly vendor plan, and publish your location and hours so nearby customers can find you.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/account?next=%2Fvendor-studio" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#B6FF38] px-6 py-3 font-black text-[#111116] transition hover:brightness-110">Create your account <ArrowRight className="h-4 w-4" /></Link>
+              <Link href="/account?next=%2F%3Fview%3Dfounder-login" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#B6FF38] px-6 py-3 font-black text-[#111116] transition hover:brightness-110">Create your account <ArrowRight className="h-4 w-4" /></Link>
               <Link href="/discover-local-spots" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 px-6 py-3 font-bold text-white transition hover:border-[#D8A5FF] hover:text-[#D8A5FF]">Explore local spots</Link>
             </div>
             <p className="mt-3 text-xs leading-5 text-white/50">Plans are billed through Stripe. Visibility and customer activity are not guaranteed.</p>
