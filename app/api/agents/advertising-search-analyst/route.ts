@@ -8,7 +8,7 @@ const InputSchema = z.object({
   business: z.string().trim().min(2).max(100),
   location: z.string().trim().max(100).default(""),
   audience: z.enum(["customers", "vendors", "event-hosts", "businesses", "all"]).default("all"),
-  goal: z.enum(["awareness", "app-installs", "vendor-claims", "event-hosting", "retention"]).default("awareness"),
+  goal: z.enum(["awareness", "app-installs", "vendor-claims", "event-hosting", "retention", "paid-conversions"]).default("paid-conversions"),
   offerings: z.string().trim().max(500).default(""),
   seedKeywords: z.string().trim().max(500).default(""),
 })
@@ -27,7 +27,7 @@ const ReportSchema = z.object({
   guardrails: z.array(z.string().min(5).max(300)).min(2).max(6),
 })
 const audiences = { customers: "local customers", vendors: "food trucks, pop-up vendors, and street businesses", "event-hosts": "people hosting weddings, birthdays, graduations, and community events", businesses: "local businesses and pop-up retailers", all: "customers, vendors, businesses, and event hosts" }
-const goals = { awareness: "increase local awareness", "app-installs": "earn relevant app installs", "vendor-claims": "encourage verified vendor listing claims", "event-hosting": "convert personal and community event hosts", retention: "increase repeat discovery and engagement" }
+const goals = { awareness: "increase local awareness", "app-installs": "earn relevant app installs", "vendor-claims": "encourage verified vendor listing claims", "event-hosting": "convert personal and community event hosts", retention: "increase repeat discovery and engagement", "paid-conversions": "increase paid vendor subscriptions and event-hosting purchases" }
 const unique = (values: string[]) => [...new Set(values.map(x => x.trim()).filter(Boolean))]
 const requestBuckets = new Map<string, { count: number; resetAt: number }>()
 function isRateLimited(request: Request) {
@@ -63,7 +63,7 @@ function createFallback(input: z.infer<typeof InputSchema>) {
     recommendedLandingPage: {
       title: `${input.business}${input.location ? ` in ${input.location}` : ""} | Discover on StreetSpot`,
       metaDescription: `Discover ${input.business} and more local vendors, pop-ups, businesses, and events on StreetSpot. Find your next local favorite.`,
-      primaryCallToAction: input.goal === "vendor-claims" ? "Claim your listing" : input.goal === "event-hosting" ? "Create your event" : input.goal === "app-installs" ? "Get StreetSpot" : "Explore local spots",
+      primaryCallToAction: input.goal === "vendor-claims" ? "Claim your listing" : input.goal === "event-hosting" ? "Create your event" : input.goal === "paid-conversions" ? "View vendor and event-hosting plans" : input.goal === "app-installs" ? "Get StreetSpot" : "Explore local spots",
     },
     channelPlan: [
       { channel: "Google Search / SEO", action: "Create useful landing pages for real service areas, with unique titles and descriptions. Do not publish doorway pages for places StreetSpot does not serve." },
@@ -83,6 +83,7 @@ function createFallback(input: z.infer<typeof InputSchema>) {
 }
 
 async function createAiReport(input: z.infer<typeof InputSchema>, request: Request) {
+  if (process.env.STREETSPOT_ENABLE_PAID_AI !== "true") return null
   const apiKey = process.env.AI_GATEWAY_API_KEY || request.headers.get("x-vercel-oidc-token") || process.env.VERCEL_OIDC_TOKEN
   if (!apiKey) return null
   const model = process.env.STREETSPOT_AI_MODEL || "openai/gpt-5.6-sol"

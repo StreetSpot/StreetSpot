@@ -88,10 +88,10 @@ check("Store agent reports billing and publishing integration readiness without 
 const analyst = await fetch(`${base}/api/agents/advertising-search-analyst`, {
   method: "POST",
   headers: { "Content-Type": "application/json", Cookie: cookie },
-  body: JSON.stringify({ business: "StreetSpot", audience: "all", goal: "awareness" }),
+  body: JSON.stringify({ business: "StreetSpot", audience: "all", goal: "paid-conversions" }),
 })
 const analystReport = await analyst.json()
-check("Authenticated analyst API returns a structured report", analyst.status === 200 && Array.isArray(analystReport.keywordIdeas) && analystReport.keywordIdeas.length > 0)
+check("Authenticated analyst API returns a paid-conversion campaign draft", analyst.status === 200 && Array.isArray(analystReport.keywordIdeas) && analystReport.keywordIdeas.length > 0 && analystReport.recommendedLandingPage?.primaryCallToAction === "View vendor and event-hosting plans" && analystReport.mode === "fallback")
 
 const logout = await fetch(`${base}/api/agents/auth`, { method: "DELETE", headers: { Cookie: cookie } })
 check("Logout clears the session cookie", logout.status === 200 && logout.headers.get("set-cookie")?.includes("Max-Age=0"))
