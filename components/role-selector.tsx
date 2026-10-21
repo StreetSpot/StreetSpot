@@ -59,6 +59,7 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
               >
                 <Download className="h-4 w-4" /> Get StreetSpot on Google Play
               </a>
+              <a href="/host/invitations" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#D8A5FF] bg-[#111116] px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:border-[#B6FF38] hover:text-[#B6FF38]"><CalendarDays className="h-4 w-4 text-[#D8A5FF]" /> Host a Private Event</a>
             </div>
 
             <div className="mt-7 flex flex-wrap gap-x-5 gap-y-3 text-xs font-semibold text-[#59645f]">

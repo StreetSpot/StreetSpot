@@ -1,6 +1,6 @@
 "use client"
 
-import { MapPin, ArrowLeft } from "lucide-react"
+import { MapPin, ArrowLeft, CalendarDays } from "lucide-react"
 import Link from "next/link"
 
 interface AppHeaderProps {
@@ -40,13 +40,13 @@ export function AppHeader({ mode, onBack }: AppHeaderProps) {
           </span>
         </Link>
       </div>
-      <div className="flex shrink-0 items-center gap-2 pl-2">
+      <nav aria-label="Quick actions" className="flex shrink-0 items-center gap-2 pl-2"><Link href="/host/invitations" className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-xl border border-[#D8A5FF]/50 bg-[#111116] px-3 py-2 text-xs font-extrabold text-white shadow-sm transition hover:border-[#B6FF38] hover:text-[#B6FF38] sm:gap-2 sm:px-4 sm:text-sm"><CalendarDays className="h-4 w-4 text-[#D8A5FF]" /><span className="hidden sm:inline">Host a Private Event</span><span className="sm:hidden">Host Event</span></Link>
         {mode !== "landing" && (
           <span className="hidden rounded-full border border-[#258052]/25 bg-[#eaf5ed] px-2.5 py-1 text-[10px] font-bold text-[#258052] sm:inline-flex sm:text-xs">
             {mode === "founder" ? "Vendor Mode" : "Finder Mode"}
           </span>
         )}
-      </div>
+      </nav>
     </header>
   )
 }
