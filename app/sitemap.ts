@@ -22,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.2,
     })),
     ...[
+      { path: "vendors", priority: 0.9 },
       { path: "for-vendors", priority: 0.8 },
       { path: "pop-up-shops", priority: 0.7 },
       { path: "local-events", priority: 0.7 },

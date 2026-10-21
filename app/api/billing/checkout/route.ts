@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     if (error instanceof Response && error.status !== 401) return error
     if (!(error instanceof Response)) return errorResponse(error)
-    const next = selected.audience === "vendor" ? "/vendor-studio" : selected.audience === "host" ? "/host/invitations" : "/themes"
+    const next = selected.audience === "vendor" ? `/api/billing/checkout?plan=${encodeURIComponent(plan)}` : selected.audience === "host" ? "/host/invitations" : "/themes"
     const login = new URL("/account", request.url)
     login.searchParams.set("next", next)
     return NextResponse.redirect(login, 302)
