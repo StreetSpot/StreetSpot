@@ -1,6 +1,6 @@
 ﻿import { NextResponse } from "next/server"
 import { SEEDED_CLAIMABLE_VENDORS } from "@/lib/claimable-vendors"
-import { errorResponse, supabaseFetch } from "@/lib/supabase-admin"
+import { errorResponse, supabaseServiceFetch } from "@/lib/supabase-admin"
 
 export const dynamic = "force-dynamic"
 
@@ -9,7 +9,7 @@ type ClaimStatusRow = { seed_id: string; claim_status: "CLAIMED" | "PENDING_VERI
 export async function GET() {
   try {
     const seedIds = SEEDED_CLAIMABLE_VENDORS.map(vendor => vendor.id)
-    const statuses = await supabaseFetch<ClaimStatusRow[]>("rpc/get_seeded_vendor_claim_status", {
+    const statuses = await supabaseServiceFetch<ClaimStatusRow[]>("rpc/get_seeded_vendor_claim_status", {
       method: "POST",
       body: JSON.stringify({ p_seed_ids: seedIds }),
     })
