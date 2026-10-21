@@ -81,6 +81,10 @@ assert.ok(cookie, "Expected an agent session cookie")
 const privatePage = await fetch(`${base}/agents`, { headers: { Cookie: cookie }, redirect: "manual" })
 check("Authenticated operator can open agent console", privatePage.status === 200)
 
+const integrationStatus = await fetch(`${base}/api/agents/store-management/status`, { headers: { Cookie: cookie }, cache: "no-store" })
+const integrationReport = await integrationStatus.json()
+check("Store agent reports billing and publishing integration readiness without exposing secrets", integrationStatus.status === 200 && integrationReport.ok === true && typeof integrationReport.integrations?.stripeWebhook === "boolean" && typeof integrationReport.integrations?.testCheckout === "boolean" && !JSON.stringify(integrationReport).includes("sk_live_") && !JSON.stringify(integrationReport).includes("sk_test_"))
+
 const analyst = await fetch(`${base}/api/agents/advertising-search-analyst`, {
   method: "POST",
   headers: { "Content-Type": "application/json", Cookie: cookie },
