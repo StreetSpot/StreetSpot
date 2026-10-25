@@ -16,5 +16,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/support`, changeFrequency: "monthly", priority: 0.4 },
     { url: `${base}/privacy`, changeFrequency: "yearly", priority: 0.2 },
     { url: `${base}/terms`, changeFrequency: "yearly", priority: 0.2 },
+    { url: `${base}/delete-account`, changeFrequency: "yearly", priority: 0.1 },
   ]
 }
