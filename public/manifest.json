@@ -1,20 +1,41 @@
 {
-  "name": "StreetSpot | Discover What’s Happening Nearby",
-  "short_name": "StreetSpot",
-  "description": "Real-time local discovery for food trucks, street vendors, pop-ups, events, skate spots, businesses, and community gems.",
-  "start_url": "/",
-  "id": "https://streetspotapp.com/",
-  "scope": "/",
-  "display": "standalone",
-  "background_color": "#f6f7f2",
-  "theme_color": "#f06435",
-  "orientation": "any",
-  "categories": ["food", "lifestyle", "navigation", "shopping", "social"],
-  "lang": "en-US",
-  "prefer_related_applications": false,
-  "icons": [
-    { "src": "/brand-icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any maskable" },
-    { "src": "/brand-icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" },
-    { "src": "/brand-apple-icon.png", "type": "image/png", "sizes": "180x180", "purpose": "any" }
-  ]
+    "name":  "StreetSpot | Discover What\u0027s Happening Nearby",
+    "short_name":  "StreetSpot",
+    "description":  "Real-time local discovery for food trucks, street vendors, pop-ups, events, skate spots, businesses, and community gems.",
+    "start_url":  "/",
+    "id":  "https://streetspotapp.com/",
+    "scope":  "/",
+    "display":  "standalone",
+    "background_color":  "#f6f7f2",
+    "theme_color":  "#f06435",
+    "orientation":  "any",
+    "categories":  [
+                       "food",
+                       "lifestyle",
+                       "navigation",
+                       "shopping",
+                       "social"
+                   ],
+    "lang":  "en-US",
+    "prefer_related_applications":  false,
+    "icons":  [
+                  {
+                      "src":  "/brand-icon-192.png",
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "purpose":  "any maskable"
+                  },
+                  {
+                      "src":  "/brand-icon-512.png",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "purpose":  "any maskable"
+                  },
+                  {
+                      "src":  "/brand-apple-icon.png",
+                      "type":  "image/png",
+                      "sizes":  "180x180",
+                      "purpose":  "any"
+                  }
+              ]
 }

@@ -1,5 +1,18 @@
-﻿import Link from "next/link"
+﻿import type { Metadata } from "next"
+import Link from "next/link"
 import { ArrowLeft, Check, Palette, Sparkles, Crown, ShoppingBag, LockKeyhole } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Theme Studio for Local Businesses and Vendors",
+  description: "Customize your StreetSpot business profile, themed icons, and listing style with optional branding upgrades for vendors, food trucks, pop-ups, and local creators.",
+  alternates: { canonical: "/themes" },
+  openGraph: {
+    title: "StreetSpot Theme Studio | Customize Your Brand",
+    description: "Choose profile, icon, and listing styles that fit your local business.",
+    url: "https://streetspotapp.com/themes",
+    type: "website",
+  },
+}
 
 const offers = [
   {
@@ -10,7 +23,7 @@ const offers = [
     description: "A themed icon, profile logo treatment, and matching listing accents.",
     features: ["1 theme pack", "Matching app/profile icon treatment", "Theme stays yours after purchase"],
     icon: ShoppingBag,
-    style: "from-orange-500 to-rose-500",
+    style: "from-orange-500 to-orange-600",
     checkout: process.env.NEXT_PUBLIC_STRIPE_THEME_STREET_STYLE_URL ? "/api/billing/checkout?plan=street_style" : undefined,
     badge: "One-time purchase",
   },
@@ -22,7 +35,7 @@ const offers = [
     description: "A rotating collection for vendors, food trucks, pop-ups, and local creators.",
     features: ["All standard theme packs", "Seasonal theme drops", "Profile and listing styling"],
     icon: Palette,
-    style: "from-emerald-600 to-teal-500",
+    style: "from-emerald-600 to-green-700",
     checkout: process.env.NEXT_PUBLIC_STRIPE_THEME_CREATOR_URL ? "/api/billing/checkout?plan=creator" : undefined,
     badge: "Monthly subscription",
   },
@@ -34,7 +47,7 @@ const offers = [
     description: "A premium branded look for established businesses and busy vendors.",
     features: ["All Creator Themes benefits", "Premium logo and cover treatments", "Expanded branded profile options", "New premium designs as released"],
     icon: Crown,
-    style: "from-slate-700 to-slate-500",
+    style: "from-orange-600 to-emerald-700",
     checkout: process.env.NEXT_PUBLIC_STRIPE_THEME_BRAND_STUDIO_URL ? "/api/billing/checkout?plan=brand_studio" : undefined,
     badge: "Premium subscription",
   },

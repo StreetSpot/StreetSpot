@@ -15,7 +15,7 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - $treet$pot",
+  title: "Privacy Policy - StreetSpot",
   description:
     "How StreetSpot handles account data, location permissions, public listings, private events, payments, and analytics.",
   alternates: { canonical: "https://streetspotapp.com/privacy" },
@@ -80,7 +80,7 @@ export default function PrivacyPolicyPage() {
           <Link
             href="/"
             className="flex items-center justify-center rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-            aria-label="Back to $treet$pot"
+            aria-label="Back to StreetSpot"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
@@ -89,7 +89,7 @@ export default function PrivacyPolicyPage() {
               <MapPin className="h-4 w-4 text-primary-foreground" />
             </div>
             <span className="text-lg font-semibold tracking-tight text-foreground">
-              $treet$pot
+              StreetSpot
             </span>
           </div>
         </div>
@@ -118,11 +118,11 @@ export default function PrivacyPolicyPage() {
             </div>
             <div className="rounded-xl border border-border bg-card p-4">
               <p className="text-sm leading-relaxed text-muted-foreground">
-                $treet$pot (&quot;we,&quot; &quot;our,&quot; or &quot;the App&quot;) is a real-time vendor
+                StreetSpot (&quot;we,&quot; &quot;our,&quot; or &quot;the App&quot;) is a real-time vendor
                 discovery platform connecting street vendors (Founders) with
                 nearby customers (Finders). This policy explains how we
                 collect, use, store, and protect your information when you
-                interact with $treet$pot.
+                interact with StreetSpot.
               </p>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function PrivacyPolicyPage() {
                   />
                   <DataRow
                     label="Background tracking"
-                    value="$treet$pot does NOT track your location in the background. GPS is only accessed when you explicitly request it."
+                    value="StreetSpot does NOT track your location in the background. GPS is only accessed when you explicitly request it."
                   />
                 </div>
               </div>
@@ -172,7 +172,7 @@ export default function PrivacyPolicyPage() {
                   />
                   <DataRow
                     label="No storage"
-                    value="The locate result is used in your browser and is not sent to $treet$pot's server. Other features may save their own data in browser storage; these records are not synced to a verified $treet$pot account."
+                    value="The locate result is used in your browser and is not sent to StreetSpot's server. Other features may save their own data in browser storage; these records are not synced to a verified StreetSpot account."
                   />
                 </div>
               </div>
@@ -202,7 +202,7 @@ export default function PrivacyPolicyPage() {
                 />
                 <DataRow
                   label="Closing time"
-                  value="The backend record’s closing time, shown with a countdown timer."
+                  value="The backend record's closing time, shown with a countdown timer."
                 />
                 <DataRow
                   label="Gold status"
@@ -210,7 +210,7 @@ export default function PrivacyPolicyPage() {
                 />
               </div>
               <p>
-                Public vendor records are stored in StreetSpot’s backend and remain until the owner takes them offline or requests deletion. Some finder tools still use browser storage and may not sync across devices.
+                Public vendor records are stored in StreetSpot&apos;s backend and remain until the owner takes them offline or requests deletion. Some finder tools still use browser storage and may not sync across devices.
               </p>
             </PolicySection>
 
@@ -220,7 +220,7 @@ export default function PrivacyPolicyPage() {
               number="03"
               title="Information We Collect"
             >
-              <p>$treet$pot collects the minimum data necessary to operate:</p>
+              <p>StreetSpot collects the minimum data necessary to operate:</p>
               <div className="overflow-hidden rounded-lg border border-border">
                 <table className="w-full text-left text-sm">
                   <thead>
@@ -285,7 +285,7 @@ export default function PrivacyPolicyPage() {
               <div className="space-y-1.5">
                 <DataRow
                   label="Encryption in transit"
-                  value="Use $treet$pot over HTTPS. Security and request logging at external providers are governed by their own policies."
+                  value="Use StreetSpot over HTTPS. Security and request logging at external providers are governed by their own policies."
                 />
                 <DataRow
                   label="Browser storage"
@@ -318,7 +318,7 @@ export default function PrivacyPolicyPage() {
               <div className="space-y-1.5">
                 <DataRow
                   label="Checkout"
-                  value="Plan links open a Stripe-hosted checkout page. $treet$pot does not receive card details through this website."
+                  value="Plan links open a Stripe-hosted checkout page. StreetSpot does not receive card details through this website."
                 />
                 <DataRow
                   label="Status"
@@ -345,7 +345,7 @@ export default function PrivacyPolicyPage() {
               number="06"
               title="Your Rights & Choices"
             >
-              <p>You have full control over your data on $treet$pot:</p>
+              <p>You have full control over your data on StreetSpot:</p>
               <div className="space-y-1.5">
                 <DataRow
                   label="Opt out of GPS"
@@ -415,7 +415,7 @@ export default function PrivacyPolicyPage() {
                 </div>
               </div>
               <a
-                href={`mailto:${SUPPORT_EMAIL}?subject=$treet$pot%20Privacy%20Inquiry`}
+                href={`mailto:${SUPPORT_EMAIL}?subject=StreetSpot%20Privacy%20Inquiry`}
                 className="mt-2 inline-flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary/80"
               >
                 <Mail className="h-4 w-4 text-primary" />
@@ -431,7 +431,7 @@ export default function PrivacyPolicyPage() {
               className="flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to $treet$pot
+              Back to StreetSpot
             </Link>
           </div>
         </div>
@@ -440,7 +440,7 @@ export default function PrivacyPolicyPage() {
       {/* Footer */}
       <footer className="border-t border-border bg-card px-4 py-5 md:px-6">
         <p className="text-center text-[10px] text-muted-foreground/60">
-          {"\u00A9"} {new Date().getFullYear()} $treet$pot. All rights reserved.
+          {"\u00A9"} {new Date().getFullYear()} StreetSpot. All rights reserved.
         </p>
       </footer>
     </div>

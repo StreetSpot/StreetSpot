@@ -1,10 +1,10 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
 import Link from "next/link"
 import { DeleteLocalDataButton } from "@/components/delete-local-data-button"
 
 export const metadata: Metadata = {
   title: "Delete Account",
-  description: "Request deletion of your $treet$pot account and data.",
+  description: "Request deletion of your StreetSpot account and data.",
   alternates: { canonical: "https://streetspotapp.com/delete-account" },
   openGraph: { url: "https://streetspotapp.com/delete-account" },
 }
@@ -13,14 +13,14 @@ export default function DeleteAccountPage() {
   return (
     <main className="mx-auto min-h-dvh max-w-3xl px-6 py-12 text-foreground">
       <Link href="/" className="text-primary">
-        $treet$pot
+        StreetSpot
       </Link>
       <h1 className="mt-10 text-4xl font-bold">Delete your account or data</h1>
       <p className="mt-6 leading-7 text-muted-foreground">
         To request help with account or data deletion, email{" "}
         <a
           className="text-primary underline"
-          href="mailto:support@streetspotapp.com?subject=$treet$pot%20account%20or%20data%20deletion"
+          href="mailto:support@streetspotapp.com?subject=StreetSpot%20account%20or%20data%20deletion"
         >
           support@streetspotapp.com
         </a>

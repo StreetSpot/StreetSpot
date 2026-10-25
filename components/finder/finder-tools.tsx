@@ -104,10 +104,10 @@ export function FinderTools() {
 
   async function handleInvite() {
     const url = "https://streetspotapp.com"
-    const text = `Discover local vendors, food trucks, markets, and skate spots with $treet$pot. Pin the places you find. ${url}`
+    const text = `Discover local vendors, food trucks, markets, and skate spots with StreetSpot. Pin the places you find. ${url}`
     try {
       if (navigator.share) {
-        await navigator.share({ title: "$treet$pot", text, url })
+        await navigator.share({ title: "StreetSpot", text, url })
       } else {
         await navigator.clipboard.writeText(text)
         setShareDone(true)
@@ -373,11 +373,11 @@ export function FinderTools() {
               >
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-xs font-medium text-foreground">
-                    {log.startAddress} → {log.destination}
+                    {log.startAddress} to {log.destination}
                   </p>
                   <p className="text-[11px] text-muted-foreground">
-                    {log.tripDate} · {log.mileage} mi
-                    {log.notes ? ` · ${log.notes}` : ""}
+                    {log.tripDate}  |  {log.mileage} mi
+                    {log.notes ? `  |  ${log.notes}` : ""}
                   </p>
                 </div>
                 <button

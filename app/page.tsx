@@ -143,7 +143,7 @@ function HomeContent() {
               </span>
               <span className="brand-wordmark text-sm font-black text-foreground">
                 StreetSpot
-                <span className="ml-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">LOCAL DISCOVERY • LIVE MAP</span>
+                <span className="ml-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">LOCAL DISCOVERY  |  LIVE MAP</span>
               </span>
             </Link>
 
@@ -167,11 +167,11 @@ function HomeContent() {
             </div>
 
             <p className="text-center text-[10px] leading-relaxed text-muted-foreground/60">
-              {"\u00A9"} {new Date().getFullYear()} $treet$pot. FIND LOCAL. SHOP SMALL. SHOW UP.
+              {"\u00A9"} {new Date().getFullYear()} StreetSpot. FIND LOCAL. SHOP SMALL. SHOW UP.
             </p>
 
             <p className="rounded-md border border-border bg-secondary px-3 py-1.5 text-[10px] text-muted-foreground">
-              Tip: Add $treet$pot to your Home Screen for a native app
+              Tip: Add StreetSpot to your Home Screen for a native app
               experience.
             </p>
           </div>

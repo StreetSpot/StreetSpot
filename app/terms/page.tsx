@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Terms of Service - $treet$pot",
+  title: "Terms of Service - StreetSpot",
   description: "StreetSpot terms for vendor listings, subscriptions, private event hosting, and customer discovery.",
   alternates: { canonical: "https://streetspotapp.com/terms" },
   openGraph: { url: "https://streetspotapp.com/terms" },
@@ -14,17 +14,17 @@ const SUPPORT_EMAIL = "support@streetspotapp.com"
 export default function TermsPage() {
   return (
     <main className="mx-auto min-h-dvh max-w-3xl px-6 py-12 text-foreground">
-      <Link href="/" className="text-primary">← $treet$pot</Link>
+      <Link href="/" className="text-primary">Back to StreetSpot</Link>
       <h1 className="mt-10 text-4xl font-bold">Terms of Service</h1>
       <p className="mt-2 text-sm text-muted-foreground">Effective {EFFECTIVE_DATE}</p>
       <div className="mt-8 space-y-6 leading-7 text-muted-foreground">
-        <p>$treet$pot helps people discover local vendors, mobile businesses, community spots, and events. By using StreetSpot, you agree to these terms and to the <Link href="/privacy" className="text-primary underline">Privacy Policy</Link>.</p>
+        <p>StreetSpot helps people discover local vendors, mobile businesses, community spots, and events. By using StreetSpot, you agree to these terms and to the <Link href="/privacy" className="text-primary underline">Privacy Policy</Link>.</p>
 
         <h2 className="text-xl font-semibold text-foreground">Accounts and ownership</h2>
         <p>You must provide accurate account information and may claim only businesses you own or are authorized to represent. A claim request is not proof of ownership. StreetSpot may ask for evidence, reject an unsupported claim, or remove a listing that appears misleading or unauthorized.</p>
 
         <h2 className="text-xl font-semibold text-foreground">Vendor listings and location</h2>
-        <p>Vendors control when their listing is live. When you publish a live listing, its business name, description, hours, and submitted map coordinates may be visible to the public. Do not publish a private residence or another person’s location without authorization. StreetSpot does not track vendor location in the background. You are responsible for updating your location and taking your listing offline when it is no longer accurate.</p>
+        <p>Vendors control when their listing is live. When you publish a live listing, its business name, description, hours, and submitted map coordinates may be visible to the public. Do not publish a private residence or another person's location without authorization. StreetSpot does not track vendor location in the background. You are responsible for updating your location and taking your listing offline when it is no longer accurate.</p>
 
         <h2 className="text-xl font-semibold text-foreground">Subscriptions and paid features</h2>
         <p>Vendor subscriptions are recurring plans processed through Stripe. Paid map visibility and the ability to publish live are activated only after StreetSpot receives and verifies payment status from Stripe. Access may be suspended when a subscription is canceled, expires, or remains unpaid beyond the current paid period. Do not purchase a second plan to change tiers while a subscription is active. To change or cancel a subscription, contact <a className="text-primary underline" href={"mailto:" + SUPPORT_EMAIL + "?subject=StreetSpot%20subscription%20change"}>{SUPPORT_EMAIL}</a>.</p>

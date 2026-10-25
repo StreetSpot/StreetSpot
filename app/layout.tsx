@@ -9,7 +9,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' })
 
-const brandName = 'StreetSpot | Discover What’s Happening Nearby'
+const brandName = "StreetSpot | Discover What's Happening Nearby"
 const brandDescription =
   'Discover food trucks, pop-up shops, local businesses, neighborhood events, skate spots, and hidden gems near you. Explore the live map and connect with local businesses.'
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   description: brandDescription,
   keywords: [
-    '$treet$pot',
+    'StreetSpot',
     'food trucks near me',
     'street vendors',
     'local discovery map',
@@ -39,13 +39,13 @@ export const metadata: Metadata = {
     locale: 'en_US',
     siteName: 'StreetSpot',
     url: 'https://streetspotapp.com',
-    title: 'StreetSpot | Discover What’s Happening Nearby',
+    title: "StreetSpot | Discover What's Happening Nearby",
     description: brandDescription,
     images: [{ url: '/brand-social.png', width: 1200, height: 630, alt: 'StreetSpot local discovery map' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'StreetSpot | Discover What’s Happening Nearby',
+    title: "StreetSpot | Discover What's Happening Nearby",
     description: brandDescription,
     images: ['/brand-social.png'],
   },
@@ -55,6 +55,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: '/icon.svg', type: 'image/svg+xml', sizes: 'any' },
       { url: '/brand-icon-192.png', type: 'image/png', sizes: '192x192' },
       { url: '/brand-icon-512.png', type: 'image/png', sizes: '512x512' },
     ],
@@ -79,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

@@ -11,34 +11,34 @@
   --card-foreground: #f4f3f7;
   --popover: #19191f;
   --popover-foreground: #f4f3f7;
-  --primary: #FF3CAC;
+  --primary: #f06435;
   --primary-foreground: #111116;
   --secondary: #24232b;
   --secondary-foreground: #f4f3f7;
   --muted: #24232b;
   --muted-foreground: #b2afbb;
-  --accent: #D8A5FF;
+  --accent: #258052;
   --accent-foreground: #17131c;
   --destructive: #f87171;
   --destructive-foreground: #111116;
   --border: #383640;
   --input: #24232b;
   --ring: #00E5FF;
-  --chart-1: #FF3CAC;
-  --chart-2: #D8A5FF;
+  --chart-1: #f06435;
+  --chart-2: #258052;
   --chart-3: #D6A34D;
   --chart-4: #00E5FF;
   --chart-5: #FF4FD8;
-  --neon-pink: #FF3CAC;
+  --neon-pink: #f06435;
   --neon-cyan: #00E5FF;
   --neon-orange: #FF7A18;
   --neon-yellow: #FFE600;
   --neon-blue: #537BFF;
-  --neon-green: #B6FF38;
+  --neon-green: #258052;
   --radius: 0.75rem;
   --sidebar: #15151a;
   --sidebar-foreground: #f4f3f7;
-  --sidebar-primary: #FF3CAC;
+  --sidebar-primary: #f06435;
   --sidebar-primary-foreground: #111116;
   --sidebar-accent: #24232b;
   --sidebar-accent-foreground: #f4f3f7;
@@ -53,27 +53,27 @@
   --card-foreground: #f4f3f7;
   --popover: #19191f;
   --popover-foreground: #f4f3f7;
-  --primary: #FF3CAC;
+  --primary: #f06435;
   --primary-foreground: #111116;
   --secondary: #24232b;
   --secondary-foreground: #f4f3f7;
   --muted: #24232b;
   --muted-foreground: #b2afbb;
-  --accent: #D8A5FF;
+  --accent: #258052;
   --accent-foreground: #17131c;
   --destructive: #f87171;
   --destructive-foreground: #111116;
   --border: #383640;
   --input: #24232b;
   --ring: #00E5FF;
-  --chart-1: #FF3CAC;
-  --chart-2: #D8A5FF;
+  --chart-1: #f06435;
+  --chart-2: #258052;
   --chart-3: #D6A34D;
   --chart-4: #72e4dc;
   --chart-5: #ff8a55;
   --sidebar: #15151a;
   --sidebar-foreground: #f4f3f7;
-  --sidebar-primary: #FF3CAC;
+  --sidebar-primary: #f06435;
   --sidebar-primary-foreground: #111116;
   --sidebar-accent: #24232b;
   --sidebar-accent-foreground: #f4f3f7;
@@ -127,7 +127,7 @@
   html { color-scheme: dark; scroll-behavior: smooth; }
   body { @apply text-foreground; min-height:100%; background-color:#08080d; background-image:radial-gradient(ellipse at 8% 10%,rgba(255,60,172,.13),transparent 30%),radial-gradient(ellipse at 92% 15%,rgba(0,229,255,.12),transparent 28%),radial-gradient(ellipse at 78% 78%,rgba(83,123,255,.10),transparent 30%),radial-gradient(ellipse at 25% 88%,rgba(255,122,24,.08),transparent 28%),linear-gradient(145deg,#08080d 0%,#111019 52%,#08080d 100%); background-attachment:fixed; }
   #__next { min-height:100vh; }
-  ::selection { color: #111116; background: #FF3CAC; }
+  ::selection { color: #111116; background: #f06435; }
   :focus-visible { outline: 3px solid #00E5FF; outline-offset: 3px; }
 }
 
@@ -151,7 +151,7 @@
 .leaflet-tile-pane { filter: brightness(.72) saturate(.78); }
 .leaflet-container { background: #19191f; font-family: var(--font-inter), Inter, sans-serif; }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #19191f; color: #f4f3f7; border: 1px solid #383640; }
-.leaflet-control-zoom a { background: #19191f !important; color: #B6FF38 !important; border-color: #383640 !important; }
+.leaflet-control-zoom a { background: #19191f !important; color: #258052 !important; border-color: #383640 !important; }
 
 .brand-header {
   background: rgba(17, 17, 22, .94);
@@ -159,14 +159,14 @@
   backdrop-filter: blur(16px);
 }
 .brand-mark {
-  background: #B6FF38;
+  background: #258052;
   color: #111116;
-  box-shadow: 3px 3px 0 #D8A5FF;
+  box-shadow: 3px 3px 0 #258052;
 }
 .brand-wordmark { letter-spacing: -.045em; }
-.brand-wordmark .brand-dollar { color: #FF3CAC; }
+.brand-wordmark .brand-dollar { color: #f06435; }
 .brand-kicker {
-  color: #D8A5FF;
+  color: #258052;
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: .68rem;
   font-weight: 800;
@@ -211,10 +211,10 @@
   mask-image: linear-gradient(to top, black, transparent 75%);
 }
 .hustle-graffiti {
-  text-shadow: 3px 3px 0 #FF3CAC, -2px -2px 0 #00E5FF, 0 0 22px rgba(255,60,172,.45);
+  text-shadow: 3px 3px 0 #f06435, -2px -2px 0 #00E5FF, 0 0 22px rgba(255,60,172,.45);
 }
 .hustle-neon-rainbow {
-  background: linear-gradient(100deg, #B6FF38 0%, #FFE600 23%, #FF7A18 43%, #FF3CAC 63%, #D8A5FF 78%, #00E5FF 100%);
+  background: linear-gradient(100deg, #258052 0%, #FFE600 23%, #FF7A18 43%, #f06435 63%, #258052 78%, #00E5FF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -228,7 +228,7 @@
   border-radius: 999px;
   padding: .48rem .8rem;
   background: rgba(255,60,172,.09);
-  color: #B6FF38;
+  color: #258052;
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: .7rem;
   font-weight: 800;
@@ -244,7 +244,7 @@
 }
 .hustle-outline {
   color: transparent;
-  -webkit-text-stroke: 1.5px #D8A5FF;
+  -webkit-text-stroke: 1.5px #258052;
   text-shadow: 3px 3px 0 rgba(216,165,255,.08);
 }
 .hustle-card {
@@ -258,15 +258,15 @@
 }
 .hustle-card, .hustle-card * { transition-property: border-color, background-color, color, transform, box-shadow; transition-duration: 180ms; }
 .hustle-primary {
-  background: #B6FF38;
+  background: #258052;
   color: #111116;
   font-weight: 900;
-  box-shadow: 4px 4px 0 #D8A5FF;
+  box-shadow: 4px 4px 0 #258052;
 }
-.hustle-primary:hover { background: #c6ff68; transform: translate(-1px,-1px); box-shadow: 6px 6px 0 #D8A5FF; }
-.hustle-secondary { border: 1px solid #D8A5FF; color: #e8d0ff; background: rgba(216,165,255,.06); }
+.hustle-primary:hover { background: #c6ff68; transform: translate(-1px,-1px); box-shadow: 6px 6px 0 #258052; }
+.hustle-secondary { border: 1px solid #258052; color: #e8d0ff; background: rgba(216,165,255,.06); }
 .hustle-secondary:hover { background: rgba(216,165,255,.13); }
-.hustle-feature-icon { color: #B6FF38; background: rgba(182,255,56,.09); border: 1px solid rgba(182,255,56,.22); }
+.hustle-feature-icon { color: #258052; background: rgba(182,255,56,.09); border: 1px solid rgba(182,255,56,.22); }
 .hustle-gold { color: #D6A34D; }
 .hustle-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(216,165,255,.55), rgba(182,255,56,.45), transparent); }
 
@@ -287,9 +287,9 @@ body::before { content: none !important; display: none !important; background-im
   --background: #f6f7f2; --foreground: #17231f; --card: #ffffff; --card-foreground: #17231f;
   --popover: #ffffff; --popover-foreground: #17231f; --primary: #f06435; --primary-foreground: #ffffff;
   --secondary: #e9ede5; --secondary-foreground: #17231f; --muted: #e9ede5; --muted-foreground: #647168;
-  --accent: #285ee8; --accent-foreground: #ffffff; --destructive: #c83f35; --destructive-foreground: #ffffff;
-  --border: #dce1d8; --input: #ffffff; --ring: #f06435; --chart-1: #f06435; --chart-2: #285ee8;
-  --chart-3: #258052; --chart-4: #8358c9; --chart-5: #e4a629; --radius: 1rem;
+  --accent: #258052; --accent-foreground: #ffffff; --destructive: #c83f35; --destructive-foreground: #ffffff;
+  --border: #dce1d8; --input: #ffffff; --ring: #f06435; --chart-1: #f06435; --chart-2: #258052;
+  --chart-3: #258052; --chart-4: #258052; --chart-5: #f06435; --radius: 1rem;
   --sidebar: #ffffff; --sidebar-foreground: #17231f; --sidebar-primary: #f06435;
   --sidebar-primary-foreground: #ffffff; --sidebar-accent: #e9ede5; --sidebar-accent-foreground: #17231f;
   --sidebar-border: #dce1d8; --sidebar-ring: #f06435;
@@ -298,7 +298,7 @@ body::before { content: none !important; display: none !important; background-im
   --background: #f6f7f2; --foreground: #17231f; --card: #ffffff; --card-foreground: #17231f;
   --popover: #ffffff; --popover-foreground: #17231f; --primary: #f06435; --primary-foreground: #ffffff;
   --secondary: #e9ede5; --secondary-foreground: #17231f; --muted: #e9ede5; --muted-foreground: #647168;
-  --accent: #285ee8; --accent-foreground: #ffffff; --destructive: #c83f35; --destructive-foreground: #ffffff;
+  --accent: #258052; --accent-foreground: #ffffff; --destructive: #c83f35; --destructive-foreground: #ffffff;
   --border: #dce1d8; --input: #ffffff; --ring: #f06435; --sidebar: #ffffff; --sidebar-foreground: #17231f;
   --sidebar-primary: #f06435; --sidebar-primary-foreground: #ffffff; --sidebar-accent: #e9ede5;
   --sidebar-accent-foreground: #17231f; --sidebar-border: #dce1d8; --sidebar-ring: #f06435;
@@ -307,7 +307,7 @@ body::before { content: none !important; display: none !important; background-im
   html { color-scheme: light; scroll-behavior: smooth; }
   body { color: var(--foreground); background: #f6f7f2; background-image: radial-gradient(ellipse at 7% 0%, rgba(240,100,53,.07), transparent 34%), radial-gradient(ellipse at 92% 14%, rgba(40,94,232,.05), transparent 30%); background-attachment: fixed; }
   ::selection { color: #fff; background: #f06435; }
-  :focus-visible { outline: 3px solid #285ee8; outline-offset: 3px; }
+  :focus-visible { outline: 3px solid #258052; outline-offset: 3px; }
 }
 .brand-header { background: rgba(255,255,255,.94); border-color: #e0e5dd; backdrop-filter: blur(18px); box-shadow: 0 2px 12px rgba(23,35,31,.035); }
 .brand-mark { background: #f06435; color: white; box-shadow: none; }
@@ -324,15 +324,15 @@ body::before { content: none !important; display: none !important; background-im
 .market-feature-card:hover { transform: translateY(-3px); border-color: #c6d0c5; box-shadow: 0 12px 28px rgba(23,35,31,.07); }
 .market-feature-icon { background: #e9ede5; }
 .market-tone-orange { color: #f06435; background: #fff0e8; }
-.market-tone-blue { color: #285ee8; background: #edf2ff; }
+.market-tone-blue { color: #258052; background: #edf2ff; }
 .market-tone-green { color: #258052; background: #eaf5ed; }
-.market-tone-purple { color: #8358c9; background: #f1ebfc; }
+.market-tone-purple { color: #258052; background: #f1ebfc; }
 .leaflet-container { background: #edf1e8; color: #17231f; font-family: var(--font-inter), Inter, sans-serif; }
 .leaflet-tile-pane { filter: none; }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #fff; color: #17231f; border: 1px solid #dce1d8; }
 .leaflet-control-zoom a { background: #fff !important; color: #f06435 !important; border-color: #dce1d8 !important; }
 .leaflet-control-attribution { background: rgba(255,255,255,.88) !important; color: #647168 !important; }
-.leaflet-control-attribution a { color: #285ee8 !important; }
+.leaflet-control-attribution a { color: #258052 !important; }
 .hustle-landing, .hustle-card { background: #f6f7f2; }
 
 /* Canonical clean StreetSpot theme: white, green, and orange only. */
@@ -343,7 +343,7 @@ body::before { content: none !important; display: none !important; background-im
   --accent:#258052; --accent-foreground:#ffffff; --border:#dce1d8; --input:#ffffff; --ring:#258052;
   --sidebar:#ffffff; --sidebar-foreground:#17231f; --sidebar-primary:#f06435; --sidebar-primary-foreground:#ffffff;
   --sidebar-accent:#e9ede5; --sidebar-accent-foreground:#17231f; --sidebar-border:#dce1d8; --sidebar-ring:#258052;
-  --chart-1:#f06435; --chart-2:#258052; --chart-3:#e4a629; --chart-4:#647168; --chart-5:#b94d29;
+  --chart-1:#f06435; --chart-2:#258052; --chart-3:#f06435; --chart-4:#647168; --chart-5:#b94d29;
 }
 .dark { --background:#f6f7f2; --foreground:#17231f; --card:#ffffff; --card-foreground:#17231f; --popover:#ffffff; --popover-foreground:#17231f; --primary:#f06435; --primary-foreground:#ffffff; --secondary:#e9ede5; --secondary-foreground:#17231f; --muted:#e9ede5; --muted-foreground:#647168; --accent:#258052; --accent-foreground:#ffffff; --border:#dce1d8; --input:#ffffff; --ring:#258052; }
 html, body { color-scheme:light !important; color:#17231f; background:#f6f7f2 !important; background-image:none !important; }
@@ -380,7 +380,30 @@ main:has(a[href*="/api/billing/checkout"]) p { color:#647168 !important; }
 main:has(a[href*="/api/billing/checkout"]) .text-white\/65, main:has(a[href*="/api/billing/checkout"]) .text-white\/70, main:has(a[href*="/api/billing/checkout"]) .text-white\/75, main:has(a[href*="/api/billing/checkout"]) .text-white\/80, main:has(a[href*="/api/billing/checkout"]) .text-white\/60, main:has(a[href*="/api/billing/checkout"]) .text-white\/50, main:has(a[href*="/api/billing/checkout"]) .text-white\/45 { color:#647168 !important; }
 main:has(a[href*="/api/billing/checkout"]) .bg-black\/30, main:has(a[href*="/api/billing/checkout"]) .bg-black\/20, main:has(a[href*="/api/billing/checkout"]) .bg-white\/\[\.03\] { background:#fff !important; }
 main:has(a[href*="/api/billing/checkout"]) .border-white\/10, main:has(a[href*="/api/billing/checkout"]) .border-white\/15, main:has(a[href*="/api/billing/checkout"]) .border-white\/20 { border-color:#dce1d8 !important; }
-main:has(a[href*="/api/billing/checkout"]) .text-\[\#B6FF38\], main:has(a[href*="/api/billing/checkout"]) .text-\[\#D8A5FF\] { color:#258052 !important; }
-main:has(a[href*="/api/billing/checkout"]) .bg-\[\#B6FF38\] { background:#f06435 !important; color:#fff !important; }
-main:has(a[href*="/api/billing/checkout"]) .border-\[\#B6FF38\] { border-color:#f06435 !important; }
+main:has(a[href*="/api/billing/checkout"]) .text-\[\#258052\], main:has(a[href*="/api/billing/checkout"]) .text-\[\#258052\] { color:#258052 !important; }
+main:has(a[href*="/api/billing/checkout"]) .bg-\[\#258052\] { background:#f06435 !important; color:#fff !important; }
+main:has(a[href*="/api/billing/checkout"]) .border-\[\#258052\] { border-color:#f06435 !important; }
 main:has(a[href*="/api/billing/checkout"]) .text-\[\#111116\] { color:#fff !important; }
+
+/* Final site-wide brand guardrails: clean white, green, and orange. */
+html, body { color-scheme: light !important; }
+.brand-mark { background: #258052 !important; color: #ffffff !important; box-shadow: none !important; }
+.brand-wordmark { color: #17231f; }
+.brand-wordmark .brand-dollar { color: #f06435; }
+.brand-kicker { color: #258052 !important; }
+[class*="bg-[#111116]"], [class*="bg-[#111116]/"], [class*="bg-[#19191f]"], [class*="bg-[#24232b]"] {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #17231f !important;
+  border-color: #dce1d8 !important;
+}
+[class*="bg-[#111116]"] [class*="text-white"], [class*="bg-[#19191f]"] [class*="text-white"], [class*="bg-[#24232b]"] [class*="text-white"] {
+  color: #17231f !important;
+}
+[class*="border-[#D8A5FF]"], [class*="border-[#B6FF38]"], [class*="border-purple-"], [class*="border-fuchsia-"] {
+  border-color: #dce1d8 !important;
+}
+[class*="text-[#D8A5FF]"], [class*="text-[#B6FF38]"], [class*="text-purple-"], [class*="text-fuchsia-"] {
+  color: #258052 !important;
+}
+[class*="bg-[#B6FF38]"] { background-color: #f06435 !important; color: #ffffff !important; }

@@ -1,26 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">$treet$pot map-pin logo</title>
-  <desc id="desc">Neon lime map pin with a dark dollar sign and street-purple graffiti accent on an asphalt background.</desc>
-  <defs>
-    <linearGradient id="asphalt" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1b1a22"/>
-      <stop offset="1" stop-color="#111116"/>
-    </linearGradient>
-    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="8" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>
-  <rect width="512" height="512" fill="url(#asphalt)"/>
-  <path d="M56 145 L104 126 L86 164 L132 150 L109 188" fill="none" stroke="#D8A5FF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
-  <path d="M389 331 L429 314 L411 351 L450 339" fill="none" stroke="#D8A5FF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
-  <path d="M256 432 C217 376 135 292 135 205 C135 137 189 83 256 83 C323 83 377 137 377 205 C377 292 295 376 256 432 Z" fill="#B6FF38" filter="url(#glow)"/>
-  <path d="M256 432 C217 376 135 292 135 205 C135 137 189 83 256 83 C323 83 377 137 377 205 C377 292 295 376 256 432 Z" fill="#B6FF38" stroke="#e0ffad" stroke-width="5" stroke-linejoin="round"/>
-  <circle cx="256" cy="205" r="91" fill="#111116"/>
-  <path d="M302 165 C288 150 270 144 249 146 C222 148 205 164 205 185 C205 208 222 218 252 225 C282 232 298 241 297 261 C296 282 276 296 249 295 C228 294 211 286 197 271" fill="none" stroke="#B6FF38" stroke-width="19" stroke-linecap="round"/>
-  <path d="M257 123 L257 311" stroke="#B6FF38" stroke-width="13" stroke-linecap="round"/>
-  <path d="M169 335 L196 352 L182 375" fill="none" stroke="#D8A5FF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="370" cy="119" r="7" fill="#D6A34D"/>
-  <circle cx="391" cy="143" r="4" fill="#D8A5FF"/>
-  <circle cx="122" cy="320" r="6" fill="#D6A34D"/>
+  <title id="title">StreetSpot map pin</title>
+  <desc id="desc">A clean green location pin with an orange center on a warm white background.</desc>
+  <rect width="512" height="512" rx="112" fill="#f6f7f2"/>
+  <circle cx="256" cy="238" r="184" fill="#eaf5ed"/>
+  <path d="M256 452C211 389 112 292 112 205C112 125 176 64 256 64S400 125 400 205C400 292 301 389 256 452Z" fill="#258052"/>
+  <circle cx="256" cy="204" r="105" fill="#ffffff"/>
+  <circle cx="256" cy="204" r="42" fill="#f06435"/>
+  <circle cx="256" cy="204" r="16" fill="#ffffff"/>
+  <circle cx="386" cy="105" r="17" fill="#f06435"/>
 </svg>
