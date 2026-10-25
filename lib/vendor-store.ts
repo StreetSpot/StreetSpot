@@ -2,6 +2,7 @@ import { useEffect, useSyncExternalStore } from "react"
 
 export interface Vendor {
   id: string
+  seedId?: string
   name: string
   description: string
   lat: number

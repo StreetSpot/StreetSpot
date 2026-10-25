@@ -46,6 +46,12 @@ function HomeContent() {
         if (requestedName) setBusinessName(requestedName)
       }, 0)
     }
+    if (params.get("view") === "finder") {
+      window.setTimeout(() => {
+        setView("finder")
+        setFinderTab(params.get("tab") === "tools" ? "tools" : "map")
+      }, 0)
+    }
     window.history.replaceState({ streetSpotView: "landing" }, "", window.location.href)
     const restoreView = (event: PopStateEvent) => {
       const next = event.state?.streetSpotView

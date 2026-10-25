@@ -25,6 +25,7 @@ import {
 import { ConsentMessagePanel } from "@/components/messaging/consent-message-panel"
 import { LocateControl } from "@/components/map/locate-control"
 import { hasValidCoordinates } from "@/lib/geo"
+import type { ClaimableVendor } from "@/lib/claimable-vendors"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 
@@ -96,6 +97,17 @@ function createGemIcon(spot: CommunitySpot) {
   })
 }
 
+function createClaimableIcon() {
+  const size = 34
+  return L.divIcon({
+    html: `<div style="width:${size}px;height:${size}px;background:#ffffff;border:3px solid #258052;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.25);"><div style="width:12px;height:12px;background:#f06435;border-radius:50%;border:2px solid #ffffff;"></div></div>`,
+    className: "streetspot-claimable-pin",
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size],
+    popupAnchor: [0, -size],
+  })
+}
+
 function VendorListItem({
   vendor,
   isSelected,
@@ -160,6 +172,7 @@ export function VendorMap() {
   const vendorLoadStatus = useVendorLoadStatus()
   const communitySpots = useCommunitySpots()
   const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null)
+  const [claimablePins, setClaimablePins] = useState<ClaimableVendor[]>([])
   const [selectedGem, setSelectedGem] = useState<CommunitySpot | null>(null)
   const [showList, setShowList] = useState(false)
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null)
@@ -168,9 +181,11 @@ export function VendorMap() {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const markersRef = useRef<L.Marker[]>([])
   const gemMarkersRef = useRef<L.Marker[]>([])
+  const claimableMarkersRef = useRef<L.Marker[]>([])
 
   const validVendors = activeVendors.filter(hasValidCoordinates)
   const validSpots = communitySpots.filter((spot) => spot.isActive && hasValidCoordinates(spot))
+  const fixedPins = claimablePins.filter((pin) => pin.isFixedLocation === true && typeof pin.lat === "number" && typeof pin.lng === "number" && Number.isFinite(pin.lat) && pin.lat >= -90 && pin.lat <= 90 && Number.isFinite(pin.lng) && pin.lng >= -180 && pin.lng <= 180)
   const sortedVendors = [...validVendors].sort((a, b) => {
     if (a.isPremium && !b.isPremium) return -1
     if (!a.isPremium && b.isPremium) return 1
@@ -178,14 +193,34 @@ export function VendorMap() {
   })
   const premiumVendors = sortedVendors.filter((v) => v.isPremium)
   const standardVendors = sortedVendors.filter((v) => !v.isPremium)
-  const mapAnchor = validVendors[0] ?? validSpots[0] ?? (userPosition ? { lat: userPosition[0], lng: userPosition[1] } : null)
+  const mapAnchor = validVendors[0] ?? validSpots[0] ?? fixedPins[0] ?? (userPosition ? { lat: userPosition[0], lng: userPosition[1] } : null)
   const anchorLat = mapAnchor?.lat ?? null
   const anchorLng = mapAnchor?.lng ?? null
-  const anchorIsUserLocation = Boolean(userPosition && validVendors.length === 0 && validSpots.length === 0)
+  const anchorIsUserLocation = Boolean(userPosition && validVendors.length === 0 && validSpots.length === 0 && fixedPins.length === 0)
 
   useEffect(() => {
     const iv = setInterval(() => setTick((t) => t + 1), 10000)
     return () => clearInterval(iv)
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    const loadClaimablePins = async () => {
+      try {
+        const response = await fetch("/api/vendor-candidates", { cache: "no-store" })
+        if (!response.ok) return
+        const payload = await response.json() as { vendors?: ClaimableVendor[] }
+        if (!cancelled && Array.isArray(payload.vendors)) setClaimablePins(payload.vendors)
+      } catch {
+        // Keep live vendors and community spots usable if the claim catalog is unavailable.
+      }
+    }
+    void loadClaimablePins()
+    const interval = window.setInterval(() => void loadClaimablePins(), 60000)
+    return () => {
+      cancelled = true
+      window.clearInterval(interval)
+    }
   }, [])
 
   const selectVendor = useCallback((vendor: Vendor) => {
@@ -288,6 +323,35 @@ export function VendorMap() {
       })
   }, [communitySpots])
 
+  useEffect(() => {
+    if (!mapRef.current) return
+    claimableMarkersRef.current.forEach((marker) => marker.remove())
+    claimableMarkersRef.current = []
+    const liveSeedIds = new Set(activeVendors.map((vendor) => vendor.seedId).filter((value): value is string => Boolean(value)))
+    fixedPins.filter((pin) => !liveSeedIds.has(pin.id)).forEach((pin) => {
+      const status = pin.claimStatus === "PENDING_VERIFICATION"
+        ? "Claim request pending verification"
+        : pin.claimStatus === "CLAIMED"
+          ? "Owner verified"
+          : "Unclaimed · eligible owner can request a claim"
+      const address = pin.address ? `<p style="font-size:11px;margin:0 0 8px;color:#647168;">${escapeHtml(pin.address)}</p>` : ""
+      const claimLink = pin.claimStatus === "UNCLAIMED"
+        ? `<a href="/?view=finder&tab=tools" style="display:block;text-align:center;margin-top:10px;padding:8px 10px;background:#258052;color:#ffffff;text-decoration:none;border-radius:6px;font-size:11px;font-weight:700;">Claim this business</a>`
+        : ""
+      const marker = L.marker([pin.lat!, pin.lng!], { icon: createClaimableIcon(), zIndexOffset: 50 })
+        .addTo(mapRef.current!)
+        .bindPopup(
+          `<div style="background:#ffffff;color:#17231f;padding:12px 14px;border-radius:10px;min-width:190px;font-family:system-ui,sans-serif;border:1px solid rgba(37,128,82,.35);"><p style="font-weight:700;font-size:13px;margin:0 0 5px;color:#17231f;">${escapeHtml(pin.name)}</p>${address}<p style="font-size:11px;margin:0;color:#258052;">${escapeHtml(status)}</p>${claimLink}<p style="font-size:10px;margin:8px 0 0;color:#647168;">Location from OpenStreetMap. Ownership and current details must be verified.</p></div>`,
+          { className: "streetspot-popup", closeButton: false }
+        )
+      marker.on("click", () => {
+        setSelectedVendor(null)
+        setSelectedGem(null)
+      })
+      claimableMarkersRef.current.push(marker)
+    })
+  }, [fixedPins, activeVendors])
+
   const gemCount = communitySpots.filter((s) => s.isActive).length
 
   return (
@@ -297,7 +361,7 @@ export function VendorMap() {
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
             <span className="text-sm font-medium text-foreground">
-              {activeVendors.length} live{gemCount > 0 ? ` · ${gemCount} gems` : ""}
+              {activeVendors.length} live{fixedPins.length > 0 ? ` · ${fixedPins.length} local businesses` : ""}{gemCount > 0 ? ` · ${gemCount} gems` : ""}
             </span>
           </div>
           {premiumVendors.length > 0 && (

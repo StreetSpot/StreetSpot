@@ -40,7 +40,7 @@ function toPublicVendor(vendor: VendorRow) {
 export async function GET() {
   try {
     const rows = await supabaseFetch<VendorRow[]>(
-      "vendors?is_live=eq.true&select=id,name,description,is_live,is_premium,closing_time,created_at,vendor_locations(latitude,longitude,is_live)&order=created_at.desc"
+      "vendors?is_live=eq.true&select=id,seed_id,name,description,is_live,is_premium,closing_time,created_at,vendor_locations(latitude,longitude,is_live)&order=created_at.desc"
     )
     const vendors = rows.filter((vendor) => vendor.is_live)
       .map(toPublicVendor)

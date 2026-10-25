@@ -16,6 +16,10 @@ export interface ClaimableVendor {
   claimStatus?: "UNCLAIMED" | "PENDING_VERIFICATION" | "CLAIMED"
   claimedBy?: string
   claimedAt?: number
+  address?: string
+  lat?: number
+  lng?: number
+  isFixedLocation?: boolean
 }
 
 export const SEEDED_CLAIMABLE_VENDORS: Omit<
@@ -69,4 +73,9 @@ export const SEEDED_CLAIMABLE_VENDORS: Omit<
   { id: "seed-lick-ice-cream", name: "LICK Ice Cream Food Truck", cuisine: "Ice Cream", city: "Columbia", state: "SC", country: "US", area: "Columbia, SC" },
   { id: "seed-bone-in-bbq", name: "Bone-In Artisanal BBQ on Wheels", cuisine: "Barbeque", city: "Columbia", state: "SC", country: "US", area: "Columbia, SC" },
   { id: "seed-2-fat-2-fly", name: "2 Fat 2 Fly", city: "Columbia", state: "SC", country: "US", area: "Columbia, SC" },
+  // Fixed-location Columbia businesses mapped from OpenStreetMap points; ownership remains unclaimed until verified.
+  { id: "seed-fixed-drip-coffee", name: "Drip Coffee", cuisine: "Coffee shop", city: "Columbia", state: "SC", country: "US", area: "Five Points, Columbia, SC", address: "729 Saluda Ave, Columbia, SC 29205", lat: 33.9992267, lng: -81.0173688, isFixedLocation: true },
+  { id: "seed-fixed-curiosity-coffee", name: "Curiosity Coffee Bar", cuisine: "Cafe, Bakery, Coffee shop", city: "Columbia", state: "SC", country: "US", area: "North Main, Columbia, SC", address: "2327 Main St, Columbia, SC 29201", lat: 34.0168063, lng: -81.0407018, isFixedLocation: true },
+  { id: "seed-fixed-azalea-coffee", name: "Azalea Coffee Bar", cuisine: "Coffee shop", city: "Columbia", state: "SC", country: "US", area: "Devine Street, Columbia, SC", address: "2700 Devine St, Columbia, SC 29205", lat: 33.9979999, lng: -81.0053721, isFixedLocation: true },
+  { id: "seed-fixed-farmers-market-xchange", name: "Farmers Market Xchange Bakehouse & Cafe", cuisine: "Market, Bakery, Cafe", city: "Columbia", state: "SC", country: "US", area: "Downtown Columbia, SC", address: "1237 Washington St, Columbia, SC 29201", lat: 34.0044915, lng: -81.0337115, isFixedLocation: true },
 ]

@@ -1,11 +1,13 @@
 import { NextRequest } from "next/server"
-import { errorResponse, requireUser, supabaseFetch, supabaseServiceFetch } from "@/lib/supabase-admin"
+import { errorResponse, requireUser, supabaseFetch } from "@/lib/supabase-admin"
 
 const id = (value: string) => encodeURIComponent(value)
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 const seedPattern = /^seed-[a-z0-9-]{1,120}$/
 
 export const dynamic = "force-dynamic"
+
+type SeedClaimStatus = "CLAIMED" | "PENDING_VERIFICATION" | "UNCLAIMED"
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,21 +26,27 @@ export async function POST(request: NextRequest) {
     if (note && note.length > 2000) return Response.json({ ok: false, code: "NOTE_TOO_LONG" }, { status: 400 })
 
     let resolvedVendorId = vendorId
-    let vendor: Array<{ id: string; owner_id: string | null }>
+    let seedClaimStatus: SeedClaimStatus | null = null
+    let ownerId: string | null = null
+
     if (seedCandidate) {
-      const candidates = await supabaseServiceFetch<Array<{ id: string; owner_id: string | null; name: string }>>(
-        `vendors?seed_id=eq.${id(vendorId)}&select=id,owner_id,name&limit=1`,
+      const candidates = await supabaseFetch<Array<{ seed_id: string; vendor_id: string; claim_status: SeedClaimStatus }>>(
+        "rpc/get_public_seeded_vendor_catalog",
+        { method: "POST", body: JSON.stringify({ p_seed_ids: [vendorId] }) },
+        user.accessToken,
       )
       if (!candidates[0]) return Response.json({ ok: false, code: "VENDOR_NOT_FOUND" }, { status: 404 })
-      vendor = [{ id: candidates[0].id, owner_id: candidates[0].owner_id }]
-      resolvedVendorId = candidates[0].id
+      seedClaimStatus = candidates[0].claim_status
+      if (seedClaimStatus === "CLAIMED") return Response.json({ ok: false, code: "VENDOR_ALREADY_CLAIMED" }, { status: 409 })
+      resolvedVendorId = candidates[0].vendor_id
     } else {
-      vendor = await supabaseFetch<Array<{ id: string; owner_id: string | null }>>(
+      const vendor = await supabaseFetch<Array<{ id: string; owner_id: string | null }>>(
         `vendors?id=eq.${id(vendorId)}&select=id,owner_id&limit=1`, {}, user.accessToken,
       )
+      if (!vendor[0]) return Response.json({ ok: false, code: "VENDOR_NOT_FOUND" }, { status: 404 })
+      ownerId = vendor[0].owner_id
     }
-    if (!vendor[0]) return Response.json({ ok: false, code: "VENDOR_NOT_FOUND" }, { status: 404 })
-    if (vendor[0].owner_id) return Response.json({ ok: false, code: "VENDOR_ALREADY_CLAIMED" }, { status: 409 })
+    if (ownerId) return Response.json({ ok: false, code: "VENDOR_ALREADY_CLAIMED" }, { status: 409 })
 
     const existing = await supabaseFetch<Array<{ id: string; status: string }>>(
       `vendor_claims?vendor_id=eq.${id(resolvedVendorId)}&claimant_id=eq.${id(user.id)}&status=in.(pending,approved)&select=id,status&limit=1`,
@@ -46,11 +54,8 @@ export async function POST(request: NextRequest) {
     )
     if (existing.length) return Response.json({ ok: false, code: "CLAIM_ALREADY_EXISTS", claim: existing[0] }, { status: 409 })
 
-    if (seedCandidate) {
-      const pending = await supabaseServiceFetch<Array<{ id: string }>>(
-        `vendor_claims?vendor_id=eq.${id(resolvedVendorId)}&status=eq.pending&select=id&limit=1`,
-      )
-      if (pending.length) return Response.json({ ok: false, code: "CLAIM_PENDING_REVIEW" }, { status: 409 })
+    if (seedCandidate && seedClaimStatus === "PENDING_VERIFICATION") {
+      return Response.json({ ok: false, code: "CLAIM_PENDING_REVIEW" }, { status: 409 })
     }
 
     const claims = await supabaseFetch<Array<{ id: string; status: string }>>("vendor_claims", {
