@@ -5,6 +5,7 @@ import { DeleteLocalDataButton } from "@/components/delete-local-data-button"
 export const metadata: Metadata = {
   title: "Delete Account",
   description: "Request deletion of your StreetSpot account and data.",
+  robots: { index: false, follow: true },
   alternates: { canonical: "https://streetspotapp.com/delete-account" },
   openGraph: { url: "https://streetspotapp.com/delete-account" },
 }
