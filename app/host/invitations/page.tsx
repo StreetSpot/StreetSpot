@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -217,7 +217,7 @@ export default function PrivateInvitationsPage() {
   }
   return <main className="min-h-dvh bg-[#f6f7f2] px-4 py-8 text-slate-900 sm:px-6"><div className="mx-auto max-w-6xl">
     <Link href="/" className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-600"><ArrowLeft className="h-4 w-4"/> Back to StreetSpot</Link>
-    <div className="mb-8 flex items-start gap-3"><div className="rounded-2xl bg-slate-900 p-3 text-[#B6FF38]"><LockKeyhole className="h-6 w-6"/></div><div><p className="text-xs font-bold uppercase tracking-[.2em] text-slate-500">Private Host Studio</p><h1 className="mt-1 text-3xl font-black sm:text-4xl">Invitations that stay in your circle.</h1><p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">Design wedding, graduation, birthday, family, and private-party invitations with guest names and a chosen look. Private pins must never be publicly listed.</p></div></div>
+    <div className="mb-8 flex items-start gap-3"><div className="rounded-2xl bg-slate-900 p-3 text-[#258052]"><LockKeyhole className="h-6 w-6"/></div><div><p className="text-xs font-bold uppercase tracking-[.2em] text-slate-500">Private Host Studio</p><h1 className="mt-1 text-3xl font-black sm:text-4xl">Invitations that stay in your circle.</h1><p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">Design wedding, graduation, birthday, family, and private-party invitations with guest names and a chosen look. Private pins must never be publicly listed.</p></div></div>
     <div className="grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
       <section className="space-y-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"><div className="flex items-center gap-2"><PartyPopper className="h-5 w-5 text-fuchsia-700"/><h2 className="text-lg font-extrabold">Invitation creator</h2></div>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -256,7 +256,7 @@ export default function PrivateInvitationsPage() {
         {hostPlans.map((plan) => {
           const isSelected = selectedPlan === plan.id
           return <article key={plan.id} className={`relative flex flex-col rounded-2xl border bg-white p-5 shadow-sm ${isSelected ? "border-slate-900 ring-2 ring-slate-900" : "border-slate-200"}`}>
-            {plan.popular && <span className="absolute -top-3 right-4 rounded-full bg-[#B6FF38] px-3 py-1 text-[10px] font-black uppercase tracking-wide text-slate-950">Most popular</span>}
+            {plan.popular && <span className="absolute -top-3 right-4 rounded-full bg-[#f06435] px-3 py-1 text-[10px] font-black uppercase tracking-wide text-white">Most popular</span>}
             <h3 className="text-lg font-extrabold">{plan.name}</h3>
             <p className="mt-2 min-h-12 text-sm leading-5 text-slate-600">{plan.description}</p>
             <div className="mt-4"><span className="text-3xl font-black">{plan.price}</span><p className="mt-1 text-xs font-semibold text-slate-500">{plan.billing}</p></div>

@@ -373,7 +373,7 @@ export function FinderTools() {
               >
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-xs font-medium text-foreground">
-                    {log.startAddress} to {log.destination}
+                    {log.startAddress} {"to"} {log.destination}
                   </p>
                   <p className="text-[11px] text-muted-foreground">
                     {log.tripDate}  |  {log.mileage} mi

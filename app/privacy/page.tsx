@@ -289,7 +289,7 @@ export default function PrivacyPolicyPage() {
                 />
                 <DataRow
                   label="Browser storage"
-                  value="Some finder tools save favorites, parking, and travel records in browser storage. Vendor claims, server-published listings, private event drafts, invitations, and billing status are stored in StreetSpot's backend and are subject to account access controls."
+                  value="Some finder tools save favorites, parking, and travel records in browser storage. Vendor claims, server-published listings, private event drafts, invitations, and billing status are stored in StreetSpot&apos;s backend and are subject to account access controls."
                 />
                 <DataRow
                   label="Payment security"

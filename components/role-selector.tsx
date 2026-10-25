@@ -11,9 +11,9 @@ interface RoleSelectorProps {
 
 const categories = [
   { icon: Truck, title: "Food trucks", detail: "Catch your favorites while they're open", tone: "orange" },
-  { icon: CalendarDays, title: "Pop-ups & events", detail: "Markets, parties, and things happening now", tone: "blue" },
+  { icon: CalendarDays, title: "Pop-ups & events", detail: "Markets, parties, and things happening now", tone: "orange" },
   { icon: Gem, title: "Local finds", detail: "Skate spots, hidden gems, and neighborhood picks", tone: "green" },
-  { icon: MessageCircle, title: "Direct connection", detail: "Talk to local businesses, not an algorithm", tone: "purple" },
+  { icon: MessageCircle, title: "Direct connection", detail: "Talk to local businesses, not an algorithm", tone: "green" },
 ]
 
 export function RoleSelector({ onSelect }: RoleSelectorProps) {
@@ -59,7 +59,7 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
               >
                 <Download className="h-4 w-4" /> Get StreetSpot on Google Play
               </a>
-              <a href="/host/invitations" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#D8A5FF] bg-[#111116] px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:border-[#B6FF38] hover:text-[#B6FF38]"><CalendarDays className="h-4 w-4 text-[#D8A5FF]" /> Host a Private Event</a>
+              <a href="/host/invitations" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#258052]/25 bg-white px-4 py-2.5 text-sm font-extrabold text-[#258052] shadow-sm transition hover:bg-[#eaf5ed]"><CalendarDays className="h-4 w-4 text-[#f06435]" /> Host a Private Event</a>
             </div>
 
             <div className="mt-7 flex flex-wrap gap-x-5 gap-y-3 text-xs font-semibold text-[#59645f]">
@@ -107,7 +107,7 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
                   <g>
                     <path d="M95 155c-13 0-23 10-23 23 0 17 23 34 23 34s23-17 23-34c0-13-10-23-23-23z" fill="#f06435" stroke="#fff" strokeWidth="4" />
                     <circle cx="95" cy="178" r="7" fill="white" />
-                    <path d="M304 128c-13 0-23 10-23 23 0 17 23 34 23 34s23-17 23-34c0-13-10-23-23-23z" fill="#285ee8" stroke="#fff" strokeWidth="4" />
+                    <path d="M304 128c-13 0-23 10-23 23 0 17 23 34 23 34s23-17 23-34c0-13-10-23-23-23z" fill="#258052" stroke="#fff" strokeWidth="4" />
                     <circle cx="304" cy="151" r="7" fill="white" />
                     <path d="M368 213c-11 0-20 9-20 20 0 15 20 29 20 29s20-14 20-29c0-11-9-20-20-20z" fill="#258052" stroke="#fff" strokeWidth="4" />
                     <circle cx="368" cy="233" r="6" fill="white" />
@@ -125,7 +125,7 @@ export function RoleSelector({ onSelect }: RoleSelectorProps) {
 
               <div className="grid grid-cols-3 gap-2 px-1 pb-1 pt-4">
                 <div className="rounded-xl bg-[#fff0e8] p-3"><Truck className="h-4 w-4 text-[#f06435]" /><p className="mt-2 text-xs font-extrabold text-[#29372f]">Vendors</p><p className="mt-0.5 text-[10px] text-[#7a857e]">Find the truck</p></div>
-                <div className="rounded-xl bg-[#edf2ff] p-3"><CalendarDays className="h-4 w-4 text-[#285ee8]" /><p className="mt-2 text-xs font-extrabold text-[#29372f]">Events</p><p className="mt-0.5 text-[10px] text-[#7a857e]">Catch the moment</p></div>
+                <div className="rounded-xl bg-[#eaf5ed] p-3"><CalendarDays className="h-4 w-4 text-[#258052]" /><p className="mt-2 text-xs font-extrabold text-[#29372f]">Events</p><p className="mt-0.5 text-[10px] text-[#7a857e]">Catch the moment</p></div>
                 <div className="rounded-xl bg-[#eaf5ed] p-3"><Gem className="h-4 w-4 text-[#258052]" /><p className="mt-2 text-xs font-extrabold text-[#29372f]">Hidden gems</p><p className="mt-0.5 text-[10px] text-[#7a857e]">Save your finds</p></div>
               </div>
             </div>

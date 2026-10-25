@@ -61,8 +61,8 @@ function createVendorIcon(vendor: Vendor) {
   const isPremium = vendor.isPremium
   const countdownLabel = formatCountdownShort(vendor.closingTime)
   const size = isPremium ? 42 : 36
-  const pinColor = closing ? "#e4a629" : "#f06435"
-  const countdownColor = closing ? "#e4a629" : "#285ee8"
+  const pinColor = closing ? "#f06435" : "#f06435"
+  const countdownColor = closing ? "#f06435" : "#258052"
   const countdownBg = closing ? "rgba(255,230,0,0.18)" : "rgba(40,94,232,0.12)"
   const countdownBorder = closing ? "rgba(255,230,0,0.4)" : "rgba(40,94,232,0.3)"
   let pinAnimation = ""
@@ -71,11 +71,11 @@ function createVendorIcon(vendor: Vendor) {
   const countdownAnim =
     closing && !isPremium ? "animation: countdown-urgent 1.2s ease-in-out infinite;" : ""
   const premiumBadge = isPremium
-    ? `<div style="position:absolute;top:-7px;right:-7px;width:18px;height:18px;background:linear-gradient(135deg,#e4a629,#b98531);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #17231f;z-index:2;"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="#17231f" stroke="none"><path d="M2 4l3 12h14l3-12-5 4-5-6-5 6z"/><path d="M5 16v4h14v-4"/></svg></div>`
+    ? `<div style="position:absolute;top:-7px;right:-7px;width:18px;height:18px;background:linear-gradient(135deg,#f06435,#f06435);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #17231f;z-index:2;"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="#17231f" stroke="none"><path d="M2 4l3 12h14l3-12-5 4-5-6-5 6z"/><path d="M5 16v4h14v-4"/></svg></div>`
     : ""
-  const borderStyle = isPremium ? `border:3px solid #e4a629;box-shadow:0 0 18px rgba(255,230,0,.75),0 0 34px rgba(240,100,53,.3);` : `border:3px solid #17231f;box-shadow:0 0 15px ${pinColor}99,0 0 28px rgba(40,94,232,.2);`
+  const borderStyle = isPremium ? `border:3px solid #f06435;box-shadow:0 0 18px rgba(240,100,53,.28),0 0 34px rgba(240,100,53,.3);` : `border:3px solid #17231f;box-shadow:0 0 15px ${pinColor}99,0 0 28px rgba(37,128,82,.2);`
   return L.divIcon({
-    html: `<div style="position:relative;width:${size}px;height:${size}px;"><div style="width:${size}px;height:${size}px;background:${isPremium ? "linear-gradient(135deg,#e4a629,#b98531)" : pinColor};${borderStyle}border-radius:50%;display:flex;align-items:center;justify-content:center;${pinAnimation}"><svg xmlns="http://www.w3.org/2000/svg" width="${isPremium ? 17 : 15}" height="${isPremium ? 17 : 15}" viewBox="0 0 24 24" fill="none" stroke="#17231f" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>${premiumBadge}<div style="position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);background:${countdownBg};border:1px solid ${countdownBorder};border-radius:4px;padding:1px 6px;white-space:nowrap;font-size:10px;font-weight:700;color:${countdownColor};font-family:monospace;${countdownAnim}">${countdownLabel}</div></div>`,
+    html: `<div style="position:relative;width:${size}px;height:${size}px;"><div style="width:${size}px;height:${size}px;background:${isPremium ? "linear-gradient(135deg,#f06435,#f06435)" : pinColor};${borderStyle}border-radius:50%;display:flex;align-items:center;justify-content:center;${pinAnimation}"><svg xmlns="http://www.w3.org/2000/svg" width="${isPremium ? 17 : 15}" height="${isPremium ? 17 : 15}" viewBox="0 0 24 24" fill="none" stroke="#17231f" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>${premiumBadge}<div style="position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);background:${countdownBg};border:1px solid ${countdownBorder};border-radius:4px;padding:1px 6px;white-space:nowrap;font-size:10px;font-weight:700;color:${countdownColor};font-family:monospace;${countdownAnim}">${countdownLabel}</div></div>`,
     className: "",
     iconSize: [size, size + 22],
     iconAnchor: [size / 2, size / 2],
@@ -85,7 +85,7 @@ function createVendorIcon(vendor: Vendor) {
 
 function createGemIcon(spot: CommunitySpot) {
   const isSkate = spot.type === "skate_park" || spot.type === "skate_spot"
-  const color = isSkate ? "#285ee8" : spot.claimed ? "#f06435" : "#f06435"
+  const color = isSkate ? "#258052" : spot.claimed ? "#f06435" : "#f06435"
   const size = 28
   return L.divIcon({
     html: `<div style="width:${size}px;height:${size}px;background:${color};border:2px solid #17231f;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.4);"><span style="font-size:11px;font-weight:800;color:#17231f;">◆</span></div>`,
@@ -234,10 +234,10 @@ export function VendorMap() {
     ordered.forEach((vendor) => {
       const icon = createVendorIcon(vendor)
       const closing = isClosingSoon(vendor.closingTime)
-      const countdownColor = closing ? "#e4a629" : "#285ee8"
+      const countdownColor = closing ? "#f06435" : "#258052"
       const countdownBg = closing ? "rgba(255,230,0,0.1)" : "rgba(40,94,232,0.08)"
       const premiumLabel = vendor.isPremium
-        ? `<div style="display:inline-flex;align-items:center;gap:4px;background:rgba(214,163,77,0.12);border:1px solid rgba(214,163,77,0.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;color:#e4a629;margin-bottom:6px;">Gold Vendor</div>`
+        ? `<div style="display:inline-flex;align-items:center;gap:4px;background:rgba(240,100,53,0.12);border:1px solid rgba(240,100,53,0.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;color:#f06435;margin-bottom:6px;">Gold Vendor</div>`
         : ""
       const marker = L.marker([vendor.lat, vendor.lng], {
         icon,
