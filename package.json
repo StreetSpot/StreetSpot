@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "smoke:auth": "node scripts/smoke-auth.mjs",
-    "smoke:agents": "node scripts/smoke-agent-discovery.mjs"
+    "smoke:agents": "node scripts/smoke-agent-discovery.mjs",
+    "check:migration-grants": "node scripts/check-migration-grants.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

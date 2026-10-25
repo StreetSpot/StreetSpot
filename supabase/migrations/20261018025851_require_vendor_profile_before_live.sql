@@ -1,5 +1,5 @@
 -- Prevent blank or seed-placeholder listings from going live.
-CREATE OR REPLACE FUNCTION public.publish_vendor(p_name text, p_description text, p_category text, p_lat double precision, p_lng double precision, p_closing_time text)
+CREATE OR REPLACE FUNCTION private.publish_vendor(p_name text, p_description text, p_category text, p_lat double precision, p_lng double precision, p_closing_time text)
  RETURNS uuid
  LANGUAGE plpgsql
  SECURITY DEFINER
@@ -38,7 +38,7 @@ begin
 end;
 $function$;
 
-CREATE OR REPLACE FUNCTION public.set_vendor_live(p_vendor_id uuid, p_is_live boolean, p_lat double precision, p_lng double precision, p_closing_time text, p_description text)
+CREATE OR REPLACE FUNCTION private.set_vendor_live(p_vendor_id uuid, p_is_live boolean, p_lat double precision, p_lng double precision, p_closing_time text, p_description text)
  RETURNS boolean
  LANGUAGE plpgsql
  SECURITY DEFINER
@@ -83,3 +83,34 @@ begin
   return true;
 end;
 $function$;
+
+-- Keep public RPCs as thin invoker wrappers; the implementation stays in the private schema.
+create or replace function public.publish_vendor(
+  p_name text, p_description text, p_category text,
+  p_lat double precision, p_lng double precision, p_closing_time text
+) returns uuid
+language sql
+set search_path to ''
+as $function$
+  select private.publish_vendor(p_name, p_description, p_category, p_lat, p_lng, p_closing_time);
+$function$;
+
+create or replace function public.set_vendor_live(
+  p_vendor_id uuid, p_is_live boolean, p_lat double precision, p_lng double precision,
+  p_closing_time text, p_description text
+) returns boolean
+language sql
+set search_path to ''
+as $function$
+  select private.set_vendor_live(p_vendor_id, p_is_live, p_lat, p_lng, p_closing_time, p_description);
+$function$;
+
+revoke all on function private.publish_vendor(text, text, text, double precision, double precision, text) from public, anon;
+revoke all on function private.set_vendor_live(uuid, boolean, double precision, double precision, text, text) from public, anon;
+grant execute on function private.publish_vendor(text, text, text, double precision, double precision, text) to authenticated, service_role;
+grant execute on function private.set_vendor_live(uuid, boolean, double precision, double precision, text, text) to authenticated, service_role;
+
+revoke all on function public.publish_vendor(text, text, text, double precision, double precision, text) from public, anon;
+revoke all on function public.set_vendor_live(uuid, boolean, double precision, double precision, text, text) from public, anon;
+grant execute on function public.publish_vendor(text, text, text, double precision, double precision, text) to authenticated, service_role;
+grant execute on function public.set_vendor_live(uuid, boolean, double precision, double precision, text, text) to authenticated, service_role;

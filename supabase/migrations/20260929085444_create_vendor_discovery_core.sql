@@ -47,6 +47,15 @@ alter table public.vendors enable row level security;
 alter table public.vendor_locations enable row level security;
 alter table public.community_spots enable row level security;
 
+-- Keep community spot API access column-scoped from its first creation.
+-- The later secure_community_spots_access migration reasserts these grants after revoking legacy access.
+grant select (id, name, type, description, latitude, longitude, event_date, is_active, claimed, created_at, updated_at)
+  on public.community_spots to anon, authenticated;
+grant insert (name, type, description, latitude, longitude, created_by, event_date, is_active)
+  on public.community_spots to authenticated;
+grant update (name, description, latitude, longitude, event_date, is_active, updated_at)
+  on public.community_spots to authenticated;
+
 grant select on public.vendors, public.vendor_locations to anon, authenticated;
 grant insert, update, delete on public.vendors, public.vendor_locations to authenticated;
 

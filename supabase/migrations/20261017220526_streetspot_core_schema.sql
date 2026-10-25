@@ -89,6 +89,14 @@ alter table public.vendor_claims enable row level security;
 alter table public.conversations enable row level security;
 alter table public.messages enable row level security;
 
+-- Community spots deliberately use column-level grants, never a blanket table grant.
+grant select (id, name, type, description, latitude, longitude, event_date, is_active, claimed, created_at, updated_at)
+  on public.community_spots to anon, authenticated;
+grant insert (name, type, description, latitude, longitude, created_by, event_date, is_active)
+  on public.community_spots to authenticated;
+grant update (name, description, latitude, longitude, event_date, is_active, updated_at)
+  on public.community_spots to authenticated;
+
 revoke all on public.vendors, public.vendor_locations, public.vendor_claims, public.conversations, public.messages from anon, authenticated;
 grant select on public.vendors, public.vendor_locations to anon, authenticated;
 grant insert, update on public.vendors to authenticated;
