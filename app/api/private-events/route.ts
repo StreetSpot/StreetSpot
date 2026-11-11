@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic"
 const eventTypes = new Set(["Wedding","Graduation","Birthday","Baby Shower","Anniversary","Family Gathering","Private Party","Other"])
 const styles = new Set(["elegant","celebration","street"])
 type PrivateEvent = { id:string; title:string; event_type:string; host_name:string; starts_at:string; venue_label:string; latitude:number; longitude:number; invitation_style:string; invitation_message:string; status:"draft"|"published"|"canceled"; created_at:string }
+
 export async function GET(request: NextRequest) {
   try {
     const user = await requireUser(request)
@@ -11,11 +12,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ok:true,events},{headers:{"Cache-Control":"no-store"}})
   } catch(error) { return errorResponse(error) }
 }
+
 export async function POST(request: NextRequest) {
   try {
     const user = await requireUser(request)
     const body = await request.json().catch(()=>null) as Record<string,unknown>|null
-    if (!body || typeof body!=="object" || Array.isArray(body)) return NextResponse.json({ok:false,error:"Send a valid event draft."},{status:400})
+    if (!body || typeof body!=="object" || Array.isArray(body)) {
+      return NextResponse.json({ok:false,error:"Send a valid event draft.",fields:{form:"Send a valid event draft."}},{status:400})
+    }
     const title=typeof body.title==="string"?body.title.trim():""
     const eventType=typeof body.eventType==="string"?body.eventType:""
     const hostName=typeof body.hostName==="string"?body.hostName.trim():""
@@ -25,8 +29,24 @@ export async function POST(request: NextRequest) {
     const longitude=typeof body.longitude==="number"?body.longitude:Number.NaN
     const invitationStyle=typeof body.invitationStyle==="string"?body.invitationStyle:"celebration"
     const invitationMessage=typeof body.invitationMessage==="string"?body.invitationMessage.trim():""
-    if(title.length<1||title.length>120||!eventTypes.has(eventType)||hostName.length>100||!Number.isFinite(startsAt.getTime())||startsAt.getTime()<=Date.now()||venueLabel.length<1||venueLabel.length>200||!Number.isFinite(latitude)||latitude < -90||latitude>90||!Number.isFinite(longitude)||longitude < -180||longitude>180||!styles.has(invitationStyle)||invitationMessage.length>1000)
-      return NextResponse.json({ok:false,error:"Check the event title, future date, venue, map coordinates, and invitation details."},{status:400})
+    const fields: Record<string, string> = {}
+    if (title.length<1) fields.title = "Add an event title."
+    else if (title.length>120) fields.title = "Event title must be 120 characters or fewer."
+    if (!eventTypes.has(eventType)) fields.eventType = "Choose an occasion from the list."
+    if (!hostName) fields.hostName = "Add the host or celebrant name."
+    else if (hostName.length>100) fields.hostName = "Host name must be 100 characters or fewer."
+    if (!Number.isFinite(startsAt.getTime())) fields.startsAt = "Enter a valid date and start time."
+    else if (startsAt.getTime()<=Date.now()) fields.startsAt = "Choose a date and time in the future."
+    if (venueLabel.length<1) fields.venue = "Add a venue name or street address."
+    else if (venueLabel.length>200) fields.venue = "Venue must be 200 characters or fewer."
+    if (!Number.isFinite(latitude) || latitude < -90 || latitude>90 || !Number.isFinite(longitude) || longitude < -180 || longitude>180) {
+      fields.location = "Set the venue pin by searching an address or using your location. You do not need to enter coordinates."
+    }
+    if (!styles.has(invitationStyle)) fields.style = "Choose an invitation style."
+    if (invitationMessage.length>1000) fields.message = "The personal message must be 1000 characters or fewer."
+    if (Object.keys(fields).length) {
+      return NextResponse.json({ok:false,error:Object.values(fields).join(" "),fields},{status:400})
+    }
     const created=await supabaseFetch<PrivateEvent[]>("private_events",{method:"POST",headers:{Prefer:"return=representation"},body:JSON.stringify({host_id:user.id,title,event_type:eventType,host_name:hostName,starts_at:startsAt.toISOString(),venue_label:venueLabel,latitude,longitude,invitation_style:invitationStyle,invitation_message:invitationMessage,status:"draft",is_private:true})},user.accessToken)
     if(!Array.isArray(created)||!created[0]?.id) return NextResponse.json({ok:false,error:"The event draft could not be saved."},{status:502})
     return NextResponse.json({ok:true,event:created[0]},{status:201,headers:{"Cache-Control":"no-store"}})

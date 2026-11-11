@@ -32,8 +32,17 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
     if (!uuid.test(id)) return NextResponse.json({ ok: false, error: "Invalid event id." }, { status: 400 })
     const body = await request.json().catch(() => null) as { emails?: unknown; plan?: unknown } | null
     if (!Array.isArray(body?.emails) || body.emails.length > 200) return NextResponse.json({ ok: false, error: "Send a guest email list with no more than 200 addresses." }, { status: 400 })
-    const emails = [...new Set(body.emails.filter((value): value is string => typeof value === "string").map(value => value.trim().toLowerCase()))]
-    if (emails.some(email => !emailPattern.test(email) || email.length > 254)) return NextResponse.json({ ok: false, error: "One or more guest email addresses are invalid." }, { status: 400 })
+    const incoming = body.emails.filter((value): value is string => typeof value === "string").map(value => value.trim())
+    const invalidEmails = [...new Set(incoming.filter(value => !emailPattern.test(value.toLowerCase()) || value.length > 254))]
+    const emails = [...new Set(incoming.filter(value => emailPattern.test(value.toLowerCase()) && value.length <= 254).map(value => value.toLowerCase()))]
+    if (invalidEmails.length) {
+      return NextResponse.json({
+        ok: false,
+        error: `These guest emails are invalid: ${invalidEmails.join(", ")}`,
+        fields: { guests: `These guest emails are invalid: ${invalidEmails.join(", ")}` },
+        invalidEmails,
+      }, { status: 400 })
+    }
     const plan = typeof body.plan === "string" ? body.plan : ""
     const limit = plan === "invite" ? 1 : plan === "hosted" ? 50 : plan === "signature" ? 200 : 200
     if (emails.length > limit) return NextResponse.json({ ok: false, error: `The selected package allows up to ${limit} guest(s).` }, { status: 400 })
